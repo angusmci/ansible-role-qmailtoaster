@@ -39,17 +39,12 @@
   mysql_user: user=root password="{{ mariadb_root_password }}" host=localhost
   ignore_errors: yes
 
-- name: remove anonymous user for this host
+- name: remove anonymous user for all hosts
   when: mariadb_secure
   mysql_user:
     name: ''
-    host: "{{ item }}"
+    host_all: yes
     state: absent
-    login_user: root
-    login_password: "{{ mariadb_root_password }}"
-  with_items:
-    - localhost
-    - "{{ inventory_hostname }}"
 
 - name: secure the root user for this host
   when: mariadb_secure
