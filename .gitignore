@@ -1,0 +1,9 @@
+# Ignore Mac chaff
+
+.DS_Store
+
+# Ignore Intellij IDEA project files
+
+.idea/*
+.idea/libraries/*
+qmailtoaster.iml
