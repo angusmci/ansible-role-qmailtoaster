@@ -6,4 +6,5 @@
 
 .idea/*
 .idea/libraries/*
+.idea/libraries/R_User_Library.xml
 qmailtoaster.iml
