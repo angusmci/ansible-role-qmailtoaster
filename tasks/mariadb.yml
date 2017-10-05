@@ -10,6 +10,7 @@
 
 - name: start and enable mariadb
   systemd:
+    name: mariadb
     enabled: yes
     state: started
 
@@ -21,39 +22,53 @@
 # - secure the root user
 # - remove the test database
 #
-# Note that 'mariadb.root_password' is not defined in the 'vars' for this role. This is to force
+# Note that 'mariadb_root_password' is not defined in the 'vars' for this role. This is to force
 # you to set it when you call the role. For security, it should be defined in an Ansible vault file.
 #
 # The tasks here are based on recommendations given at:
 #
 #    https://stackoverflow.com/questions/25136498/ansible-answers-to-mysql-secure-installation
 #    https://coderwall.com/p/yez9yw/secure-mysql-with-ansible
+#
+# Note that the initial task to set the root password is set to ignore errors. This is
+# to preserve idempotency; the script can be re-run repeatedly, and won't fail if the
+# root password has already been set.
 
 - name: set mariadb root password
-  when: mariadb.secure == 'yes'
-  mysql_user: user=root password="{{ mariadb.root_password }}" host=localhost
+  when: mariadb_secure
+  mysql_user: user=root password="{{ mariadb_root_password }}" host=localhost
+  ignore_errors: yes
 
 - name: remove anonymous user for this host
-  when: mariadb.secure == 'yes'
-  mysql_user: name='' host={{ item }} state=absent
+  when: mariadb_secure
+  mysql_user:
+    name: ''
+    host: "{{ item }}"
+    state: absent
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
   with_items:
     - localhost
-    - {{ inventory_hostname }}
+    - "{{ inventory_hostname }}"
 
 - name: secure the root user for this host
-  when: mariadb.secure == 'yes'
-  mysql_user: name=root host={{ item }} password={{ mariadb.root_password }}
+  when: mariadb_secure
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    password: "{{ mariadb_root_password }}"
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
   with_items:
-    - {{ inventory_hostname }}
+    - "{{ inventory_hostname }}"
     - 127.0.0.1
     - ::1
     - localhost
 
 - name: remove the test database
-  when: mariadb.secure == 'yes'
-  mysql_db: db=test state=absent
-
-
-
-
-
+  when: mariadb_secure
+  mysql_db:
+    db: test
+    state: absent
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
