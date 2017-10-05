@@ -3,3 +3,5 @@
 
 qmt_version: 1-4
 qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b00874
+
+mariadb.secure: yes

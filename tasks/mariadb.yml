@@ -1,0 +1,59 @@
+---
+
+# Add the tools needed to manipulate MySQL from Python
+
+- name: add python mysql support
+  yum: name=MySQL-python state=present
+  when: ansible_os_family == 'RedHat'
+
+# Start MariaDB and ensure that it will be running on startup.
+
+- name: start and enable mariadb
+  systemd:
+    enabled: yes
+    state: started
+
+# The following tasks take the place of 'mysql_secure_installation' in the original script. They
+# perform the same basic functions, namely:
+#
+# - set the root password
+# - remove the anonymous user
+# - secure the root user
+# - remove the test database
+#
+# Note that 'mariadb.root_password' is not defined in the 'vars' for this role. This is to force
+# you to set it when you call the role. For security, it should be defined in an Ansible vault file.
+#
+# The tasks here are based on recommendations given at:
+#
+#    https://stackoverflow.com/questions/25136498/ansible-answers-to-mysql-secure-installation
+#    https://coderwall.com/p/yez9yw/secure-mysql-with-ansible
+
+- name: set mariadb root password
+  when: mariadb.secure == 'yes'
+  mysql_user: user=root password="{{ mariadb.root_password }}" host=localhost
+
+- name: remove anonymous user for this host
+  when: mariadb.secure == 'yes'
+  mysql_user: name='' host={{ item }} state=absent
+  with_items:
+    - localhost
+    - {{ inventory_hostname }}
+
+- name: secure the root user for this host
+  when: mariadb.secure == 'yes'
+  mysql_user: name=root host={{ item }} password={{ mariadb.root_password }}
+  with_items:
+    - {{ inventory_hostname }}
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: remove the test database
+  when: mariadb.secure == 'yes'
+  mysql_db: db=test state=absent
+
+
+
+
+
