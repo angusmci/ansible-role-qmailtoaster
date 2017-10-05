@@ -16,7 +16,7 @@
 
 - name: get qmt rpm
   get_url:
-    src: https://github.com/qmtoaster/release/raw/master/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
+    url: https://github.com/qmtoaster/release/raw/master/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
     dest: /tmp/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
     checksum: sha256:ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b00874
 
