@@ -18,7 +18,14 @@ TBD
 Role Variables
 --------------
 
-TBD
+    mariadb_secure: yes
+   
+Should the MariaDB database be secured on setup? Leave this as the default value to secure MariaDB, unless you have an extremely good reason not to.
+
+    mariadb_root_password:
+    mariadb_vpopmail_password:
+    
+No default values are provided for these variables. You must provide values for these variables or the role will not work. Ideally, these should be defined in an Ansible vault for greater security. 
 
 Dependencies
 ------------
