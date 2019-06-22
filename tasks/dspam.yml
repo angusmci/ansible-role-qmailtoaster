@@ -7,14 +7,12 @@
     state: started
     enabled: yes
   with_items:
-    - dspam
     - mariadb
 
 - name: install requirements
   become: yes
   yum:
     name: [
-      'mysql-server',
       'epel-release',
       'dspam',
       'dspam-client',
