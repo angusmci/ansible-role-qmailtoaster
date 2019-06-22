@@ -22,13 +22,6 @@
     state: latest
     update_cache: yes
 
-- name: start and enable database
-  become: yes
-  systemd:
-    name: mysqld
-    state: started
-    enabled: yes
-
 - name: check if dspam database exists
   shell: "mysql -u root -p{{ qmt_db_root_password }} -e 'SHOW DATABASES;' | grep 'dspam'"
   register: dbstatus
