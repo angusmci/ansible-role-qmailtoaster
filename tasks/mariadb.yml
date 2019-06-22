@@ -60,6 +60,7 @@
     host: "{{ item }}"
     password: "{{ qmt_db_root_password }}"
     login_user: root
+    login_password: "{{ qmt_db_root_password }}"
   with_items:
     - "{{ inventory_hostname }}"
     - 127.0.0.1
