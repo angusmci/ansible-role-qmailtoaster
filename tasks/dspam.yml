@@ -126,7 +126,7 @@
 
 - name: set up dspam defaults for all domains
   become: yes
-  when: "{{ qmt_use_dspam_domains }}"
+  when: qmt_use_dspam_domains | bool
   template:
     src: qmail_default_dspam.j2
     dest: /home/vpopmail/domains/{{ item }}/.qmail-default
