@@ -1,2 +1,12 @@
 ---
-# handlers file for qmailtoaster
+
+- name: reboot server
+  become: yes
+  reboot:
+
+- name: reload mysql
+  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} reload"
+
+- name: refresh mysql
+  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} refresh"
+

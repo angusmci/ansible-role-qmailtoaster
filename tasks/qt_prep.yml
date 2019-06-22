@@ -1,0 +1,28 @@
+---
+
+- name: disable selinux
+  become: yes
+  selinux:
+    state: disabled
+  notify:
+    - reboot server
+
+- name: yum clean
+  become: yes
+  shell: yum clean all
+
+- name: yum update
+  become: yes
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+
+- name: install wget
+  become: yes
+  yum:
+    name: wget
+    state: latest
+
+- name: flush handlers
+  meta: flush_handlers

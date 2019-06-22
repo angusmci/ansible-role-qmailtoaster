@@ -1,0 +1,314 @@
+---
+
+- name: remove postfix
+  become: yes
+  yum:
+    name: postfix
+    state: absent
+
+- name: add EPEL repository
+  become: yes
+  yum:
+    name: epel-release
+    state: latest
+
+- name: install yum-plugin-priorities
+  become: yes
+  yum:
+    name: yum-plugin-priorities
+    state: latest
+
+- name: get qmt rpm
+  get_url:
+    url: https://github.com/qmtoaster/release/raw/master/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
+    dest: /tmp/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
+
+- name: install qmt rpm
+  become: yes
+  yum:
+    name: /tmp/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
+    state: present
+
+- name: install dependencies
+  become: yes
+  yum:
+    name: [
+      'rsync'
+      'bind-utils'
+      'bind'
+      'net-tools'
+      'zlib-devel'
+      'mariadb-server'
+      'mariadb'
+      'mariadb-devel'
+      'libev-devel'
+      'httpd'
+      'php'
+      'mrtg'
+      'expect'
+      'libidn-devel'
+      'aspell'
+      'tmpwatch'
+      'perl-Time-HiRes'
+      'perl-ExtUtils-MakeMaker'
+      'perl-Archive-Tar'
+      'perl-Digest-SHA'
+      'perl-HTML-Parser'
+      'perl-IO-Zlib'
+      'perl-Net-DNS'
+      'perl-NetAddr-IP'
+      'perl-Crypt-OpenSSL-Bignum'
+      'perl-Digest-SHA1'
+      'perl-Encode-Detect'
+      'perl-Geo-IP'
+      'perl-IO-Socket-SSL'
+      'perl-Mail-DKIM'
+      'perl-Razor-Agent'
+      'perl-Sys-Syslog'
+      'perl-Net-CIDR-Lite'
+      'perl-DB_File'
+      'bzip2-devel'
+      'check-devel'
+      'curl-devel'
+      'gmp-devel'
+      'ncurses-devel'
+      'libxml2-devel'
+      'python-devel'
+      'sqlite-devel'
+      'postgresql-devel'
+      'openldap-devel'
+      'quota-devel'
+      'libcap-devel'
+      'pam-devel'
+      'clucene-core-devel'
+      'expat-devel'
+      'emacs'
+      'ocaml'
+      'procmail'
+      'wget'
+      'logwatch'
+      'vsftpd'
+      'acpid'
+      'acpid-sysvinit'
+      'at'
+      'autofs'
+      'ntp'
+      'smartmontools'
+      'mod_ssl'
+      'fail2ban'
+      'perl-Sys-Hostname-Long'
+      'perl-Mail-DomainKeys'
+      'perl-Mail-SPF-Query'
+      'nfs-utils'
+      'bzip2'
+      'python2-PyMySQL'
+    ]
+    state: latest
+    update_cache: yes
+
+- name: start mariadb
+  become: yes
+  systemd:
+    name: mariadb.service
+    state: started
+    enabled: yes
+
+- name: initialize mariadb
+  include: mariadb.yml
+
+- name: check if vpopmail database exists
+  shell: "mysql -u root -p{{ mariadb_root_database}} -e 'SHOW DATABASES;' | grep 'vpopmail'"
+  register: dbstatus
+  failed_when: dbstatus.rc == 2
+
+- name: dump vpopmail database if it exists
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_database}}"
+    name: vpopmail
+    state: dump
+    target: "{{ vpopmail_dump_file_path }}"
+  when: dbstatus.rc == 0
+
+- name: drop vpopmail database if it exists
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_database}}"
+    name: vpopmail
+    state: absent
+  when: dbstatus.rc == 0
+
+- name: create vpopmail database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_database}}"
+    name: vpopmail
+    state: present
+
+- name: reload mysql
+  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} reload"
+
+- name: refresh mysql
+  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} refresh"
+
+- name: create vpopmail database user and assign privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_database}}"
+    name: vpopmail
+    password: "{{ mariadb_vpopmail_database}}"
+    priv: 'vpopmail.*:ALL'
+    state: present
+
+- name: reload mysql
+  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} reload"
+
+- name: refresh mysql
+  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} refresh"
+
+- name: install dependencies
+  become: yes
+  yum:
+    name: [
+      'daemontools'
+      'ucspi-tcp'
+      'libsrs2'
+      'libsrs2-devel'
+      'vpopmail'
+      'spamdyke'
+      'qmail'
+      'autorespond'
+      'control-panel'
+      'ezmlm'
+      'ezmlm-cgi'
+      'qmailadmin'
+      'qmailmrtg'
+      'maildrop'
+      'maildrop-devel'
+      'isoqlog'
+      'vqadmin'
+      'squirrelmail'
+      'spamassassin'
+      'clamav'
+      'ripmime'
+      'simscan'
+      'mailman'
+      'mailman-debuginfo'
+      'dovecot'
+      'libdomainkeys-devel'
+      'qmt-plus'
+    ]
+    state: latest
+    update_cache: yes
+
+- name: start firewalld
+  become: yes
+  systemd:
+    name: firewalld.service
+    state: started
+    enabled: yes
+
+- name: open ports
+  become: yes
+  firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+  with-items:
+    - 20
+    - 21
+    - 22
+    - 25
+    - 80
+    - 110
+    - 113
+    - 143
+    - 443
+    - 465
+    - 587
+    - 993
+    - 995
+    - 3306
+
+- name: stop qmail
+  become: yes
+  shell: "qmailctl stop &> /dev/null"
+
+- name: start qmail
+  become: yes
+  shell: "qmailctl start &> /dev/null"
+
+- name: stop freshclam
+  become: yes
+  service:
+    name: freshclam
+    state: stopped
+
+- name: set up ownership of clamav
+  become: yes
+  file:
+    path: /run/clamav
+    owner: root
+    group: clamav
+    mode: '0775'
+
+- name: start and enable services
+  become: yes
+  systemd:
+    name: {{ item }}
+    state: started
+    enabled: yes
+  with-items:
+    - clamav-daemon.socket
+    - clamav-daemon.service
+    - clamav-freshclam
+    - spamd
+    - dovecot
+    - httpd
+    - named
+    - vsftpd
+    - network
+    - acpid
+    - atd
+    - autofs
+    - crond
+    - ntpd
+    - smartd
+    - sshd
+    - irqbalance
+
+- name: start isoqlog
+  become: yes
+  shell: sh /usr/share/toaster/isoqlog/bin/cron.sh
+
+- name: enable NetworkManager
+  become: yes
+  systemd:
+    name: NetworkManager-wait-online.service
+    enabled: yes
+
+- name: disable chronyd
+  become: yes
+  systemd:
+    name: chronyd.service
+    enabled: no
+
+- name: get toaststat
+  become: yes
+  get_url:
+    url: https://raw.githubusercontent.com/qmtoaster/scripts/master/toaststat
+    dest: /usr/bin/toaststat
+    mode: '0755'
+
+- name: install dspam
+  include: dspam.yml
+  when: qmt_switch.use_dspam
+
+- name: add man pages
+  become: yes
+  lineinfile:
+    path: /etc/man_db.conf
+    line: "MANDATORY_MANPATH /var/qmail/man"
+    state: present
+    regexp: EOF
+

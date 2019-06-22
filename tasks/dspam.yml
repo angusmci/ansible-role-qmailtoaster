@@ -1,0 +1,138 @@
+---
+
+- name: start and enable services
+  become: yes
+  systemd:
+    name: {{ item }}
+    state: started
+    enabled: yes
+  with-items:
+    - dspam
+    - mariadb
+
+- name: install requirements
+  become: yes
+  yum:
+    name: [
+      'mysql-server'
+      'epel-release'
+      'dspam'
+      'dspam-client'
+      'dspam-mysql'
+      'wget'
+    ]
+    state: latest
+    update_cache: yes
+
+- name: start and enable database
+  become: yes
+  systemd:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: check if dspam database exists
+  shell: "mysql -u root -p{{ mariadb_root_database}} -e 'SHOW DATABASES;' | grep 'dspam'"
+  register: dbstatus
+  failed_when: dbstatus.rc == 2
+
+- name: dump dspam database if it exists
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_database}}"
+    name: dspam
+    state: dump
+    target: "{{ dspam_dump_file_path }}"
+  when: dbstatus.rc == 0
+
+- name: drop dspam database if it exists
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_database}}"
+    name: dspam
+    state: absent
+  when: dbstatus.rc == 0
+
+- name: create dspam database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_database}}"
+    name: dspam
+    state: present
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [1]
+  meta: flush_handlers
+
+- name: create dspam database user and assign privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_database}}"
+    name: dspam
+    password: "{{ mariadb_dspam_database}}"
+    priv: 'dspam.*:ALL'
+    state: present
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [2]
+  meta: flush_handlers
+
+- name: get dspam SQL script
+  get_url:
+    url: https://raw.githubusercontent.com/qmtoaster/dspam/master/dspamdb.sql
+    dest: /tmp/dspamdb.sql
+  register: dspam_script_downloaded
+
+- name: initialize dspam database
+  when: not dspam_script_downloaded.skipped
+  shell: mysql -uroot -p{{ mariadb_root_database}} dspam < /tmp/dspamdb.sql
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [3]
+  meta: flush_handlers
+
+- name: set permissions on /var/run/dspam
+  become: yes
+  file:
+    path: /var/run/dspam
+    mode: '0777'
+
+- name: stat /etc/dspam.conf
+  stat: path=/etc/dspam.conf
+  register: dspam_conf_stat
+
+- name: Back up /etc/dspam.conf
+  command: mv /etc/dspam.conf /etc/dspam.conf.bak
+  when: dspam_conf_stat.stat.exists
+
+- name: get dspam conf file
+  get_url:
+    url: https://raw.githubusercontent.com/qmtoaster/dspam/master/dspam.conf
+    dest: /etc/dspam.conf
+    mode: '0744'
+
+- name: start and enable dspam
+  become: yes
+  systemd:
+    name: 'dspam'
+    state: started
+    enabled: yes
+
+- name: set up dspam defaults for all domains
+  become: yes
+  when: qmt_switch.use_dspam_domains
+  template:
+    src: qmail_default_dspam.j2
+    dest: /home/vpopmail/domains/{{ item }}/.qmail-default
+    backup: yes
+    owner: vpopmail
+    group: vchkpw
+    mode: '0644'
+  with-items: "{{ dspam_domains }}"
+
