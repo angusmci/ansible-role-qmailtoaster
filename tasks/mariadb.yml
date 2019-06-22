@@ -37,11 +37,15 @@
 # root password has already been set.
 
 - name: set mariadb root password
-  mysql_user: user=root password="{{ qmt_db_root_password }}" host=localhost
+  mysql_user:
+    login_user: root
+    user: root
+    password: "{{ qmt_db_root_password }}"
+    host: localhost
   ignore_errors: yes
 
 - name: remove anonymous user for all hosts
-  when: "{{ qmt_secure_mariadb }}"
+  when: qmt_secure_mariadb | bool
   mysql_user:
     name: ''
     host_all: yes
@@ -50,7 +54,7 @@
     login_password: "{{ qmt_db_root_password }}"
 
 - name: secure the root user for this host
-  when: "{{ qmt_secure_mariadb }}"
+  when: qmt_secure_mariadb | bool
   mysql_user:
     name: root
     host: "{{ item }}"
@@ -63,7 +67,7 @@
     - localhost
 
 - name: remove the test database
-  when: "{{ qmt_secure_mariadb }}"
+  when: qmt_secure_mariadb | bool
   mysql_db:
     db: test
     state: absent
