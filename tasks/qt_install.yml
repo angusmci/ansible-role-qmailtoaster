@@ -292,6 +292,7 @@
   systemd:
     name: chronyd.service
     enabled: no
+  ignore_errors: yes
 
 - name: get toaststat
   become: yes
