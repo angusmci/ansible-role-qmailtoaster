@@ -302,7 +302,7 @@
 
 - name: install dspam
   include: dspam.yml
-  when: qmt_switch.use_dspam
+  when: qmt_options.use_dspam
 
 - name: add man pages
   become: yes
