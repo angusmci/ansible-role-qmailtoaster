@@ -79,7 +79,7 @@
   register: dspam_script_downloaded
 
 - name: initialize dspam database
-  when: not dspam_script_downloaded.skipped
+  when: dspam_script_downloaded.changed
   shell: mysql -uroot -p{{ mariadb_root_database}} dspam < /tmp/dspamdb.sql
   notify:
     - reload mysql
