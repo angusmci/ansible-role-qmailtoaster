@@ -99,10 +99,12 @@
   register: dspam_conf_stat
 
 - name: Back up /etc/dspam.conf
+  become: yes
   command: mv /etc/dspam.conf /etc/dspam.conf.bak
   when: dspam_conf_stat.stat.exists
 
 - name: get dspam conf file
+  become: yes
   get_url:
     url: https://raw.githubusercontent.com/qmtoaster/dspam/master/dspam.conf
     dest: /etc/dspam.conf
