@@ -13,25 +13,15 @@ qmt_version: 1-7
 
 qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b00874
 
-# qmt_switch.secure_mariadb
+# qmt_options
 #
-# Should mariadb be secured?
+# Assorted options for controlling the QMT install
 
-qmt_switch.secure_mariadb: yes
-
-# qmt_switch.use_dspam
-
-qmt_switch.use_dspam: yes
-
-# qmt_switch.use_dspam_domains
-
-qmt_switch.use_dspam_domains: yes
-
-# dspam domains
-#
-# List of domains that should have dspam enabled
-
-dspam_domains:
+qmt_options:
+  - secure_mariadb: yes
+  - use_dspam: yes
+  - use_dspam_domains: no
+  - dspam_domains: []
 
 # vpopmail_dump_file_path
 #
