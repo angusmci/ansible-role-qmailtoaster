@@ -80,7 +80,7 @@
 
 - name: initialize dspam database
   when: dspam_script_downloaded.changed
-  shell: mysql -uroot -p{{ mariadb_root_database}} dspam < /tmp/dspamdb.sql
+  shell: mysql -uroot -p{{ qmt_db_root_password}} dspam < /tmp/dspamdb.sql
   notify:
     - reload mysql
     - refresh mysql
