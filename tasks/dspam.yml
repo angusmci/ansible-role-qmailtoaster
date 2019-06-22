@@ -42,7 +42,7 @@
     login_password: "{{ qmt_db_root_password }}"
     name: dspam
     state: dump
-    target: "{{ dspam_dump_file_path }}"
+    target: "{{ qmt_dspam_dump_file_path }}"
   when: dbstatus.rc == 0
 
 - name: drop dspam database if it exists
