@@ -302,7 +302,7 @@
 
 - name: install dspam
   include: dspam.yml
-  when: qmt_use_dspam
+  when: "{{ qmt_use_dspam }}"
 
 - name: add man pages
   become: yes
