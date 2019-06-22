@@ -20,17 +20,21 @@ TBD
 Role Variables
 --------------
 
-    qmt_switch.mariadb_secure: yes
+    qmt_options.mariadb_secure: yes
    
 Should the MariaDB database be secured on setup? Leave this as the default value to secure MariaDB, unless you have an extremely good reason not to.
 
-    qmt_switch.use_dspam: yes
+    qmt_options.use_dspam: yes
    
 Should dspam be installed? 
 
-    qmt_switch.use_dspam_domains: no
+    qmt_options.use_dspam_domains: no
    
 Should dspam be used for individual domains? 
+
+    qmt_options.dspam_domains
+    
+List of domains for which dspam should be used.
 
     mariadb_root_password:
     mariadb_vpopmail_password:

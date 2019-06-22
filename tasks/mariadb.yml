@@ -3,12 +3,14 @@
 # Add the tools needed to manipulate MySQL from Python
 
 - name: add python mysql support
+  become: yes
   yum: name=MySQL-python state=present
   when: ansible_os_family == 'RedHat'
 
 # Start MariaDB and ensure that it will be running on startup.
 
 - name: start and enable mariadb
+  become: yes
   systemd:
     name: mariadb
     enabled: yes
@@ -39,7 +41,7 @@
   ignore_errors: yes
 
 - name: remove anonymous user for all hosts
-  when: qmt_switch.secure_mariadb
+  when: qmt_options.secure_mariadb
   mysql_user:
     name: ''
     host_all: yes
@@ -48,7 +50,7 @@
     login_password: "{{ mariadb_root_password }}"
 
 - name: secure the root user for this host
-  when: qmt_switch.secure_mariadb
+  when: qmt_options.secure_mariadb
   mysql_user:
     name: root
     host: "{{ item }}"
@@ -62,7 +64,7 @@
     - localhost
 
 - name: remove the test database
-  when: qmt_switch.secure_mariadb
+  when: qmt_options.secure_mariadb
   mysql_db:
     db: test
     state: absent
