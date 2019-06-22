@@ -10,8 +10,8 @@
 - name: yum clean
   become: yes
   shell: yum clean all
-    args:
-      warn: no
+  args:
+    warn: no
 
 - name: yum update
   become: yes
