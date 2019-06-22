@@ -41,22 +41,21 @@
   ignore_errors: yes
 
 - name: remove anonymous user for all hosts
-  when: qmt_options.secure_mariadb
+  when: qmt_secure_mariadb
   mysql_user:
     name: ''
     host_all: yes
     state: absent
     login_user: root
-    login_password: "{{ mariadb_root_password }}"
+    login_password: "{{ qmt_db_root_password }}"
 
 - name: secure the root user for this host
-  when: qmt_options.secure_mariadb
+  when: qmt_secure_mariadb
   mysql_user:
     name: root
     host: "{{ item }}"
-    password: "{{ mariadb_root_password }}"
+    password: "{{ qmt_db_root_password }}"
     login_user: root
-    login_password: "{{ mariadb_root_password }}"
   with_items:
     - "{{ inventory_hostname }}"
     - 127.0.0.1
@@ -64,10 +63,10 @@
     - localhost
 
 - name: remove the test database
-  when: qmt_options.secure_mariadb
+  when: qmt_secure_mariadb
   mysql_db:
     db: test
     state: absent
     login_user: root
-    login_password: "{{ mariadb_root_password }}"
+    login_password: "{{ qmt_db_root_password }}"
 

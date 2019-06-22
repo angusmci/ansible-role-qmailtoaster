@@ -17,41 +17,40 @@ qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b
 #
 # Assorted options for controlling the QMT install
 
-qmt_options:
-  - secure_mariadb: yes
-  - use_dspam: yes
-  - use_dspam_domains: no
-  - dspam_domains: []
+qmt_secure_mariadb: yes
+qmt_use_dspam: yes
+qmt_use_dspam_domains: no
+qmt_dspam_domains: []
 
-# vpopmail_dump_file_path
+# qmt_vpopmail_dump_file_path
 #
 # Path for the vpopmail dump file
 
-vpopmail_dump_file_path: /tmp/vpopmail.sql
+qmt_vpopmail_dump_file_path: /tmp/vpopmail.sql
 
-# dspam_dump_file_path
+# qmt_dspam_dump_file_path
 #
 # Path for the vpopmail dump file
 
-dspam_dump_file_path: /tmp/dspam.sql
+qmt_dspam_dump_file_path: /tmp/dspam.sql
 
-# mariadb_root_password
+# qmt_db_root_password
 #
 # The Maria DB root password is left undefined here. You need to define it yourself
 # in your own vars file, preferably in an Ansible vault.
 #
-# mariadb_root_password:
+# qmt_db_root_password:
 
-# mariadb_vpopmail_password
+# qmt_db_vpopmail_password
 #
 # The Maria DB vpopmail password is left undefined here. You need to define it yourself
 # in your own vars file, preferably in an Ansible vault.
 #
-# mariadb_vpopmail_password:
+# qmt_db_vpopmail_password:
 
-# mariadb_dspam_password
+# qmt_db_dspam_password
 #
 # The Maria DB dspam password is left undefined here. You need to define it yourself
 # in your own vars file, preferably in an Ansible vault.
 #
-# mariadb_dspam_password:
+# qmt_db_dspam_password:

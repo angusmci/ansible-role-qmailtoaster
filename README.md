@@ -20,25 +20,25 @@ TBD
 Role Variables
 --------------
 
-    qmt_options.mariadb_secure: yes
+    qmt_mariadb_secure: yes
    
 Should the MariaDB database be secured on setup? Leave this as the default value to secure MariaDB, unless you have an extremely good reason not to.
 
-    qmt_options.use_dspam: yes
+    qmt_use_dspam: yes
    
 Should dspam be installed? 
 
-    qmt_options.use_dspam_domains: no
+    qmt_use_dspam_domains: no
    
 Should dspam be used for individual domains? 
 
-    qmt_options.dspam_domains
+    qmt_dspam_domains
     
 List of domains for which dspam should be used.
 
-    mariadb_root_password:
-    mariadb_vpopmail_password:
-    mariadb_dspam_password:
+    qmt_db_root_password:
+    qmt_db_vpopmail_password:
+    qmt_db_dspam_password:
     
 No default values are provided for these variables. You must provide values for these variables or the role will not work. Ideally, these should be defined in an Ansible vault for greater security. 
 

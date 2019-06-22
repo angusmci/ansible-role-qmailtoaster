@@ -32,14 +32,14 @@
     enabled: yes
 
 - name: check if dspam database exists
-  shell: "mysql -u root -p{{ mariadb_root_database}} -e 'SHOW DATABASES;' | grep 'dspam'"
+  shell: "mysql -u root -p{{ qmt_db_root_password }} -e 'SHOW DATABASES;' | grep 'dspam'"
   register: dbstatus
   failed_when: dbstatus.rc == 2
 
 - name: dump dspam database if it exists
   mysql_db:
     login_user: root
-    login_password: "{{ mariadb_root_database}}"
+    login_password: "{{ qmt_db_root_password }}"
     name: dspam
     state: dump
     target: "{{ dspam_dump_file_path }}"
@@ -48,7 +48,7 @@
 - name: drop dspam database if it exists
   mysql_db:
     login_user: root
-    login_password: "{{ mariadb_root_database}}"
+    login_password: "{{ qmt_db_root_password }}"
     name: dspam
     state: absent
   when: dbstatus.rc == 0
@@ -56,7 +56,7 @@
 - name: create dspam database
   mysql_db:
     login_user: root
-    login_password: "{{ mariadb_root_database}}"
+    login_password: "{{ qmt_db_root_password }}"
     name: dspam
     state: present
   notify:
@@ -69,9 +69,9 @@
 - name: create dspam database user and assign privileges
   mysql_user:
     login_user: root
-    login_password: "{{ mariadb_root_database}}"
+    login_password: "{{ qmt_db_root_password}}"
     name: dspam
-    password: "{{ mariadb_dspam_database}}"
+    password: "{{ qmt_db_dspam_password}}"
     priv: 'dspam.*:ALL'
     state: present
   notify:
@@ -126,7 +126,7 @@
 
 - name: set up dspam defaults for all domains
   become: yes
-  when: qmt_options.use_dspam_domains
+  when: qmt_use_dspam_domains
   template:
     src: qmail_default_dspam.j2
     dest: /home/vpopmail/domains/{{ item }}/.qmail-default
@@ -134,5 +134,5 @@
     owner: vpopmail
     group: vchkpw
     mode: '0644'
-  with_items: "{{ qmt_options.dspam_domains }}"
+  with_items: "{{ qmt_dspam_domains }}"
 

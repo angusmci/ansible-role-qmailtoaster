@@ -5,8 +5,8 @@
   reboot:
 
 - name: reload mysql
-  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} reload"
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password }} reload"
 
 - name: refresh mysql
-  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} refresh"
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password }} refresh"
 

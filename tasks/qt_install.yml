@@ -117,14 +117,14 @@
   include: mariadb.yml
 
 - name: check if vpopmail database exists
-  shell: "mysql -u root -p{{ mariadb_root_database}} -e 'SHOW DATABASES;' | grep 'vpopmail'"
+  shell: "mysql -u root -p{{ qmt_db_root_password}} -e 'SHOW DATABASES;' | grep 'vpopmail'"
   register: dbstatus
   failed_when: dbstatus.rc == 2
 
 - name: dump vpopmail database if it exists
   mysql_db:
     login_user: root
-    login_password: "{{ mariadb_root_database}}"
+    login_password: "{{ qmt_db_root_password}}"
     name: vpopmail
     state: dump
     target: "{{ vpopmail_dump_file_path }}"
@@ -133,7 +133,7 @@
 - name: drop vpopmail database if it exists
   mysql_db:
     login_user: root
-    login_password: "{{ mariadb_root_database}}"
+    login_password: "{{ qmt_db_root_password}}"
     name: vpopmail
     state: absent
   when: dbstatus.rc == 0
@@ -141,30 +141,30 @@
 - name: create vpopmail database
   mysql_db:
     login_user: root
-    login_password: "{{ mariadb_root_database}}"
+    login_password: "{{ qmt_db_root_password}}"
     name: vpopmail
     state: present
 
 - name: reload mysql
-  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} reload"
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} reload"
 
 - name: refresh mysql
-  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} refresh"
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
 
 - name: create vpopmail database user and assign privileges
   mysql_user:
     login_user: root
-    login_password: "{{ mariadb_root_database}}"
+    login_password: "{{ qmt_db_root_password}}"
     name: vpopmail
-    password: "{{ mariadb_vpopmail_database}}"
+    password: "{{ qmt_db_vpopmail_password}}"
     priv: 'vpopmail.*:ALL'
     state: present
 
 - name: reload mysql
-  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} reload"
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} reload"
 
 - name: refresh mysql
-  shell: "mysqladmin -uroot -p{{ mariadb_root_database}} refresh"
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
 
 - name: install dependencies
   become: yes
@@ -302,7 +302,7 @@
 
 - name: install dspam
   include: dspam.yml
-  when: qmt_options.use_dspam
+  when: qmt_use_dspam
 
 - name: add man pages
   become: yes
