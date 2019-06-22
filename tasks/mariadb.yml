@@ -37,7 +37,7 @@
 # root password has already been set.
 
 - name: set mariadb root password
-  mysql_user: user=root password="{{ mariadb_root_password }}" host=localhost
+  mysql_user: user=root password="{{ qmt_db_root_password }}" host=localhost
   ignore_errors: yes
 
 - name: remove anonymous user for all hosts
