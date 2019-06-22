@@ -3,10 +3,10 @@
 - name: start and enable services
   become: yes
   systemd:
-    name: {{ item }}
+    name: "{{ item }}"
     state: started
     enabled: yes
-  with-items:
+  with_items:
     - dspam
     - mariadb
 
@@ -14,11 +14,11 @@
   become: yes
   yum:
     name: [
-      'mysql-server'
-      'epel-release'
-      'dspam'
-      'dspam-client'
-      'dspam-mysql'
+      'mysql-server',
+      'epel-release',
+      'dspam',
+      'dspam-client',
+      'dspam-mysql',
       'wget'
     ]
     state: latest
@@ -120,7 +120,7 @@
 - name: start and enable dspam
   become: yes
   systemd:
-    name: 'dspam'
+    name: dspam
     state: started
     enabled: yes
 
@@ -134,5 +134,5 @@
     owner: vpopmail
     group: vchkpw
     mode: '0644'
-  with-items: "{{ dspam_domains }}"
+  with_items: "{{ dspam_domains }}"
 
