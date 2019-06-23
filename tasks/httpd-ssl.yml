@@ -1,0 +1,32 @@
+---
+
+- name: change server certificate file
+  become: yes
+  when: qmt_use_httpd_ssl | bool
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: '^SSLCertificateFile /etc/pki/tls/certs/.*'
+    line: 'SSLCertificateFile /etc/pki/tls/certs/{{ qmt_httpd_ssl_certificate_file }}'
+  tags:
+    - ssl
+
+- name: change server certificate key file
+  become: yes
+  when: qmt_use_httpd_ssl | bool
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: '^SSLCertificateKeyFile /etc/pki/tls/private/.*'
+    line: 'SSLCertificateKeyFile /etc/pki/tls/private/{{ qmt_httpd_ssl_certificate_key_file }}'
+  tags:
+    - ssl
+
+- name: change server certificate key file
+  become: yes
+  when: qmt_use_httpd_ssl | bool
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: '^.?SSLCACertificateFile /etc/pki/tls/certs/.*'
+    line: 'SSLCACertificateFile /etc/pki/tls/certs/{{ qmt_httpd_ssl_certificate_authority_file }}'
+  tags:
+    - ssl
+

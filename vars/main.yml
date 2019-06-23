@@ -72,3 +72,35 @@ qmt_dspam_dump_file_path: /tmp/dspam.sql
 # in your own vars file, preferably in an Ansible vault.
 #
 # qmt_db_dspam_password:
+
+# ======================================================================
+# WEB SERVER SECURITY SETTINGS
+# ======================================================================
+
+# qmt_use_httpd_ssl
+#
+# When this option is set to true, '/etc/httpd/conf.d/ssl.conf' will be
+# modified to use user-provided key, certificate and bundle files.
+
+qmt_use_httpd_ssl: no
+
+# qmt_httpd_ssl_certificate_file
+#
+# Name of the SSL certificate file. This file should be placed in
+# /etc/pki/tls/certs/
+
+qmt_httpd_ssl_certificate_file: server.crt
+
+# qmt_httpd_ssl_certificate_file
+#
+# Name of the SSL certificate key file. This file should be placed in
+# /etc/pki/tls/private/
+
+qmt_httpd_ssl_certificate_key_file: server.key
+
+# qmt_httpd_ssl_certificate_file
+#
+# Name of the SSL certificate authority file. This file should be placed in
+# /etc/pki/tls/certs/
+
+qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
