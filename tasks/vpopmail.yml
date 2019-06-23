@@ -1,0 +1,73 @@
+---
+- name: stop qmail
+  become: yes
+  shell: "qmailctl stop &> /dev/null"
+
+- name: create /var/qmail/supervise/vpopmaild
+  become: yes
+  file:
+    path: /var/qmail/supervise/vpopmaild/vpopmaild
+    state: directory
+    mode: '1751'
+
+- name: set mode on /var/qmail/supervise/vpopmaild
+  become: yes
+  file:
+    path: /var/qmail/supervise/vpopmaild/vpopmaild
+    state: directory
+    mode: '1700'
+    owner: qmaill
+    group: qmail
+
+- name: create /var/qmail/supervise/vpopmaild/log
+  become: yes
+  file:
+    path: /var/qmail/supervise/vpopmaild/vpopmaild/log
+    state: directory
+    mode: '0751'
+
+- name: set mode on /var/qmail/supervise/vpopmaild/log
+  become: yes
+  file:
+    path: /var/qmail/supervise/vpopmaild/vpopmaild/log
+    state: directory
+    mode: '0700'
+    owner: qmaill
+    group: qmail
+
+- name: create vpopmaild/run
+  become: yes
+  template:
+    src: vpopmaild_run.j2
+    dest: /var/qmail/supervise/vpopmaild/run
+    backup: yes
+    owner: qmaill
+    group: qmail
+    mode: '0751'
+
+- name: create vpopmaild/log/run
+  become: yes
+  template:
+    src: vpopmaild_log_run.j2
+    dest: /var/qmail/supervise/vpopmaild/log/run
+    backup: yes
+    owner: qmaill
+    group: qmail
+    mode: '0751'
+
+- name: open port 89 for vpopmaild
+  become: yes
+  firewalld:
+    port: "89/tcp"
+    permanent: yes
+    state: enabled
+  notify:
+    - restart firewall
+
+- name: flush handlers to restart firewall
+  meta: flush_handlers
+
+- name: start qmail
+  become: yes
+  shell: "qmailctl start &> /dev/null"
+

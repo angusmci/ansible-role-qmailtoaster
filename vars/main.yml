@@ -52,6 +52,13 @@ qmt_vpopmail_dump_file_path: /tmp/vpopmail.sql
 
 qmt_dspam_dump_file_path: /tmp/dspam.sql
 
+# qmt_install_vpopmaild
+#
+# Should we set up vpopmaild? It's needed for Roundcube, so if
+# you install Roundcube, set this to 'yes'.
+
+qmt_install_vpopmaild: no
+
 # qmt_db_root_password
 #
 # The Maria DB root password is left undefined here. You need to define it yourself

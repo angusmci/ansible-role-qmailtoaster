@@ -1,0 +1,7 @@
+#!/bin/sh
+QMAILDUID=`id -u vpopmail`
+NOFILESGID=`id -g vpopmail`
+VPOPD=/home/vpopmail/bin/vpopmaild
+
+exec 2>&1
+exec /usr/bin/tcpserver -vRHD -u "$QMAILDUID" -g "$NOFILESGID" 127.0.0.1 89 $VPOPD
