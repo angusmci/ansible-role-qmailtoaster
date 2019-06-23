@@ -10,27 +10,45 @@ qmt_version: 1-7
 # qmt_sha256_checksum
 #
 # Checksum for this version of the Qmailtoaster RPM
+#
+# TODO Set this to the correct checksum for QMT 1.7, and implement checksum checking.
 
 qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b00874
 
-# qmt_options
+# qmt_secure_mariadb
 #
-# Assorted options for controlling the QMT install
+# Should the MariaDB database be secured by removing test accounts and databases?
 
 qmt_secure_mariadb: yes
+
+# qmt_use_dspam
+#
+# Should QMT use Dspam?
+
 qmt_use_dspam: yes
+
+# qmt_use_dspam_domains
+#
+# If this option is set to 'yes', default .qmail files using Dspam will be set up for
+# each domain listed in the 'qmt_dspam_domains' argument.
+
 qmt_use_dspam_domains: no
+
+# qmt_dspam_domains
+#
+# List of domains for which a dspam-based catchall account will be initialized.
+
 qmt_dspam_domains: []
 
 # qmt_vpopmail_dump_file_path
 #
-# Path for the vpopmail dump file
+# If a vpopmail database already exists, back it up to this file.
 
 qmt_vpopmail_dump_file_path: /tmp/vpopmail.sql
 
 # qmt_dspam_dump_file_path
 #
-# Path for the vpopmail dump file
+# If a dspam database already exists, back it up to this file
 
 qmt_dspam_dump_file_path: /tmp/dspam.sql
 
