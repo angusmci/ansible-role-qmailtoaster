@@ -315,6 +315,8 @@
 - name: install dspam
   include: dspam.yml
   when: qmt_use_dspam | bool
+  tags:
+    - dspam
 
 - name: add man pages
   become: yes

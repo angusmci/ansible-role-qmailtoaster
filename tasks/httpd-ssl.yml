@@ -9,8 +9,6 @@
     line: 'SSLCertificateFile /etc/pki/tls/certs/{{ qmt_httpd_ssl_certificate_file }}'
   notify:
     - restart apache
-  tags:
-    - ssl
 
 - name: change server certificate key file
   become: yes
@@ -21,8 +19,6 @@
     line: 'SSLCertificateKeyFile /etc/pki/tls/private/{{ qmt_httpd_ssl_certificate_key_file }}'
   notify:
     - restart apache
-  tags:
-    - ssl
 
 - name: change server certificate key file
   become: yes
@@ -33,6 +29,4 @@
     line: 'SSLCACertificateFile /etc/pki/tls/certs/{{ qmt_httpd_ssl_certificate_authority_file }}'
   notify:
     - restart apache
-  tags:
-    - ssl
 

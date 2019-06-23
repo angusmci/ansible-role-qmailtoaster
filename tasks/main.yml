@@ -1,7 +1,13 @@
 ---
 - include: qt_prep.yml
+  tags:
+    - qmt
 - include: qt_install.yml
+  tags:
+    - qmt
 
 # Additional configurations and tweaks
 
 - include: httpd-ssl.yml
+  tags:
+    - ssl
