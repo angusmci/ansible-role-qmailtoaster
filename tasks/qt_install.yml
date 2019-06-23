@@ -232,6 +232,15 @@
   notify:
     - restart firewall
 
+- name: write vpopmail.mysql
+  template:
+    src: vpopmail.mysql.j2
+    dest: /home/vpopmail/etc/vpopmail.mysql
+    backup: yes
+    owner: vpopmail
+    group: vchkpw
+    mode: '0644'
+
 - name: stop qmail
   become: yes
   shell: "qmailctl stop &> /dev/null"
