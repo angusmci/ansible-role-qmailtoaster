@@ -22,14 +22,14 @@
 - name: create /var/qmail/supervise/vpopmaild/log
   become: yes
   file:
-    path: /var/qmail/supervise/vpopmaild/vpopmaild/log
+    path: /var/qmail/supervise/vpopmaild/log
     state: directory
     mode: '0751'
 
 - name: set mode on /var/qmail/supervise/vpopmaild/log
   become: yes
   file:
-    path: /var/qmail/supervise/vpopmaild/vpopmaild/log
+    path: /var/qmail/supervise/vpopmaild/log
     state: directory
     mode: '0700'
     owner: qmaill
