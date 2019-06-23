@@ -12,7 +12,7 @@
   tags:
     - ssl
 
-- include: vpopmaild
-  when:
+- include: vpopmaild.yml
+  when: qmt_install_vpopmaild | bool
   tags:
     - vpopmaild
