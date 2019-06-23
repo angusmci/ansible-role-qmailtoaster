@@ -10,3 +10,8 @@
 - name: refresh mysql
   shell: "mysqladmin -uroot -p'{{ qmt_db_root_password }}' refresh"
 
+- name: restart firewall
+  become: yes
+  systemd:
+    name: firewalld.service
+    state: restarted

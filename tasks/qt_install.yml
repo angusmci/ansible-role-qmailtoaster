@@ -229,6 +229,8 @@
     - 993
     - 995
     - 3306
+  notify:
+    - restart firewall
 
 - name: stop qmail
   become: yes
