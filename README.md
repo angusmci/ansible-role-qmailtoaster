@@ -5,12 +5,12 @@ This is an Ansible role for installing the `qmailtoaster` mail package, based on
 
 For more information about `qmailtoaster`, see http://qmailtoaster.com.
 
-This is a port to Ansible of Eric Broch's install script. At the time of writing this role is UNTESTED and INCOMPLETE.
+This is a port to Ansible of Eric Broch's install scripts. At the time of writing this role is UNTESTED and INCOMPLETE.
 Any bugs in the role are my fault, not Eric's.
 
-Very many thanks to Eric Broch for maintaining the qmailtoaster repositories.
+Thanks to the maintainers of `qmailtoaster`, Eric Shubert and Eric Broch, for all their hard work in maintaining, updating and extending the `qmailtoaster` system. Thanks are due also to Daniel Bernstein, the original author of `qmail`, and to everyone else who has contributed to the `qmailtoaster` ecosystem.  
 
-DO NOT USE THIS FOR PRODUCTION (or anything else). NO WARRANTY, EXPRESS OR IMPLIED.
+BECAUSE THIS ROLE IS STILL UNDER ACTIVE DEVELOPMENT, IT IS NOT RECOMMENDED FOR PRODUCTION SYSTEMS. NO WARRANTY, EXPRESS OR IMPLIED.
 
 Requirements
 ------------
