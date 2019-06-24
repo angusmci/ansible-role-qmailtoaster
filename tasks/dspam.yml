@@ -129,3 +129,10 @@
     mode: '0644'
   with_items: "{{ qmt_dspam_domains }}"
 
+- name: use our password for dspam
+  become: yes
+  lineinfile:
+    path: /etc/dspam.conf
+    regexp: '^MySQLPass.*'
+    line: 'MySQLPass		{{ qmt_db_dspam_password }}'
+
