@@ -1,0 +1,89 @@
+---
+- name: install dependencies
+  become: yes
+  yum:
+    name: [
+      'epel-release',
+      'php-mysql'
+      'roundcubemail'
+    ]
+    state: latest
+    update_cache: yes
+
+- name: create roundcube database
+  mysql_db:
+    login_user: root
+    login_password: "{{ qmt_db_root_password}}"
+    name: roundcube
+    state: present
+    collation: utf8_bin
+    encoding: utf8
+  register: roundcube_database_created
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [1]
+  meta: flush_handlers
+
+- name: create roundcube database user and assign privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ qmt_db_root_password}}"
+    name: dspam
+    password: "{{ qmt_db_roundcube_password}}"
+    priv: 'roundcube.*:ALL'
+    state: present
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [2]
+  meta: flush_handlers
+
+- name: initialize roundcube database database
+  when: roundcube_database_created.changed
+  shell: mysql -uroot -p{{ qmt_db_root_password}} roundcube < /usr/share/roundcubemail/SQL/mysql.initial.sql
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [3]
+  meta: flush_handlers
+
+- name: get roundcube configuration
+  become: yes
+  get_url:
+    url: http://www.qmailtoaster.com/rc.default.config
+    dest: /etc/roundcubemail/config.inc.php
+    backup: yes
+    mode: '0644'
+
+- name: get roundcube httpd configuration
+  become: yes
+  get_url:
+    url: http://www.qmailtoaster.com/rc.httpd.config
+    dest: /etc/httpd/conf.d/roundcubemail.conf
+    backup: yes
+    mode: '0644'
+  notify:
+    - restart apache
+
+- name: get roundcube password plugin configuration
+  become: yes
+  get_url:
+    url: https://www.qmailtoaster.org/rc.password.config
+    dest: /usr/share/roundcubemail/plugins/password/config.inc.php
+    backup: yes
+    mode: '0644'
+
+- name: change date.timezone in php.ini
+  become: yes
+  lineinfile:
+    path: /etc/php.ini
+    regexp: '^;?date.timezone =.*'
+    line: 'date.timezone = {{ qmt_timezone }}'
+
+- name: flush handlers [4]
+  meta: flush_handlers
+

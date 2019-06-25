@@ -59,6 +59,22 @@ qmt_dspam_dump_file_path: /tmp/dspam.sql
 
 qmt_install_vpopmaild: no
 
+# qmt_install_roundcube
+#
+# Should we set up roundcube?
+
+qmt_install_roundcube: no
+
+# qmt_timezone
+#
+# Timezone for server, e.g. "America/Denver", "America/New_York" etc.
+
+qmt_timezone: "America/New_York"
+
+# ======================================================================
+# PASSWORDS
+# ======================================================================
+
 # qmt_db_root_password
 #
 # The Maria DB root password is left undefined here. You need to define it yourself
@@ -79,6 +95,14 @@ qmt_install_vpopmaild: no
 # in your own vars file, preferably in an Ansible vault.
 #
 # qmt_db_dspam_password:
+#
+# qmt_db_roundcube_password
+#
+# The Maria DB roundcube password is left undefined here. If you install
+# Roundcube, you need to define it yourself in your own vars file,
+# preferably in an Ansible vault.
+#
+# qmt_db_roundcube_password:
 
 # ======================================================================
 # WEB SERVER SECURITY SETTINGS

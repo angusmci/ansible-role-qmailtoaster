@@ -16,3 +16,9 @@
   when: qmt_install_vpopmaild | bool
   tags:
     - vpopmaild
+    - roundcube
+
+- include: roundcube.yml
+  when: qmt_install_roundcube | bool
+  tags:
+    - roundcube
