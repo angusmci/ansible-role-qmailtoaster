@@ -61,6 +61,7 @@
   meta: flush_handlers
 
 - name: create roundcube configuration
+  become: yes
   template:
     src: rc_default_config.j2
     dest: /etc/roundcubemail/config.inc.php
@@ -72,6 +73,7 @@
     - restart apache
 
 - name: create roundcube httpd configuration
+  become: yes
   template:
     src: rc_httpd_config.j2
     dest: /etc/httpd/conf.d/roundcubemail.conf
