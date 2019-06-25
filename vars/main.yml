@@ -71,6 +71,13 @@ qmt_install_roundcube: no
 
 qmt_timezone: "America/New_York"
 
+# qmt_roundcube_des_key
+#
+# You MUST change this value if you install Roundcube, for security
+# reasons. The string needs to be exactly 24 characters long.
+
+qmt_roundcube_des_key: "Change_this_24Byte_Str!!"
+
 # ======================================================================
 # PASSWORDS
 # ======================================================================

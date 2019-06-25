@@ -1,0 +1,23 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+Alias /email /usr/share/roundcubemail
+Alias /rc /usr/share/roundcubemail
+
+# Define who can access the Webmail
+# You can enlarge permissions once configured
+
+<Directory /usr/share/roundcubemail/>
+ <IfModule mod_authz_core.c>
+    # Apache 2.4
+    Require local
+    Require all granted
+ </IfModule>
+ <IfModule !mod_authz_core.c>
+    # Apache 2.2
+    Order Deny,Allow
+    Require all granted
+    Allow from all
+ </IfModule>
+</Directory>
