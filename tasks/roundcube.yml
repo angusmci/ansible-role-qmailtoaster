@@ -10,6 +10,14 @@
     state: latest
     update_cache: yes
 
+- name: change ownership of roundcube sources
+  file:
+    path: /usr/share/roundcubemail
+    state: directory
+    recurse: yes
+    owner: apache
+    group: apache
+
 - name: create roundcube database
   mysql_db:
     login_user: root
@@ -58,6 +66,8 @@
     dest: /etc/roundcubemail/config.inc.php
     backup: yes
     mode: '0644'
+  notify:
+    - restart apache
 
 - name: get roundcube httpd configuration
   become: yes
@@ -69,6 +79,15 @@
   notify:
     - restart apache
 
+- name: change access control to allow all clients to access Roundcube
+  become: yes
+  lineinfile:
+    path: /etc/httpd/conf.d/roundcubemail.conf
+    regexp: '^.*Require local.*'
+    line: 'Require all granted'
+  notify:
+    - restart apache
+
 - name: get roundcube password plugin configuration
   become: yes
   get_url:
@@ -76,6 +95,8 @@
     dest: /usr/share/roundcubemail/plugins/password/config.inc.php
     backup: yes
     mode: '0644'
+  notify:
+    - restart apache
 
 - name: change date.timezone in php.ini
   become: yes
@@ -83,6 +104,8 @@
     path: /etc/php.ini
     regexp: '^;?date.timezone =.*'
     line: 'date.timezone = {{ qmt_timezone }}'
+  notify:
+    - restart apache
 
 - name: flush handlers [4]
   meta: flush_handlers
