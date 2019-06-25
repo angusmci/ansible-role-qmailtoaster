@@ -11,6 +11,7 @@
     update_cache: yes
 
 - name: change ownership of roundcube sources
+  become: yes
   file:
     path: /usr/share/roundcubemail
     state: directory
