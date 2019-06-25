@@ -4,7 +4,7 @@
   yum:
     name: [
       'epel-release',
-      'php-mysql'
+      'php-mysql',
       'roundcubemail'
     ]
     state: latest
