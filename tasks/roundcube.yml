@@ -50,7 +50,7 @@
 - name: flush handlers [2]
   meta: flush_handlers
 
-- name: initialize roundcube database database
+- name: initialize roundcube database
   when: roundcube_database_created.changed
   shell: mysql -uroot -p{{ qmt_db_root_password}} roundcube < /usr/share/roundcubemail/SQL/mysql.initial.sql
   notify:
