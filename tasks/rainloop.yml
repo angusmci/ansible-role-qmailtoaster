@@ -23,12 +23,14 @@
     remote_src: yes
 
 - name: change file modes recursively
+  become: yes
   command: |
     chmod -c -R ug=rw,o=r,a-x+X /usr/share/rainloop
   register: chmod_status
   changed_when: chmod_status.stdout != ""
 
 - name: change file ownership
+  become: yes
   command: |
     chmod -c -R apache:apache /usr/share/rainloop
   register: chown_status
