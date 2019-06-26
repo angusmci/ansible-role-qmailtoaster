@@ -4,7 +4,7 @@
   when: qmt_rainloop_license == 'community'
   get_url:
     url: https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip
-    dest: rainloop.zip
+    dest: /usr/local/src/rainloop.zip
     mode: '0644'
 
 - name: get the rainloop sources [standard version]
@@ -12,13 +12,13 @@
   when: qmt_rainloop_license == 'standard'
   get_url:
     url: https://www.rainloop.net/repository/webmail/rainloop-latest.zip
-    dest: rainloop.zip
+    dest: /usr/local/src/rainloop.zip
     mode: '0644'
 
 - name: unzip rainloop sources
   become: yes
   unarchive:
-    src: rainloop.zip
+    src: /usr/local/src/rainloop.zip
     dest: /usr/share/rainloop
 
 - name: change file modes recursively
