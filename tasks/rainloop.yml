@@ -1,0 +1,59 @@
+---
+- name: get the rainloop sources [community version]
+  become: yes
+  when: qmt_rainloop_license == 'community'
+  get_url:
+    url: https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip
+    dest: rainloop.zip
+    mode: '0644'
+
+- name: get the rainloop sources [standard version]
+  become: yes
+  when: qmt_rainloop_license == 'standard'
+  get_url:
+    url: https://www.rainloop.net/repository/webmail/rainloop-latest.zip
+    dest: rainloop.zip
+    mode: '0644'
+
+- name: unzip rainloop sources
+  become: yes
+  unarchive:
+    src: rainloop.zip
+    dest: /usr/share/rainloop
+
+- name: change file modes recursively
+  command: |
+    chmod -c -R ug=rw,o=r,a-x+X /usr/share/rainloop
+  register: chmod_status
+  changed_when: chmod_status.stdout != ""
+
+- name: change file ownership
+  command: |
+    chmod -c -R apache:apache /usr/share/rainloop
+  register: chown_status
+  changed_when: chown_status.stdout != ""
+
+- name: create configuration file
+  become: yes
+  template:
+    src: rainloop_centos_7_conf.j2
+    dest: /etc/httpd/conf.d/rainloop.conf
+    backup: yes
+    owner: apache
+    group: apache
+    mode: '0644'
+  notify:
+    - restart apache
+
+
+#  # Configure, help
+#  8) https://yourserver/rlmail/?admin/
+#username: admin
+#password: 12345
+#  9) Change admin password
+#  10) Add your domain, IMAP server, SMTP server, ...Do not use short login
+#  11) Add contact support if needed. Requires DB support.
+#
+#  # Login to email account
+#  12) https://yourserver/rlmail
+#  13) Additional Tutorial

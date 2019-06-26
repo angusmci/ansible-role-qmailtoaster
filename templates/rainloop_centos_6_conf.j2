@@ -1,0 +1,20 @@
+#
+# Rainloop Webmail is a browser-based multilingual IMAP client
+#
+
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+Alias /rlmail /usr/share/rainloop
+Alias /rl /usr/share/rainloop
+
+<Directory /usr/share/rainloop/>
+Options -Indexes
+AllowOverride All
+</Directory>
+
+<Directory /usr/share/rainloop/data>
+Order Deny,Allow
+Deny from All
+</Directory>

@@ -61,9 +61,21 @@ qmt_install_vpopmaild: no
 
 # qmt_install_roundcube
 #
-# Should we set up roundcube?
+# Should we install the roundcube webmail client?
 
 qmt_install_roundcube: no
+
+# qmt_install_rainloop
+#
+# Should we install the rainloop webmail client?
+
+qmt_install_rainloop: no
+
+# qmt_rainloop_license
+#
+# Should we use the 'community' or 'standard' version of Rainloop?
+
+qmt_rainloop_license: community
 
 # qmt_timezone
 #
