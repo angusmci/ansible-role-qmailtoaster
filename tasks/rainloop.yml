@@ -32,7 +32,7 @@
 - name: change file ownership
   become: yes
   command: |
-    chmod -c -R apache:apache /usr/share/rainloop
+    chown -c -R apache:apache /usr/share/rainloop
   register: chown_status
   changed_when: chown_status.stdout != ""
 
