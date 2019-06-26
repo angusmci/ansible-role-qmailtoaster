@@ -1,10 +1,17 @@
 ---
+- name: create rainloop directory
+  become: yes
+  file:
+    path: /usr/share/rainloop/
+    state: directory
+    mode: '0755'
+
 - name: get the rainloop sources [community version]
   become: yes
   when: qmt_rainloop_license == 'community'
   unarchive:
     src: https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip
-    dest: /usr/share/
+    dest: /usr/share/rainloop/
     remote_src: yes
 
 - name: get the rainloop sources [standard version]
@@ -12,7 +19,7 @@
   when: qmt_rainloop_license == 'standard'
   unarchive:
     src: https://www.rainloop.net/repository/webmail/rainloop-latest.zip
-    dest: /usr/share/
+    dest: /usr/share/rainloop/
     remote_src: yes
 
 - name: change file modes recursively
@@ -45,15 +52,6 @@
   notify:
     - restart apache
 
-
-#  # Configure, help
-#  8) https://yourserver/rlmail/?admin/
-#username: admin
-#password: 12345
-#  9) Change admin password
-#  10) Add your domain, IMAP server, SMTP server, ...Do not use short login
-#  11) Add contact support if needed. Requires DB support.
-#
-#  # Login to email account
-#  12) https://yourserver/rlmail
-#  13) Additional Tutorial
+- name: warn about configuration
+  debug:
+    - msg: "To complete Rainloop configuration, visit 'https://yourserver/rl/?admin/' and log in with user 'admin' and password '12345'. Remember to change the admin password immediately."
