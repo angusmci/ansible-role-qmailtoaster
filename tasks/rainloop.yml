@@ -20,6 +20,7 @@
   unarchive:
     src: /usr/local/src/rainloop.zip
     dest: /usr/share/rainloop
+    remote_src: yes
 
 - name: change file modes recursively
   command: |
