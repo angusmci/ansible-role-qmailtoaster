@@ -2,23 +2,16 @@
 - name: get the rainloop sources [community version]
   become: yes
   when: qmt_rainloop_license == 'community'
-  get_url:
-    url: https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip
-    dest: /usr/local/src/rainloop.zip
-    mode: '0644'
+  unarchive:
+    src: https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip
+    dest: /usr/share/
+    remote_src: yes
 
 - name: get the rainloop sources [standard version]
   become: yes
   when: qmt_rainloop_license == 'standard'
-  get_url:
-    url: https://www.rainloop.net/repository/webmail/rainloop-latest.zip
-    dest: /usr/local/src/rainloop.zip
-    mode: '0644'
-
-- name: unzip rainloop sources
-  become: yes
   unarchive:
-    src: /usr/local/src/rainloop.zip
+    src: https://www.rainloop.net/repository/webmail/rainloop-latest.zip
     dest: /usr/share/
     remote_src: yes
 
@@ -26,6 +19,8 @@
   become: yes
   command: |
     chmod -c -R ug=rw,o=r,a-x+X /usr/share/rainloop
+  args:
+    warn: false
   register: chmod_status
   changed_when: chmod_status.stdout != ""
 
@@ -33,6 +28,8 @@
   become: yes
   command: |
     chown -c -R apache:apache /usr/share/rainloop
+  args:
+    warn: false
   register: chown_status
   changed_when: chown_status.stdout != ""
 
