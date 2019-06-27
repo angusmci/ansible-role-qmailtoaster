@@ -52,6 +52,24 @@
   notify:
     - restart apache
 
+- name: create rainloop domains directory
+  become: yes
+  file:
+    path: /usr/share/rainloop/data/_data_/_default_/domains
+    state: directory
+    owner: apache
+    group: apache
+    mode: '0755'
+
+- name: create rainloop configs directory
+  become: yes
+  file:
+    path: /usr/share/rainloop/data/_data_/_default_/configs
+    state: directory
+    owner: apache
+    group: apache
+    mode: '0755'
+
 - name: create rainloop domain files
   become: yes
   template:
@@ -75,7 +93,8 @@
   register: wrote_application_ini_file
 
 - name: change admin password - step 1
-  when: wrote_application_ini_file.changed && qmt_rainloop_admin_password != '12345'
+  when: wrote_application_ini_file.changed and qmt_rainloop_admin_password != '12345'
+  become: yes
   template:
     src: rainloop_set_password_php.j2
     dest: /tmp/rainloop_set_password.php
@@ -84,13 +103,13 @@
     mode: '0644'
 
 - name: change admin password - step 2
-  when: wrote_application_ini_file.changed && qmt_rainloop_admin_password != '12345'
+  when: wrote_application_ini_file.changed and qmt_rainloop_admin_password != '12345'
   shell: php /tmp/rainloop_set_password.php
 
 - name: change admin password - step 3
-  when: wrote_application_ini_file.changed && qmt_rainloop_admin_password != '12345'
+  when: wrote_application_ini_file.changed and qmt_rainloop_admin_password != '12345'
+  become: yes
   file:
     path: /tmp/rainloop_set_password.php
     state: absent
-
 
