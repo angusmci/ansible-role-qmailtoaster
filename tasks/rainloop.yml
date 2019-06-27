@@ -52,23 +52,21 @@
   notify:
     - restart apache
 
-- name: create rainloop domains directory
+- name: create rainloop data directories
   become: yes
   file:
-    path: /usr/share/rainloop/data/_data_/_default_/domains
+    path: /usr/share/rainloop/data/_data_/_default_/{{ item }}
     state: directory
     owner: apache
     group: apache
     mode: '0755'
-
-- name: create rainloop configs directory
-  become: yes
-  file:
-    path: /usr/share/rainloop/data/_data_/_default_/configs
-    state: directory
-    owner: apache
-    group: apache
-    mode: '0755'
+  with_items:
+    - cache
+    - configs
+    - domains
+    - logs
+    - plugins
+    - storage
 
 - name: create rainloop domain files
   become: yes
@@ -104,6 +102,7 @@
 
 - name: change admin password - step 2
   when: wrote_application_ini_file.changed and qmt_rainloop_admin_password != '12345'
+  become: yes
   shell: php /tmp/rainloop_set_password.php
 
 - name: change admin password - step 3
@@ -112,4 +111,3 @@
   file:
     path: /tmp/rainloop_set_password.php
     state: absent
-
