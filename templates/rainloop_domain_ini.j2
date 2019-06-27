@@ -1,4 +1,4 @@
-imap_host = "{{ domain.imap_host }}"
+imap_host = "{{ item.imap_host }}"
 imap_port = 143
 imap_secure = "TLS"
 imap_short_login = Off
@@ -7,7 +7,7 @@ sieve_allow_raw = Off
 sieve_host = ""
 sieve_port = 4190
 sieve_secure = "None"
-smtp_host = "{{ domain.smtp_host }}"
+smtp_host = "{{ item.smtp_host }}"
 smtp_port = 587
 smtp_secure = "TLS"
 smtp_short_login = Off
