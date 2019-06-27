@@ -65,4 +65,4 @@
 
 - name: warn about configuration
   debug:
-    - msg: "To complete Rainloop configuration, visit 'https://yourserver/rl/?admin/' and log in with user 'admin' and password '12345'. Remember to change the admin password immediately."
+    msg: "To complete Rainloop configuration, visit 'https://yourserver/rl/?admin/' and log in with user 'admin' and password '12345'. Remember to change the admin password immediately."
