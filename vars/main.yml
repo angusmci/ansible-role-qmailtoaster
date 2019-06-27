@@ -82,11 +82,11 @@ qmt_rainloop_license: community
 # List of rainloop domains to create. The list should have the form
 #
 # - domain: domain1.com
-#   imap_domain: imap.domain1.com
-#   smtp_domain: smtp.domain1.com
+#   imap_host: imap.domain1.com
+#   smtp_host: smtp.domain1.com
 # - domain: domain2.com
-#   imap_domain: mail.domain2.com
-#   smtp_domain: mail.domain2.com
+#   imap_host: mail.domain2.com
+#   smtp_host: mail.domain2.com
 #
 # etc.
 
