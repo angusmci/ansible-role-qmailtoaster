@@ -107,7 +107,6 @@ qmt_rainloop_title: RainLoop Webmail
 qmt_rainloop_theme: Default
 qmt_rainloop_default_language: en
 qmt_rainloop_admin_language: en
-qmt_rainloop_attachment_size_limit: 25
 qmt_rainloop_admin_name: admin
 qmt_rainloop_admin_password: 12345
 
@@ -116,6 +115,13 @@ qmt_rainloop_admin_password: 12345
 # Timezone for server, e.g. "America/Denver", "America/New_York" etc.
 
 qmt_timezone: "America/New_York"
+
+# qmt_attachment_size_limit
+#
+# Maximum size of attachments that can be posted through web UIs on
+# this server.
+
+qmt_attachment_size_limit: 10
 
 # qmt_roundcube_des_key
 #
