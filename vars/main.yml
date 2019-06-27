@@ -108,8 +108,8 @@ qmt_rainloop_theme: Default
 qmt_rainloop_default_language: en
 qmt_rainloop_admin_language: en
 qmt_rainloop_attachment_size_limit: 25
-qmt_admin_login_name: admin
-
+qmt_rainloop_admin_name: admin
+qmt_rainloop_admin_password: 12345
 
 # qmt_timezone
 #

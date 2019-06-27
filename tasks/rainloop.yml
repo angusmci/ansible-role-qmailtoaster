@@ -75,7 +75,7 @@
   register: wrote_application_ini_file
 
 - name: change admin password - step 1
-  when: wrote_application_ini_file.changed
+  when: wrote_application_ini_file.changed && qmt_rainloop_admin_password != '12345'
   template:
     src: rainloop_set_password_php.j2
     dest: /tmp/rainloop_set_password.php
@@ -84,11 +84,11 @@
     mode: '0644'
 
 - name: change admin password - step 2
-  when: wrote_application_ini_file.changed
+  when: wrote_application_ini_file.changed && qmt_rainloop_admin_password != '12345'
   shell: php /tmp/rainloop_set_password.php
 
 - name: change admin password - step 3
-  when: wrote_application_ini_file.changed
+  when: wrote_application_ini_file.changed && qmt_rainloop_admin_password != '12345'
   file:
     path: /tmp/rainloop_set_password.php
     state: absent
