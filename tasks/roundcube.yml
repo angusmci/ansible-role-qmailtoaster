@@ -95,6 +95,7 @@
     - restart apache
 
 - name: Ensure maximum upload size is set
+  become: yes
   lineinfile:
     path: /etc/roundcubemail/config.inc.php
     regexp: "^$config['max_message_size'] = .*"
