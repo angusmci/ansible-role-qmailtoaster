@@ -27,3 +27,8 @@
   when: qmt_install_rainloop | bool
   tags:
     - rainloop
+
+- include: php.yml
+  tags:
+    - rainloop
+    - roundcube

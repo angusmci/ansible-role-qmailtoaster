@@ -94,15 +94,11 @@
   notify:
     - restart apache
 
-- name: change date.timezone in php.ini
-  become: yes
+- name: Ensure maximum upload size is set
   lineinfile:
-    path: /etc/php.ini
-    regexp: '^;?date.timezone =.*'
-    line: 'date.timezone = {{ qmt_timezone }}'
+    path: /etc/roundcubemail/config.inc.php
+    regexp: "^$config['max_message_size'] = .*"
+    line: "$config['max_message_size'] = '{{ qmt_attachment_size_limit }}M';"
   notify:
     - restart apache
-
-- name: flush handlers [4]
-  meta: flush_handlers
 
