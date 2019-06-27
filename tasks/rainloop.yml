@@ -52,6 +52,17 @@
   notify:
     - restart apache
 
+- name: create rainloop domain files
+  become: yes
+  template:
+    src: rainloop_domain_ini.j2
+    dest: "/usr/share/rainloop/data/_data_/_default_/domains/{{ item.domain }}.ini"
+    backup: yes
+    owner: apache
+    group: apache
+    mode: '0644'
+  - with_items: "{{ qmt_rainloop_domains }}"
+
 - name: warn about configuration
   debug:
     - msg: "To complete Rainloop configuration, visit 'https://yourserver/rl/?admin/' and log in with user 'admin' and password '12345'. Remember to change the admin password immediately."
