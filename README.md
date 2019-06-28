@@ -5,9 +5,10 @@ This is an Ansible role for installing the `qmailtoaster` mail package, based on
 For more information about `qmailtoaster`, see http://qmailtoaster.com.
 
 This is a port to Ansible of Eric Broch's install scripts. At the time of writing this role is UNTESTED and INCOMPLETE.
+
 Any bugs in the role are my fault, not Eric's.
 
-Thanks to the maintainers of `qmailtoaster`, Eric Shubert and Eric Broch, for all their hard work in maintaining, updating and extending the `qmailtoaster` system. Thanks are due also to Daniel Bernstein, the original author of `qmail`, and to everyone else who has contributed to the `qmailtoaster` ecosystem.  
+Thanks to the maintainers of `qmailtoaster`, Eric Broch and Eric Shubert, for all their hard work in maintaining, updating and extending the `qmailtoaster` system. Thanks are due also to Daniel Bernstein, the original author of `qmail`, and to everyone else who has contributed to the `qmailtoaster` ecosystem.  
 
 BECAUSE THIS ROLE IS STILL UNDER ACTIVE DEVELOPMENT, IT IS NOT RECOMMENDED FOR PRODUCTION SYSTEMS. NO WARRANTY, EXPRESS OR IMPLIED.
 
@@ -15,31 +16,23 @@ BECAUSE THIS ROLE IS STILL UNDER ACTIVE DEVELOPMENT, IT IS NOT RECOMMENDED FOR P
 
 TBD
 
-## Role Variables
+## Configuration Variables
 
-The behavior of the role is controlled by various role variables. These are used to specify options (such as
-whether to install a particular optional package or not, which version of qmailtoaster to install, and so
-on). They are also used to specify database passwords.
+The behavior of the role is controlled by various role variables. These are used to specify options (such as whether to install a particular optional package or not, which version of qmailtoaster to install, and so on). They are also used to specify database passwords.
 
-### Passwords
+### Password variables
 
-The default `vars/main.yml` file in the role does not provide definitions for the database passwords used
-in the role. Therefore, if you simply run the role without specifying these passwords, the role will fail
-with an error. This is intentional: for the security of your system, you should provide good, non-default
-passwords.
+The default `vars/main.yml` file in the role does not provide definitions for the database passwords used in the role. Therefore, if you simply run the role without specifying these passwords, the role will fail with an error. This is intentional: for the security of your system, you should provide good, non-default passwords.
 
-The standard `qmailtoaster` install scripts specify rather weak default passwords for the
-MariaDB users `vpopmail` and `dspam`. This arguably represents a possible small security risk. For
-greater security, this role requires you to specify your own passwords for each of these.
+The standard `qmailtoaster` install scripts specify rather weak default passwords for the MariaDB users `vpopmail` and `dspam`. This arguably represents a possible small security risk. For greater security, this role requires you to specify your own passwords for each of these.
 
-When choosing passwords, you are recommended to avoid using certain characters, specifically punctuation
-that has special meaning to the shell (e.g. '&', '|', ' ' or '!') or in SQL (e.g. semicolons and various types 
-of quotes). This is because some parts of the install process require the passwords to be passed to the shell
-or to MariaDB, and Ansible isn't always entirely helpful in the way that it handles quoted strings. Using 
-special characters can cause problems. Using alphanumerics and a restricted set of punctuation characters
-(e.g. '=', '-', '_', '+', '.', ',') should be safe.
+When choosing passwords, you are recommended to avoid using certain characters, specifically punctuation that has special meaning to the shell (e.g. '&', '|', ' ' or '!') or in SQL (e.g. semicolons and various types of quotes). This is because some parts of the install process require the passwords to be passed to the shell or to MariaDB, and Ansible isn't always entirely helpful in the way that it handles quoted strings. Using special characters can cause problems. Using alphanumerics and a restricted set of punctuation characters (e.g. '=', '-', '_', '+', '.', ',') should be safe.
 
-### Variables 
+    qmt_db_root_password:
+    qmt_db_vpopmail_password:
+    qmt_db_dspam_password:
+
+### General QMailToaster configuration
 
     qmt_mariadb_secure: yes
    
@@ -51,17 +44,83 @@ Should dspam be installed?
 
     qmt_use_dspam_domains: no
    
-Should dspam be used for individual domains? 
+Should dspam be used for individual domains on setup. 
 
-    qmt_dspam_domains
+    qmt_dspam_domains:
     
 List of domains for which dspam should be used.
 
-    qmt_db_root_password:
-    qmt_db_vpopmail_password:
-    qmt_db_dspam_password:
+	qmt_install_vpopmaild: no
+	
+Should `vpopmaild` be installed? The `vpopmaild` daemon is required for Roundcube, so if you install Roundcube, set this to `yes`.
+
+### Roundcube configuration
+
+	qmt_install_roundcube: no
+	
+Should the Roundcube webmail client be installed?
+
+	qmt_roundcube_des_key: "Change_this_24Byte_Str!!"
+	
+If you install Roundcube, you must specify a DES key. This key must be a string containing exactly 24 characters. Do not simply use the default value, or your Roundcube installation will be insecure.
+
+### Rainloop configuration
+
+	qmt_install_rainloop: no
+
+Should the Rainloop webmail client be installed?
+
+	qmt_rainloop_license: community
+	
+If Rainloop is installed, should it be the `community` or `standard` version?
+
+	qmt_rainloop_domains: 
+	
+Which domains should Rainloop handle? If you install Rainloop, this variable should be a list of objects that specify the name of a domain, and the name of the hosts that handle SMTP and IMAP for that domain. For example:
+
+	qmt_rainloop_domains:
+	  - domain: domain1.com
+		imap_host: imap.domain1.com
+		smtp_host: smtp.domain1.com
+	  - domain: domain2.com
+		imap_host: mail.domain2.com
+		smtp_host: mail.domain2.com
+
+### PHP configuration
+
+	qmt_timezone: "America/New_York"
+	
+What timezone should be used for this server? This must be chosen from the list of [PHP supported timezones](https://www.php.net/manual/en/timezones.php).
+
+	qmt_attachment_size_limit: 10
+
+Maximum size of attachments that can be uploaded for sending through any webmail UI on this server.
+
+### SSL Configuration
+
+	qmt_use_httpd_ssl: no
+	
+Should the server be set up to use a provided SSL certificate in place of the automatically-generated self-signed certificate? You probably want to get a proper server certificate, and set this option to `yes`.
+
+	qmt_httpd_ssl_certificate_file: server.crt
+
+Name of the SSL certificate key file. This file should be placed in `/etc/pki/tls/private/`.
+
+	qmt_httpd_ssl_certificate_key_file: server.key
+
+Name of the SSL certificate authority file. This file should be placed in `/etc/pki/tls/certs/`.
+
+	qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
+
+Name of the SSL certificate bundle file. This file should be placed in `/etc/pki/tls/private/`.
     
-No default values are provided for these variables. You must provide values for these variables or the role will not work. Ideally, these should be defined in an Ansible vault for greater security. 
+### Domain configuration
+
+Most of this role is intended to be as 'unopinionated' as possible, or at least no more opinionated than QMailToaster. It is intended to follow the standard scripts on the [QMailToaster](http://qmailtoaster.org/) website closely, so that it can be used to build a basic QMailToaster server.
+
+If you wish, however, you can use this role to configure domains and users on your servers. This is the point at which the role becomes very opinionated indeed, and more than a little complicated.
+
+Domain configuration allows you to specify the desired domains and users as a nested configuration structure. For each domain, the role will build a set of '[role accounts](http://www.faqs.org/rfcs/rfc2142.html)' (such as 'postmaster', 'webmaster' 'info', 'support', 'sales' etc), that will handle email sent to them in various ways. To reduce the complexity of the configuration, the role accounts are organized into five groups: owner, webmaster, tech, sales, support, additional. For example, the 'owner' accounts might include 'admin', 'billing', 'contact' and 'info'. All accounts belonging to a particular group will be handled the same way.  
 
 ## Dependencies
 

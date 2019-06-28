@@ -196,6 +196,55 @@ qmt_httpd_ssl_certificate_key_file: server.key
 qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
 
 # ======================================================================
+# CONFIGURATION
+# ======================================================================
+
+# qmt_roles
+#
+# The qmt_roles variable defines the major role groups for the role
+# accounts on this server. When you declare your domains, you can
+# specify for each role group how emails should be handled.
+#
+# If this scheme doesn't work for you, you can declare role accounts
+# individually as either aliases or mailboxes.
+#
+# Note that role accounts in the 'other' group will not be created
+# automatically. These accounts are included here simply to illustrate
+# some other RFC2142 role accounts that you might wish to create
+# manually.
+
+qmt_roles:
+  owner:
+    - admin
+    - billing
+  business:
+    - info
+    - marketing
+    - sales
+    - support
+  network:
+    - abuse
+    - noc
+    - security
+  services:
+    - hostmaster
+    - mail
+    - postmaster
+  webmaster:
+    - webmaster
+  other:
+    - help
+    - contact
+    - feedback
+    - root
+    - service
+    - news
+    - ftp
+    - usenet
+    - uucp
+
+
+# ======================================================================
 # PATHS
 # ======================================================================
 
