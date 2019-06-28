@@ -120,7 +120,29 @@ Most of this role is intended to be as 'unopinionated' as possible, or at least 
 
 If you wish, however, you can use this role to configure domains and users on your servers. This is the point at which the role becomes very opinionated indeed, and more than a little complicated.
 
-Domain configuration allows you to specify the desired domains and users as a nested configuration structure. For each domain, the role will build a set of '[role accounts](http://www.faqs.org/rfcs/rfc2142.html)' (such as 'postmaster', 'webmaster' 'info', 'support', 'sales' etc), that will handle email sent to them in various ways. To reduce the complexity of the configuration, the role accounts are organized into five groups: owner, webmaster, tech, sales, support, additional. For example, the 'owner' accounts might include 'admin', 'billing', 'contact' and 'info'. All accounts belonging to a particular group will be handled the same way.  
+Domain configuration allows you to specify the desired domains and users as a nested configuration structure. The structure specifies how to create the '[role accounts](http://www.faqs.org/rfcs/rfc2142.html)' (such as 'postmaster', 'webmaster' 'info', 'support', 'sales' etc) for each domain, what aliases to add, and which mailboxes to create, and how mail to those various addresses should be handled.
+
+Let's start with role accounts, which are the standard accounts that are either required -- such as 'postmaster' -- or frequently present -- such as 'sales' or 'info'. To make the configuration less complex, role accounts are organized into five groups: business, network, owner, services, webmaster. For example, the 'owner' accounts include 'admin', and 'billing'. All accounts belonging to a particular group will be handled the same way, so if the configuration said that mail to the 'owner' group should be deleted, then any mail sent to either 'admin' or 'billing' will be deleted; if the configuration says that mail for the 'network' group should go to 'fred@yourdomain.com', then Fred will get any mail sent to 'abuse', 'security' or 'noc' (the standard members of the 'network' group). If you don't like this, you can set the action for the group to 'none', and define aliases individually.
+
+Actions specify how mail should be handled. We'll see actions used with both role groups and aliases. Possible actions are:
+
+none
+: No .qmail files will be created
+	
+delete
+: Mail sent to this alias or group will be deleted unread.
+	
+deliver
+: Mail sent to this alias or group will be delivered to a local mailbox.
+	
+forward
+: Mail sent to this alias or group will be forwarded to a remote address.
+	
+filter
+: Mail sent to this alias or group will be filtered using `procmail` before delivery.
+	
+_... more text will follow here ..._
+
 
 ## Dependencies
 
@@ -128,12 +150,82 @@ TBD
 
 ## Example Playbook
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Here is an example of invoking the role.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
+	- name: install qmailtoaster
+	  include_role:
+		name: ansible-role-qmailtoaster
+	  vars:
+		qmt_version: 1-7
+		qmt_secure_mariadb: yes
+		qmt_use_dspam: yes
+		qmt_use_dspam_domains: no
+		qmt_install_vpopmaild: yes
+		qmt_install_roundcube: yes
+		qmt_install_rainloop: yes
+		qmt_db_root_password: "{{ my_password1 }}"
+		qmt_db_vpopmail_password: "{{ my_password2 }}"
+		qmt_db_dspam_password: "{{ my_password3 }}"
+		qmt_db_roundcube_password: "{{ my_password4 }}"
+		qmt_roundcube_des_key: "an.3x4mpl3.DES.key.12345"
+		qmt_rainloop_license: community
+		qmt_rainloop_domains:
+		  - domain: example.com
+			imap_host: server1.example.com
+			smtp_host: server2.example.com
+		  - domain: example.net
+			imap_host: mail.example.net
+			smtp_host: mail.example.net
+		qmt_use_httpd_ssl: yes
+		qmt_timezone: America/New_York
+		qmt_rainloop_admin_password: "{{ my_password5 }}"
+		qmt_attachment_size_limit: 25
+		qmt_domains:
+		  - name: example.com
+    		password: "{{ my_password6 }}"
+			default:
+			  action: delete
+			business:
+			  action: filter
+			  user: fred
+			  host: example.com
+			owner:
+			  action: filter
+			  user: bob
+			  host: example.com
+			network:
+			  action: filter
+			  user: jane
+			  host: example.com
+			services:
+			  action: filter
+			  user: elizabeth
+			  host: example.com
+			webmaster:
+			  action: filter
+			  user: fred
+			  host: example.com
+		  - name: example.net
+    		password: "{{ my_password6 }}"
+			default:
+			  action: delete
+			business:
+			  action: none
+			owner:
+			  action: filter
+			  user: bob
+			  host: example.com
+			network:
+			  action: filter
+			  user: jane
+			  host: example.com
+			services:
+			  action: filter
+			  user: elizabeth
+			  host: example.com
+			webmaster:
+			  action: none
+		
 ## License
 
 BSD
