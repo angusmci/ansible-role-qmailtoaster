@@ -22,6 +22,7 @@
 
 - name: create business role account .qmail files for each domain
   become: yes
+  when: "{{ item[0].business.action != 'none' }}"
   template:
     src: templates/dot_qmail_business.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -30,12 +31,13 @@
     mode: 0644
   with_nested:
     - "{{ qmt_domains }}"
-    - "{{ qmt_roles.business | default([]) }}"
+    - "{{ qmt_roles.business }}"
   vars:
     ansible_ssh_pipelining: Yes
 
 - name: create network role account .qmail files for each domain
   become: yes
+  when: "{{ item[0].network.action != 'none' }}"
   template:
     src: templates/dot_qmail_network.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -44,12 +46,13 @@
     mode: 0644
   with_nested:
     - "{{ qmt_domains }}"
-    - "{{ qmt_roles.network | default([]) }}"
+    - "{{ qmt_roles.network }}"
   vars:
     ansible_ssh_pipelining: Yes
 
 - name: create owner role account .qmail files for each domain
   become: yes
+  when: "{{ item[0].owner.action != 'none' }}"
   template:
     src: templates/dot_qmail_owner.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -58,12 +61,13 @@
     mode: 0644
   with_nested:
     - "{{ qmt_domains }}"
-    - "{{ qmt_roles.owner | default([]) }}"
+    - "{{ qmt_roles.owner }}"
   vars:
     ansible_ssh_pipelining: Yes
 
 - name: create services role account .qmail files for each domain
   become: yes
+  when: "{{ item[0].services.action != 'none' }}"
   template:
     src: templates/dot_qmail_network.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -72,12 +76,13 @@
     mode: 0644
   with_nested:
     - "{{ qmt_domains }}"
-    - "{{ qmt_roles.services | default([]) }}"
+    - "{{ qmt_roles.services }}"
   vars:
     ansible_ssh_pipelining: Yes
 
 - name: create webmaster role account .qmail files for each domain
   become: yes
+  when: "{{ item[0].webmaster.action != 'none' }}"
   template:
     src: templates/dot_qmail_webmaster.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -86,7 +91,7 @@
     mode: 0644
   with_nested:
     - "{{ qmt_domains }}"
-    - "{{ qmt_roles.webmaster | default([]) }}"
+    - "{{ qmt_roles.webmaster }}"
   vars:
     ansible_ssh_pipelining: Yes
 
