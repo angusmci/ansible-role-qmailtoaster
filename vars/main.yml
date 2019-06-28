@@ -194,3 +194,17 @@ qmt_httpd_ssl_certificate_key_file: server.key
 # /etc/pki/tls/certs/
 
 qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
+
+# ======================================================================
+# PATHS
+# ======================================================================
+
+# You could theoretically override these variables. But unless you
+# have a very good idea what you're doing, I strongly suggest that
+# you don't.
+
+qmt_preline: /var/qmail/bin/preline
+qmt_procmail: /usr/bin/procmail
+qmt_vdelivermail: /home/vpopmail/bin/vdelivermail
+qmt_dspam: /usr/bin/dspam
+

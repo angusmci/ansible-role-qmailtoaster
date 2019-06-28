@@ -5,6 +5,17 @@
   args:
     creates: "/home/vpopmail/domains/{{ item.name }}"
   vars:
-    ansible_ssh_pipelining: Yes
+    ansible_ssh_pipelining: yes
   with_items: "{{ qmt_domains }}"
 
+- name: create catch-all file for each domain
+  become: yes
+  template:
+    src: templates/dot_qmail_default.j2
+    dest: /home/vpopmail/domains/{{ item.name }}/.qmail-default
+    owner: vpopmail
+    group: vchkpw
+    mode: 0600
+  with_items: "{{ qmt_domains }}"
+  vars:
+    ansible_ssh_pipelining: Yes

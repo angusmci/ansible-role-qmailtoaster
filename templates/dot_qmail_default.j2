@@ -1,0 +1,15 @@
+{% if item.default.action == "filter" %}
+{% if item.default.dspam | bool %}
+| {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | {{ qmt_preline }} {{ qmt_procmail }} -p -m /home/vpopmail/domains/{{ item.default.host }}/.procmailrc-{{ item.default.user }}
+{% else %}
+| {{ qmt_preline }} {{ qmt_procmail }} -p -m /home/vpopmail/domains/{{ item.default.host }}/.procmailrc-{{ item.default.user }}
+{% elif item.default.action == "deliver" %}
+{% if item.default.dspam | bool %}
+| {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | /home/vpopmail/bin/vdelivermail '' bounce-no-mailbox
+{% else %}
+{{ item.default.directory }}
+{% elif item.default.action == "forward" %}
+{{ item.default.address }}
+{% elif item.default.action == "delete" %}
+| {{ qmt_vdelivermail }} '' delete
+{% endif %}
