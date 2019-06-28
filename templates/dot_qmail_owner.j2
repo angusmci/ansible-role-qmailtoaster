@@ -1,11 +1,11 @@
 {% if item[0].owner.action == "filter" %}
-{% if item[0].owner.dspam | bool %}
+{% if item[0].owner.dspam is defined and item[0].owner.dspam | bool %}
 | {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | {{ qmt_preline }} {{ qmt_procmail }} -p -m /home/vpopmail/domains/{{ item[0].owner.host }}/.procmailrc-{{ item[0].owner.user }}
 {% else %}
 | {{ qmt_preline }} {{ qmt_procmail }} -p -m /home/vpopmail/domains/{{ item[0].owner.host }}/.procmailrc-{{ item[0].owner.user }}
 {% endif %}
 {% elif item[0].owner.action == "deliver" %}
-{% if item[0].owner.dspam | bool %}
+{% if item[0].owner.dspam is defined and item[0].owner.dspam | bool %}
 | {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | /home/vpopmail/bin/vdelivermail '' bounce-no-mailbox
 {% else %}
 {{ item[0].owner.directory }}

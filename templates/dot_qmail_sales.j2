@@ -1,0 +1,17 @@
+{% if item[0].sales.action == "filter" %}
+{% if item[0].sales.dspam is defined and item[0].sales.dspam | bool %}
+| {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | {{ qmt_preline }} {{ qmt_procmail }} -p -m /home/vpopmail/domains/{{ item[0].sales.host }}/.procmailrc-{{ item[0].sales.user }}
+{% else %}
+| {{ qmt_preline }} {{ qmt_procmail }} -p -m /home/vpopmail/domains/{{ item[0].sales.host }}/.procmailrc-{{ item[0].sales.user }}
+{% endif %}
+{% elif item[0].sales.action == "deliver" %}
+{% if item[0].sales.dspam is defined and item[0].sales.dspam | bool %}
+| {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | /home/vpopmail/bin/vdelivermail '' bounce-no-mailbox
+{% else %}
+{{ item[0].sales.directory }}
+{% endif %}
+{% elif item[0].sales.action == "forward" %}
+{{ item[0].sales.address }}
+{% elif item[0].sales.action == "delete" %}
+| {{ qmt_vdelivermail }} '' delete
+{% endif %}
