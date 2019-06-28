@@ -211,12 +211,9 @@ qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
 # Note that role accounts in the 'other' group will not be created
 # automatically. These accounts are included here simply to illustrate
 # some other RFC2142 role accounts that you might wish to create
-# manually.
+# individually.
 
 qmt_roles:
-  owner:
-    - admin
-    - billing
   business:
     - info
     - marketing
@@ -226,6 +223,9 @@ qmt_roles:
     - abuse
     - noc
     - security
+  owner:
+    - admin
+    - billing
   services:
     - hostmaster
     - mail
