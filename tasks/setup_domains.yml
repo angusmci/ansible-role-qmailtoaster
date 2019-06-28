@@ -1,7 +1,7 @@
 ---
 - name: create all domains
   become: yes
-  command: "/home/vpopmail/bin/vadddomain {{ item.name }} {{ item.pass }}"
+  command: "/home/vpopmail/bin/vadddomain {{ item.name }} {{ item.password }}"
   args:
     creates: "/home/vpopmail/domains/{{ item.name }}"
   vars:
