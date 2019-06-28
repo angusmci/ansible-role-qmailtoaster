@@ -1,16 +1,36 @@
 ---
+
+# Do basic QMailToaster preparation
+#
+# Corresponds (roughly) to the 'qt_prep.sh' script.
+
 - include: qt_prep.yml
   tags:
     - qmt
+
+# Do QMailToaster installation
+#
+# Corresponds (roughly) to the 'qt_install.sh' script.
+
 - include: qt_install.yml
   tags:
     - qmt
 
-# Additional configurations and tweaks
+# Set up a security certificate to replace the automatically-created
+# self-signed certificate.
 
 - include: httpd-ssl.yml
   tags:
     - ssl
+
+# Perform some checks to ensure that users, groups and directories
+# for vpopmail are all present.
+
+- include: vpopmail.yml
+  tags:
+    - vpopmail
+
+# Set up the vpopmaild daemon if required.
 
 - include: vpopmaild.yml
   when: qmt_install_vpopmaild | bool
@@ -18,17 +38,36 @@
     - vpopmaild
     - roundcube
 
+# Install the Roundcube webmail package if required
+
 - include: roundcube.yml
   when: qmt_install_roundcube | bool
   tags:
     - roundcube
+
+# Install the Rainloop webmail package if required
 
 - include: rainloop.yml
   when: qmt_install_rainloop | bool
   tags:
     - rainloop
 
+# Adjust PHP settings if needed
+
 - include: php.yml
   tags:
     - rainloop
     - roundcube
+
+# Set up domains
+
+- include: setup_domains.yml
+  tags:
+    - domains
+
+# Set up users
+
+- include: setup_users.yml
+  tags:
+    - users
+

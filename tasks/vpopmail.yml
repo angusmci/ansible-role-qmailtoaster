@@ -1,0 +1,34 @@
+---
+- name: ensure vchkpw group exists
+  become: yes
+  group:
+    name: vchkpw
+    state: present
+
+- name: ensure vpopmail user exists
+  become: yes
+  user:
+    name: vpopmail
+    comment: "Vpopmail User"
+    group: vchkpw
+    shell: /sbin/nologin
+    home: /home/vpopmail
+    state: present
+
+- name: ensure vpopmail directory exists
+  become: yes
+  file:
+    path: /home/vpopmail
+    state: directory
+    owner: vpopmail
+    group: vchkpw
+    mode: 0700
+
+- name: ensure vpopmail domains directory exists
+  become: yes
+  file:
+    path: /home/vpopmail/domains/
+    state: directory
+    owner: vpopmail
+    group: vchkpw
+    mode: 0700
