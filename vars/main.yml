@@ -40,6 +40,13 @@ qmt_use_dspam_domains: no
 
 qmt_dspam_domains: []
 
+# qmt_spf_behavior
+#
+# Set the SPF behavior for this toaster. See http://wiki.qmailtoaster.com/index.php/Spf
+# for a list of behaviors. The default setting is 3, reject when SPF resolves to fail.
+
+qmt_spf_behavior: 3
+
 # qmt_vpopmail_dump_file_path
 #
 # If a vpopmail database already exists, back it up to this file.
