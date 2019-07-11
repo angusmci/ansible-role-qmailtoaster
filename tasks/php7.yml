@@ -1,0 +1,9 @@
+---
+- name: add REMI repo
+  become: yes
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+
+
+

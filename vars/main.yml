@@ -21,6 +21,13 @@ qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b
 
 qmt_secure_mariadb: yes
 
+# qmt_php7_version
+#
+# If a valid version number is specified, PHP7 will be installed in place of the stock
+# CentOS PHP 5.4, and qmailtoaster patched accordingly. Set to 0 to stay with PHP 5.4.
+
+qmt_php7_version: 0
+
 # qmt_use_dspam
 #
 # Should QMT use Dspam?

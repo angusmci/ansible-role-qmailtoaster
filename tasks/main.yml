@@ -52,6 +52,13 @@
   tags:
     - rainloop
 
+# Install PHP7 if instructed
+
+- include: php7.yml
+  when: qmt_php7_version != 0
+  tags:
+    - php7
+
 # Adjust PHP settings if needed
 
 - include: php.yml
