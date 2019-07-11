@@ -5,5 +5,36 @@
     name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
+- name: install php7
+  become: yes
+  yum:
+    name:
+      - php
+      - php-mcrypt
+      - php-cli
+      - php-gd
+      - php-curl
+      - php-mysql
+      - php-ldap
+      - php-zip
+      - php-fileinfo
+    enablerepo: remi-php73
+    state: present
 
+- name: upload patched mrtg file
+  become: yes
+  copy:
+    src: files/php7_fixes/usr_share_toaster_htdocs_mrtg_index.php
+    dest: /usr/share/toaster/htdocs/mrtg/index.php
+    owner: root
+    group: apache
+    mode: '0644'
 
+- name: upload patched admin file
+  become: yes
+  copy:
+    src: files/php7_fixes/usr_share_toaster_include_admin_index.php
+    dest: /usr/share/toaster/include/admin/index.php
+    owner: root
+    group: apache
+    mode: '0644'
