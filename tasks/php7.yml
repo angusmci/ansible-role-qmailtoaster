@@ -33,8 +33,8 @@
 - name: upload patched admin file
   become: yes
   copy:
-    src: files/php7_fixes/usr_share_toaster_include_admin_index.php
-    dest: /usr/share/toaster/include/admin/index.php
+    src: files/php7_fixes/usr_share_toaster_include_admin.inc.php
+    dest: /usr/share/toaster/include/admin.inc.php
     owner: root
     group: apache
     mode: '0644'
