@@ -1,1 +1,14 @@
 ---
+- name: create users for each domain
+  become: yes
+#  template:
+#    src: templates/dot_qmail_business.j2
+#    dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
+#    owner: vpopmail
+#    group: vchkpw
+#    mode: 0644
+  debug:
+    msg: "{{ item.0 }} - {{ item.1 }}"
+  loop: "{{ qmt_domains|subelements('users') }}"
+  vars:
+    ansible_ssh_pipelining: Yes

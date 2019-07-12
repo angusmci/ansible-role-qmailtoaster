@@ -95,3 +95,10 @@
   vars:
     ansible_ssh_pipelining: Yes
 
+- name: list all domains
+  become: yes
+  debug:
+    msg: "{{ item }}"
+  vars:
+    ansible_ssh_pipelining: yes
+  with_items: "{{ qmt_domains }}"
