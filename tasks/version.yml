@@ -1,7 +1,7 @@
 ---
 - name: update to standard version
   become: yes
-  when: qmt_package = 'standard'
+  when: qmt_package == 'standard'
   yum:
     name: '*'
     state: latest
@@ -9,7 +9,7 @@
 
 - name: update to testing version
   become: yes
-  when: qmt_package = 'testing'
+  when: qmt_package == 'testing'
   yum:
     name: '*'
     state: latest
@@ -18,7 +18,7 @@
 
 - name: update to development version
   become: yes
-  when: qmt_package = 'development'
+  when: qmt_package == 'development'
   yum:
     name: '*'
     state: latest
