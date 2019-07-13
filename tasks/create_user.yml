@@ -14,19 +14,33 @@
 
 - name: create procmailrc
   when: filter == True
-  debug:
-    msg: "Creating /home/vpopmail/domains/{{ domain }}/.procmailrc-{{ username }}"
+  template:
+    src: templates/dot_procmailrc.j2
+    dest: /home/vpopmail/domains/{{ domain }}/.procmailrc-{{ username }}
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
 
 - name: create procmail folder
   when: filter == True
-  debug:
-    msg: "Creating /home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}"
+  file:
+    state: directory
+    path: /home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}
+    owner: vpopmail
+    group: vchkpw
+    mode: 0755
 
 - name: create procmail filtersets
   when: filter == True
-  debug:
-    msg: "Creating /home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}/{{ item }}"
-  loop: "{{ qmt_procmail_filtersets }}"
+  file:
+    state: directory
+    path: /home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}/rc.{{ filterset }}
+    owner: vpopmail
+    group: vchkpw
+    mode: 0755
+  loop: "{{ filtersets }}"
+  loop_control:
+    loop_var: filterset
 
 - name: write .qmail file
   debug:
