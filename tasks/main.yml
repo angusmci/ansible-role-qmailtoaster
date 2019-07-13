@@ -30,6 +30,11 @@
   tags:
     - vpopmail
 
+# Do an update to install additional software for the selected version
+# if necessary.
+
+- include: version.yml
+
 # Set up the vpopmaild daemon if required.
 
 - include: vpopmaild.yml
