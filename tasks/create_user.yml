@@ -10,7 +10,7 @@
 
 - name: create user
   become: yes
-  command: "/home/vpopmail/bin/vadduser -c {{ comment }} -q {{ quota }} {{ username }}@{{ domain }} {{ password }}"
+  command: "/home/vpopmail/bin/vadduser -c '{{ comment }}' -q {{ quota }} {{ username }}@{{ domain }} {{ password }}"
   args:
     creates: "/home/vpopmail/domains/{{ domain }}/{{ username }}"
 
