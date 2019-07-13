@@ -7,7 +7,9 @@
     ansible_ssh_pipelining: Yes
     domain: "{{ item.0.name }}"
     username: "{{ item.1.name }}"
-    comment: "{{ item.1.comment }}"
-    filter: "{{ item.1.filter }}"
-    dspam: "{{ item.1.dspam }}"
-
+    password: "{{ item.1.password }}"
+    comment: "{{ item.1.comment | default('') }}"
+    dspam: "{{ item.1.dspam | default('no') }}"
+    filter: "{{ item.1.filter | default('no') }}"
+    filtersets: "{{ item.1.filtersets | default(qmt_procmail_filtersets) }}"
+    filterdirs: "{{ item.1.filterdirs | default(qmt_procmail_filterdirs) }}"
