@@ -232,7 +232,17 @@
   notify:
     - restart firewall
 
+- name: ensure /home/vpopmail/etc exists
+  become: yes
+  file:
+    path: /home/vpopmail/etc
+    state: directory
+    owner: vpopmail
+    group: vchkpw
+    mode: '0755'
+
 - name: write vpopmail.mysql
+  become: yes
   template:
     src: vpopmail.mysql.j2
     dest: /home/vpopmail/etc/vpopmail.mysql
