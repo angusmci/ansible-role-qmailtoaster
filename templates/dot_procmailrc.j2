@@ -1,0 +1,24 @@
+# File:         .procmailrc-{{ username }}
+#
+# {{ ansible_managed }}
+
+SHELL=/bin/sh
+
+PMDIR=/home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}
+
+LOGFILE=/home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}/log
+VERBOSE=on
+CRLF="
+"
+
+MAILDIR=/home/vpopmail/domains/{{ domain }}/{{ username }}/Maildir/
+{% for filterdir in filterdirs %}
+{{ filterdir.name }}=/home/vpopmail/domains/{{ domain }}/{{ username }}/Maildir/{{ filterdir.path }}
+{% endfor %}
+
+{% for filterset in filtersets %}
+INCLUDERC=$PMDIR/rc.{{ filterset }}
+{% endfor %}
+
+:0w
+$MAILDIR
