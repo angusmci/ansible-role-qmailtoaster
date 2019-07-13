@@ -1,0 +1,13 @@
+{% if filter | bool %}
+{% if dspam | bool %}
+| {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | {{ qmt_preline }} {{ qmt_procmail }} -p -m /home/vpopmail/domains/{{ domain }}/.procmailrc-{{ username }}
+{% else %}
+| {{ qmt_preline }} {{ qmt_procmail }} -p -m /home/vpopmail/domains/{{ domain }}/.procmailrc-{{ username }}
+{% endif %}
+{% else %}
+{% if dspam | bool %}
+| {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | /home/vpopmail/bin/vdelivermail '' bounce-no-mailbox
+{% else %}
+/home/vpopmail/bin/vdelivermail '' bounce-no-mailbox
+{% endif %}
+{% endif %}

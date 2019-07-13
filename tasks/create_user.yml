@@ -9,10 +9,13 @@
 #  with_items: "{{ qmt_domains }}"
 
 - name: create user
-  debug:
-    msg: "Creating user {{ username }}@{{ domain }} with password {{ password }} -c {{ comment }}"
+  become: yes
+  command: "/home/vpopmail/bin/vadduser -c {{ comment }} -q {{ quota }} {{ username }}@{{ domain }} {{ password }}"
+  args:
+    creates: "/home/vpopmail/domains/{{ domain }}/{{ username }}"
 
 - name: create procmailrc
+  become: yes
   when: filter == True
   template:
     src: templates/dot_procmailrc.j2
@@ -22,6 +25,7 @@
     mode: 0644
 
 - name: create procmail folder
+  become: yes
   when: filter == True
   file:
     state: directory
@@ -31,6 +35,7 @@
     mode: 0755
 
 - name: create procmail filtersets
+  become: yes
   when: filter == True
   file:
     state: touch
@@ -43,5 +48,11 @@
     loop_var: filterset
 
 - name: write .qmail file
-  debug:
-    msg: "Writing /home/vpopmail/domains/{{ domain }}/.qmail-{{ username }}"
+  become: yes
+  template:
+    src: templates/dot_qmail_user.j2
+    dest: /home/vpopmail/domains/{{ domain }}/.qmail-{{ username }}
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
+

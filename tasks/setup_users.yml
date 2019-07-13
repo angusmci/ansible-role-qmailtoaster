@@ -9,6 +9,7 @@
     username: "{{ item.1.name }}"
     password: "{{ item.1.password }}"
     comment: "{{ item.1.comment | default('') }}"
+    quota: "{{ item.1.quota | default('NOQUOTA') }}"
     dspam: "{{ item.1.dspam | default('no') }}"
     filter: "{{ item.1.filter | default('no') }}"
     filtersets: "{{ item.1.filtersets | default(qmt_procmail_filtersets) }}"
