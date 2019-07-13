@@ -1,0 +1,33 @@
+---
+#- name: create user
+#  become: yes
+#  command: "/home/vpopmail/bin/vadduser {{ username }}@{{ domain }} {{ password }} -c {{ comment }}"
+#  args:
+#    creates: "/home/vpopmail/domains/{{ item.name }}"
+#  vars:
+#    ansible_ssh_pipelining: yes
+#  with_items: "{{ qmt_domains }}"
+
+- name: create user
+  debug:
+    msg: "Creating user {{ username }}@{{ domain }} with password {{ password }} -c {{ comment }}"
+
+- name: create procmailrc
+  when: filter == True
+  debug:
+    msg: "Creating /home/vpopmail/domains/{{ domain }}/.procmailrc-{{ username }}"
+
+- name: create procmail folder
+  when: filter == True
+  debug:
+    msg: "Creating /home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}"
+
+- name: create procmail filtersets
+  when: filter == True
+  debug:
+    msg: "Creating /home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}/{{ item }}"
+  loop: "{{ qmt_procmail_filtersets }}"
+
+- name: write .qmail file
+  debug:
+    msg: "Writing /home/vpopmail/domains/{{ domain }}/.qmail-{{ username }}"
