@@ -33,11 +33,11 @@
 - name: create procmail filtersets
   when: filter == True
   file:
-    state: directory
+    state: touch
     path: /home/vpopmail/domains/{{ domain }}/.procmail-{{ username }}/rc.{{ filterset }}
     owner: vpopmail
     group: vchkpw
-    mode: 0755
+    mode: 0644
   loop: "{{ filtersets }}"
   loop_control:
     loop_var: filterset
