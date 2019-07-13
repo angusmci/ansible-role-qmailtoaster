@@ -277,12 +277,12 @@ qmt_procmail_filtersets:
   - whitelist
   - subscriptions
 
-# qmt_procmail_directories
+# qmt_procmail_filterdirs
 #
 # If the user is using procmail filtering, this list of named directories
 # will be set up in their .procmailrc file.
 
-qmt_procmail_directories:
+qmt_procmail_filterdirs:
   - name: JUNKDIR
     path: .Junk/
   - name: LISTDIR
