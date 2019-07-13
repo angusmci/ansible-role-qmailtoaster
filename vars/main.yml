@@ -266,6 +266,16 @@ qmt_roles:
     - usenet
     - uucp
 
+# qmt_procmail_filtersets
+#
+# The user creation process will create a set of procmail rc include
+# files for any users who use procmail to filter their incoming email.
+# This list gives a set of default include file names.
+
+qmt_procmail_filtersets:
+  - blacklist
+  - whitelist
+  - subscriptions
 
 # ======================================================================
 # PATHS
