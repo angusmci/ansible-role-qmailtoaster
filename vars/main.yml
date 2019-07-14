@@ -290,6 +290,16 @@ qmt_procmail_filterdirs:
   - name: SPAMDIR
     path: .Spam/
 
+# qmt_maildir_subdirs
+#
+# This defines the names of subdirectories of a Maildir; don't change
+# these unless you want things to possibly break in surprising ways.
+
+qmt_maildir_subdirs:
+  - cur
+  - new
+  - tmp
+
 # ======================================================================
 # PATHS
 # ======================================================================

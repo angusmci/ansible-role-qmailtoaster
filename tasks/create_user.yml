@@ -1,18 +1,17 @@
 ---
-#- name: create user
-#  become: yes
-#  command: "/home/vpopmail/bin/vadduser {{ username }}@{{ domain }} {{ password }} -c {{ comment }}"
-#  args:
-#    creates: "/home/vpopmail/domains/{{ item.name }}"
-#  vars:
-#    ansible_ssh_pipelining: yes
-#  with_items: "{{ qmt_domains }}"
+# Create a vpopmail user. This uses the 'vadduser' command, which is not idempotent -- it will
+# throw an error if it's run on an existing user. This task has a 'creates' argument that
+# should prevent repeated creation attempts. If for some reason you need to re-create a user,
+# you'll have to manually remove the user's home directory and clean up the database.
 
 - name: create user
   become: yes
   command: "/home/vpopmail/bin/vadduser -c '{{ comment }}' -q {{ quota }} {{ username }}@{{ domain }} {{ password }}"
   args:
     creates: "/home/vpopmail/domains/{{ domain }}/{{ username }}"
+
+# If the user has the 'filter' flag set to true, create a .procmailrc file for that user
+# that will contain a skeleton definition for procmail filtering.
 
 - name: create procmailrc
   become: yes
@@ -24,7 +23,10 @@
     group: vchkpw
     mode: 0644
 
-- name: create procmail folder
+# If the user has the 'filter' flag set to true, create a .procmail directory for the
+# user. The directory will hold the user's procmail log, and any include files.
+-
+- name: create procmail directory
   become: yes
   when: filter == True
   file:
@@ -34,7 +36,10 @@
     group: vchkpw
     mode: 0755
 
-- name: create procmail filtersets
+# If the user has the 'filter' flag set to true, create a set of 'rc.*' files that
+# will hold their procmail recipes.
+
+- name: create procmail include files
   become: yes
   when: filter == True
   file:
@@ -46,6 +51,25 @@
   loop: "{{ filtersets }}"
   loop_control:
     loop_var: filterset
+
+# If the user has some mail subdirectories specified as part of their definition, set
+# those up.
+
+- name: create mail directories
+  become: yes
+  file:
+    state: touch
+    path: /home/vpopmail/domains/{{ domain }}/{{ username }}/Maildir/{{ dir.0 }}/{{ dir.1 }}
+    owner: vpopmail
+    group: vchkpw
+    mode: 0600
+  loop: "{{ filterdirs|product(qmt_maildir_subdirs)|list }}"
+  loop_control:
+    loop_var: dir
+
+# Write the .qmail file that will actually deliver mail to the user. The template will
+# set up the file appropriately, so that it contains any relevant instructions, i.e. to
+# use dspam, to use procmail filtering etc.
 
 - name: write .qmail file
   become: yes
