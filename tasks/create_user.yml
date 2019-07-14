@@ -58,8 +58,8 @@
 - name: create mail directories
   become: yes
   file:
-    state: touch
-    path: /home/vpopmail/domains/{{ domain }}/{{ username }}/Maildir/{{ dir.0 }}/{{ dir.1 }}
+    state: directory
+    path: /home/vpopmail/domains/{{ domain }}/{{ username }}/Maildir/{{ dir.0.path }}{{ dir.1 }}
     owner: vpopmail
     group: vchkpw
     mode: 0600
