@@ -1,15 +1,26 @@
 ---
-- name: install dependencies
+- name: install roundcube and dependencies - PHP 5
   become: yes
+  when: qmt_php7_version == 0
   yum:
-    name: [
-      'epel-release',
-      'php-mysql',
-      'roundcubemail'
-    ]
+    name:
+      - epel-release
+      - php-mysql
+      - roundcubemail
     state: latest
     update_cache: yes
     skip_broken: yes
+
+- name: install roundcube and dependencies - PHP 7
+  become: yes
+  when: qmt_php7_version != 0
+  yum:
+    name:
+      - php-mysql
+      - roundcubemail
+    enablerepo: remi-php73
+    state: latest
+    update_cache: yes
 
 - name: change ownership of roundcube sources
   become: yes
