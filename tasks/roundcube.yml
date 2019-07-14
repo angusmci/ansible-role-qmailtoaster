@@ -9,6 +9,7 @@
     ]
     state: latest
     update_cache: yes
+    skip_broken: yes
 
 - name: change ownership of roundcube sources
   become: yes
