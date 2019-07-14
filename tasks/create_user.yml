@@ -52,10 +52,22 @@
   loop_control:
     loop_var: filterset
 
-# If the user has some mail subdirectories specified as part of their definition, set
-# those up.
+# If the user has some Maildir subdirectories specified as part of their definition,
+# set those up.
 
-- name: create mail directories
+- name: create mail directories - step 1
+  become: yes
+  file:
+    state: directory
+    path: /home/vpopmail/domains/{{ domain }}/{{ username }}/Maildir/{{ dir.path }}
+    owner: vpopmail
+    group: vchkpw
+    mode: 0700
+  loop: "{{ filterdirs }}"
+  loop_control:
+    loop_var: dir
+
+- name: create mail directories - step 2
   become: yes
   file:
     state: directory
