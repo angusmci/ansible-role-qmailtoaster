@@ -62,7 +62,7 @@
     path: /home/vpopmail/domains/{{ domain }}/{{ username }}/Maildir/{{ dir.0.path }}{{ dir.1 }}
     owner: vpopmail
     group: vchkpw
-    mode: 0600
+    mode: 0700
   loop: "{{ filterdirs|product(qmt_maildir_subdirs)|list }}"
   loop_control:
     loop_var: dir
