@@ -23,12 +23,12 @@ qmt_secure_mariadb: yes
 
 # qmt_package
 #
-# qmt_package can be 'standard', 'testing', or 'development'. 'standard' will get you
-# the current base install; 'testing' or 'development' will get you increasingly
+# qmt_package can be 'stable', 'testing', or 'development'. 'stable' will get you
+# the current stable install; 'testing' or 'development' will get you increasingly
 # bleeding-edge versions. See http://qmailtoaster.com/ to see what will be installed
 # for each of these.
 
-qmt_package: standard
+qmt_package: stable
 
 # qmt_php7_version
 #
