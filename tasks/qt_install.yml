@@ -43,7 +43,6 @@
       'mariadb-devel',
       'libev-devel',
       'httpd',
-      'php',
       'mrtg',
       'expect',
       'libidn-devel',
@@ -105,6 +104,14 @@
     ]
     state: latest
     update_cache: yes
+
+- name: install php5
+  include: php7.yml
+  when: qmt_php7_version == 0
+
+- name: install php7
+  include: php7.yml
+  when: qmt_php7_version != 0
 
 - name: start mariadb
   become: yes
