@@ -1,0 +1,16 @@
+---
+- name: install php5
+  become: yes
+  yum:
+    name:
+      - php
+      - php-mcrypt
+      - php-cli
+      - php-gd
+      - php-curl
+      - php-mysql
+      - php-ldap
+      - php-zip
+      - php-fileinfo
+    state: latest
+    update_cache: yes

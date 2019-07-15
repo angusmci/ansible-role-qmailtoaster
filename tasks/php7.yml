@@ -19,7 +19,8 @@
       - php-zip
       - php-fileinfo
     enablerepo: remi-php73
-    state: present
+    state: latest
+    update_cache: yes
 
 - name: upload patched mrtg file
   become: yes
