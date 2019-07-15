@@ -9,16 +9,21 @@
       - roundcubemail
     state: latest
     update_cache: yes
-    skip_broken: yes
+
+- name: add REMI test repo
+  become: yes
+  when: qmt_php7_version != 0
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
 
 - name: install roundcube and dependencies - PHP 7
   become: yes
   when: qmt_php7_version != 0
   yum:
     name:
-      - php-mysql
       - roundcubemail
-    enablerepo: remi-php73
+    enablerepo: remi-test
     state: latest
     update_cache: yes
 
