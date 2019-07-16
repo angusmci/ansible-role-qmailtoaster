@@ -29,7 +29,7 @@
     name: /tmp/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
     state: present
 
-- name: install dependencies
+- name: install required packages
   become: yes
   yum:
     name: [

@@ -10,7 +10,7 @@
     state: latest
     update_cache: yes
 
-- name: add REMI repos
+- name: add REMI repos if needed
   become: yes
   when: qmt_php7_version != 0
   yum:

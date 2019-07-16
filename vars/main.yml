@@ -34,8 +34,9 @@ qmt_package: stable
 #
 # If a valid version number is specified, PHP7 will be installed in place of the stock
 # CentOS PHP 5.4, and qmailtoaster patched accordingly. Set to 0 to stay with PHP 5.4.
+# Set to 71 for PHP 7.1 etc.
 
-qmt_php7_version: 0
+qmt_php7_version: 71
 
 # qmt_use_dspam
 #
