@@ -106,7 +106,7 @@
     update_cache: yes
 
 - name: install php5
-  include: php7.yml
+  include: php5.yml
   when: qmt_php7_version == 0
 
 - name: install php7
