@@ -64,6 +64,8 @@
     - rainloop
     - roundcube
 
+# Add PHP7 patches
+-
 - name: patch files for php7 if required
   include: php7-patches.yml
   when: qmt_php7_version != 0
