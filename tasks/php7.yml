@@ -18,7 +18,7 @@
       - php-ldap
       - php-zip
       - php-fileinfo
-    enablerepo: remi-php73
+    enablerepo: "remi-php{{ qmt_php7_version }}"
     state: latest
     update_cache: yes
 

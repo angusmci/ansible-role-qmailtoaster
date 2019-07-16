@@ -10,7 +10,7 @@
     state: latest
     update_cache: yes
 
-- name: add REMI test repo
+- name: add REMI repos
   become: yes
   when: qmt_php7_version != 0
   yum:
@@ -44,7 +44,7 @@
   yum:
     name:
       - roundcubemail
-    enablerepo: remi-test
+    enablerepo: remi
     state: latest
     update_cache: yes
 
