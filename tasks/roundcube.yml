@@ -17,26 +17,36 @@
     name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
-- name: install requirements from remi repo
+- name: install ImageMagick
   become: yes
   when: qmt_php7_version != 0
   yum:
     name:
-      - php-pspell
-      - php-mbstring
-      - php-intl
-      - php-zip
-      - php-pear-Net-SMTP
-      - php-pear-Auth-SASL
-      - php-pear-Net-LDAP2
-      - php-pear-Net-IDNA2
-      - php-pear-Net-Sieve
-      - php-pear-crypt-gpg
-      - php-pear-Mail-Mime
-      - php-pear-Net-Socket
-    enablerepo: remi
-    state: latest
-    update_cache: yes
+      - php71-php-pecl-imagick.x86_64
+    enablerepo:
+      - epel
+      - "remi-php{{ qmt_php7_version }}"
+
+#- name: install requirements from remi repo
+#  become: yes
+#  when: qmt_php7_version != 0
+#  yum:
+#    name:
+#      - php-pspell
+#      - php-mbstring
+#      - php-intl
+#      - php-zip
+#      - php-pear-Net-SMTP
+#      - php-pear-Auth-SASL
+#      - php-pear-Net-LDAP2
+#      - php-pear-Net-IDNA2
+#      - php-pear-Net-Sieve
+#      - php-pear-crypt-gpg
+#      - php-pear-Mail-Mime
+#      - php-pear-Net-Socket
+#    enablerepo: remi
+#    state: latest
+#    update_cache: yes
 
 - name: install roundcube and dependencies - PHP 7
   become: yes
@@ -44,7 +54,7 @@
   yum:
     name:
       - roundcubemail
-    enablerepo: remi
+    enablerepo: remi-test
     state: latest
     update_cache: yes
 

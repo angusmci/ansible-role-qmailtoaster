@@ -9,16 +9,12 @@
   become: yes
   yum:
     name:
-      - php
-      - php-mcrypt
-      - php-cli
-      - php-gd
-      - php-curl
-      - php-mysql
-      - php-ldap
-      - php-zip
-      - php-fileinfo
-    enablerepo: "remi-php{{ qmt_php7_version }}"
+      - "php{{ qmt_php7_version }}-php-mysqlnd.x86_64"
+    enablerepo:
+      - remi
+      - "remi-php{{ qmt_php7_version }}"
+    disablerepo:
+      - epel
     state: latest
     update_cache: yes
 
