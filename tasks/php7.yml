@@ -15,6 +15,7 @@
       - "remi-php{{ qmt_php7_version }}"
     disablerepo:
       - epel
+      - ius
     state: latest
     update_cache: yes
 
