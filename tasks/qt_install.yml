@@ -1,5 +1,4 @@
 ---
-
 - name: remove postfix
   become: yes
   yum:
@@ -104,6 +103,8 @@
     ]
     state: latest
     update_cache: yes
+    disablerepo:
+      - ius
 
 - name: install php5
   include: php5.yml
@@ -207,6 +208,8 @@
     ]
     state: latest
     update_cache: yes
+    disablerepo:
+      - ius
 
 - name: start firewalld
   become: yes
