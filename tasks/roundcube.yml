@@ -44,6 +44,7 @@
       - php-pecl-zip
       - php-pdo
       - php-gd
+      - php-pecl-mysql
     enablerepo:
       - remi
       - "remi-php{{ qmt_php7_version }}"
