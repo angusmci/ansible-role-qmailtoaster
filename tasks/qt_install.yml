@@ -346,3 +346,15 @@
     state: present
     regexp: EOF
 
+- name: set up tcp.smtp
+  become: yes
+  template:
+    src: tcp_smtp.j2
+    dest: /etc/tcprules.d/tcp.smtp
+    backup: yes
+    owner: root
+    group: root
+    mode: '0644'
+
+
+
