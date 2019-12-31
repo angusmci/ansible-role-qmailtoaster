@@ -154,6 +154,18 @@ qmt_attachment_size_limit: 10
 
 qmt_roundcube_des_key: "Change_this_24Byte_Str!!"
 
+# qmt_roundcube_support_url
+#
+# URL of the support page for this Roundcube instance
+
+qmt_roundcube_support_url: ""
+
+# qmt_roundcube_product_name
+#
+# Product name displayed to users of this Roundcube instance
+
+qmt_roundcube_product_name: "Roundcube Webmail"
+
 # ======================================================================
 # PASSWORDS
 # ======================================================================
