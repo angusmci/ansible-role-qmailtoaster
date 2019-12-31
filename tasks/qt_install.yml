@@ -356,5 +356,15 @@
     group: root
     mode: '0644'
 
+- name: install local squirrelmail config
+  become: yes
+  template:
+    src: squirrelmail_config_local.php.j2
+    dest: /etc/squirrelmail/config_local.php
+    backup: yes
+    owner: root
+    group: root
+    mode: '0644'
+
 
 

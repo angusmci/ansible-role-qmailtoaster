@@ -116,6 +116,21 @@ qmt_rainloop_license: community
 
 qmt_rainloop_domains: []
 
+# qmt_squirrelmail_*
+#
+# Some basic Squirrelmail configuration options. You can probably leave all
+# of these at the defaults. If you want to configure the Rainloop
+# application in ways that aren't supported by this role, you should
+# use your own template and tasks.
+#
+# These variable names are intended to be self-explanatory. If they
+# don't make sense to you, look in 'squirrelmail_config_local.j2' to
+# see how they're used.
+
+qmt_squirrelmail_org_name: "Qmailtoaster"
+qmt_squirrelmail_provider_uri: "http://qmailtoaster.com/"
+qmt_squirrelmail_provider_name: "QmailToaster"
+
 # qmt_rainloop_*
 #
 # Some basic Rainloop configuration options. You can probably leave all
