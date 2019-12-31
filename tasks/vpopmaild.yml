@@ -3,6 +3,15 @@
   become: yes
   shell: "qmailctl stop &> /dev/null"
 
+- name: create /var/qmail/supervise/vpopmaild/
+  become: yes
+  file:
+    path: /var/qmail/supervise/vpopmaild/
+    state: directory
+    mode: '1700'
+    owner: qmaill
+    group: qmail
+
 - name: create /var/qmail/supervise/vpopmaild
   become: yes
   file:
