@@ -54,6 +54,20 @@
     state: latest
     update_cache: yes
 
+- name: install php LDAP3
+  become: yes
+  when: qmt_php7_version != 0
+  yum:
+    name:
+      - php-kolab-net-ldap3
+    enablerepo:
+      - remi
+      - "remi-php{{ qmt_php7_version }}"
+    disablerepo:
+      - ius
+      - epel
+    state: latest
+    update_cache: yes
 
 - name: install roundcube and dependencies - PHP 7
   become: yes
