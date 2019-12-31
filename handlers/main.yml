@@ -21,3 +21,7 @@
   systemd:
     name: httpd.service
     state: restarted
+
+- name: rebuild qmail cdb
+  become: yes
+  shell: "qmailctl cdb"
