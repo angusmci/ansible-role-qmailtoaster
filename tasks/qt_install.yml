@@ -356,6 +356,8 @@
     owner: root
     group: root
     mode: '0644'
+  notify:
+    - rebuild qmail cdb
 
 - name: install local squirrelmail config
   become: yes

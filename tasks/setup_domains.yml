@@ -6,6 +6,8 @@
   vars:
     ansible_ssh_pipelining: yes
   with_items: "{{ qmt_domains }}"
+  notify:
+    - restart dovecot
 
 - name: create catch-all file for each domain
   become: yes

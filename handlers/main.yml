@@ -25,3 +25,9 @@
 - name: rebuild qmail cdb
   become: yes
   shell: "qmailctl cdb"
+
+- name: restart dovecot
+  become: yes
+  systemd:
+    name: dovecot.service
+    state: restarted

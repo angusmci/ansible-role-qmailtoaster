@@ -9,6 +9,8 @@
   command: "/home/vpopmail/bin/vadduser -c '{{ comment }}' -q {{ quota }} {{ username }}@{{ domain }} {{ password }}"
   args:
     creates: "/home/vpopmail/domains/{{ domain }}/{{ username }}"
+  notify:
+    - restart dovecot
 
 # If the user has the 'filter' flag set to true, create a .procmailrc file for that user
 # that will contain a skeleton definition for procmail filtering.
