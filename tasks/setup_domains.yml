@@ -2,8 +2,7 @@
 - name: create all domains
   become: yes
   command: "/home/vpopmail/bin/vadddomain {{ item.name }} {{ item.password }}"
-  args:
-    creates: "/home/vpopmail/domains/{{ item.name }}"
+  ignore_errors: true
   vars:
     ansible_ssh_pipelining: yes
   with_items: "{{ qmt_domains }}"
@@ -22,7 +21,7 @@
 
 - name: create business role account .qmail files for each domain
   become: yes
-  when: item[0].business.action != 'none'
+  when: item[0].business is defined and item[0].business.action != 'none'
   template:
     src: templates/dot_qmail_business.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -37,7 +36,7 @@
 
 - name: create network role account .qmail files for each domain
   become: yes
-  when: item[0].network.action != 'none'
+  when: item[0].network is defined and item[0].network.action != 'none'
   template:
     src: templates/dot_qmail_network.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -52,7 +51,7 @@
 
 - name: create owner role account .qmail files for each domain
   become: yes
-  when: item[0].owner.action != 'none'
+  when: item[0].owner is defined and item[0].owner.action != 'none'
   template:
     src: templates/dot_qmail_owner.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -67,7 +66,7 @@
 
 - name: create services role account .qmail files for each domain
   become: yes
-  when: item[0].services.action != 'none'
+  when: item[0].services is defined and item[0].services.action != 'none'
   template:
     src: templates/dot_qmail_network.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}
@@ -82,7 +81,7 @@
 
 - name: create webmaster role account .qmail files for each domain
   become: yes
-  when: item[0].webmaster.action != 'none'
+  when: item[0].webmaster is defined and item[0].webmaster.action != 'none'
   template:
     src: templates/dot_qmail_webmaster.j2
     dest: /home/vpopmail/domains/{{ item[0].name }}/.qmail-{{ item[1] }}

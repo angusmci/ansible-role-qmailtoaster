@@ -2,7 +2,7 @@
 - name: create users for each domain
   become: yes
   include: create_user.yml
-  loop: "{{ qmt_domains|subelements('users') }}"
+  loop: "{{ qmt_domains|subelements('users', skip_missing=True) }}"
   vars:
     ansible_ssh_pipelining: Yes
     domain: "{{ item.0.name }}"

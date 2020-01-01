@@ -70,6 +70,14 @@ qmt_spf_behavior: 3
 
 qmt_vpopmail_dump_file_path: /tmp/vpopmail.sql
 
+# qmt_vpopmail_rebuild_database
+#
+# Force a rebuild of the database. This is potentially dangerous, because it will
+# destroy any domain tables created by 'vadddomain', which will cause 'vadduser'
+# to fail later. If you set this to true, be prepared to clean up the mess manually.
+
+qmt_vpopmail_rebuild_database: false
+
 # qmt_dspam_dump_file_path
 #
 # If a dspam database already exists, back it up to this file
