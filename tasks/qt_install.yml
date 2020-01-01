@@ -137,7 +137,7 @@
     name: vpopmail
     state: dump
     target: "{{ qmt_vpopmail_dump_file_path }}"
-  when: dbstatus is defined and dbstatus.rc == 0
+  when: qmt_vpopmail_rebuild_database and dbstatus.rc == 0
 
 - name: drop vpopmail database if it exists
   mysql_db:
@@ -145,7 +145,7 @@
     login_password: "{{ qmt_db_root_password}}"
     name: vpopmail
     state: absent
-  when: dbstatus is defined and dbstatus.rc == 0
+  when: qmt_vpopmail_rebuild_database and dbstatus.rc == 0
 
 - name: ensure vpopmail database is present
   mysql_db:
