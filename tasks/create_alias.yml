@@ -1,0 +1,12 @@
+# Write the .qmail file that will actually deliver mail to the user. The template will
+# set up the file appropriately, so that it contains any relevant instructions, i.e. to
+# use dspam, to use procmail filtering etc.
+
+- name: write .qmail file
+  become: yes
+  template:
+    src: templates/dot_qmail_user.j2
+    dest: /home/vpopmail/domains/{{ domain }}/.qmail-{{ username }}
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
