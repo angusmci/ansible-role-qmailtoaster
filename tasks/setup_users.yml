@@ -12,5 +12,23 @@
     quota: "{{ item.1.quota | default('NOQUOTA') }}"
     dspam: "{{ item.1.dspam | default('no') }}"
     filter: "{{ item.1.filter | default('no') }}"
+    bounce: "{{ item.1.bounce | default('no') }}"
+    delete: "{{ item.1.delete | default('no') }}"
+    address: "{{ item.1.address | default('') }}"
     filtersets: "{{ item.1.filtersets | default(qmt_procmail_filtersets) }}"
     filterdirs: "{{ item.1.filterdirs | default(qmt_procmail_filterdirs) }}"
+
+- name: create aliases
+  become: yes
+  include: create_alias.yml
+  loop: "{{ qmt_aliases }}"
+  vars:
+    ansible_ssh_pipelining: Yes
+    email: "{{ item.0.email }}"
+    username: "{{ item.0.alias }}"
+    domain: "{{ item.0.domain }}"
+    action: "{{ item.0.action }}"
+    dspam: "{{ item.0.dspam | default(false) }}"
+    address: "{{ item.0.address | default('') }}"
+    user: "{{ item.0.user | default('') }}"
+    host: "{{ item.0.host | default('') }}"
