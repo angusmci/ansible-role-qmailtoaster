@@ -348,4 +348,4 @@ qmt_preline: /var/qmail/bin/preline
 qmt_procmail: /usr/bin/procmail
 qmt_vdelivermail: /home/vpopmail/bin/vdelivermail
 qmt_dspam: /usr/bin/dspam
-
+qmt_vpopmail_dir: /home/vpopmail/domains

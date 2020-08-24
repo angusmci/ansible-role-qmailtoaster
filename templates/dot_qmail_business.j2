@@ -6,7 +6,7 @@
 {% endif %}
 {% elif item[0].business.action == "deliver" %}
 {% if item[0].business.dspam is defined and item[0].business.dspam | bool %}
-| {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | /home/vpopmail/bin/vdelivermail '' bounce-no-mailbox
+| {{ qmt_dspam }} --user "$EXT@$HOST" --deliver=stdout | {{ qmt_vdelivermail }} '' bounce-no-mailbox
 {% else %}
 {{ item[0].business.directory }}
 {% endif %}
