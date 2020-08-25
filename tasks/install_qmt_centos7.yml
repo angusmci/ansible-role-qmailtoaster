@@ -1,4 +1,6 @@
 ---
+- debug:
+    msg: Installing qmailtoaster for CentOS 7 on {{ inventory_hostname }}
 
 # Do basic QMailToaster preparation
 #
@@ -85,4 +87,3 @@
 - include: setup_users.yml
   tags:
     - users
-
