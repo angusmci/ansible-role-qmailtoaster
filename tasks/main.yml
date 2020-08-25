@@ -31,9 +31,13 @@
   tags:
     - qmt
 
-# Set up PHP
+# Set up web-related stuff
 
 - include: php_configuration.yml
+  tags:
+    - qmt
+
+- include: httpd_ssl.yml
   tags:
     - qmt
 
@@ -88,6 +92,13 @@
   tags:
     - qmt
 
+# Install dspam
+
+- when: qmt_use_dspam == "yes"
+  include: dspam_install.yml
+  tags:
+    - dspam
+
 # Post-installation
 
 - when: ansible_facts['distribution_major_version'] == "8"
@@ -97,6 +108,10 @@
 
 - when: ansible_facts['distribution_major_version'] == "7"
   include: postinstall_centos_7.yml
+  tags:
+    - qmt
+
+- include: postinstall_tuning.yml
   tags:
     - qmt
 # Do QMailToaster installation
