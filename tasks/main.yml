@@ -2,39 +2,41 @@
 - debug:
     msg: Installing qmailtoaster on {{ inventory_hostname }} -- distribution={{ansible_facts['distribution']}} version={{ansible_facts['distribution_major_version']}}
 
-- name: QMT for CentOS 7
-  when: ansible_facts['distribution_major_version'] == 7
-  import_tasks: qmailtoaster_centos_7.yml
-
-- name: QMT for CentOS 8
-  when: ansible_facts['distribution_major_version'] == 8
-  import_tasks: qmailtoaster_centos_8.yml
-
-- name: test
-  when: ansible_facts['distribution_major_version'] == 8
-  debug:
-    msg: "This is CentOS 8"
-
-- name: test2
-  when: ansible_facts['distribution_major_version'] == "8"
-  debug:
-    msg: "Maybe version has to be a string"
 # Do basic QMailToaster preparation
 #
-# Corresponds (roughly) to the 'qt_prep.sh' script.
+# Corresponds (roughly) to the 'qt_prep.sh' script used in CentOS 7 installation.
 
-# - name:
-#   include: qt_prep.yml
-#   tags:
-#     - qmt
-# # Do QMailToaster installation
-# #
-# # Corresponds (roughly) to the 'qt_install.sh' script.
+- when: ansible_facts['distribution_major_version'] == "7"
+  include: qt_prep.yml
+  tags:
+    - qmt
 
-# - include: qt_install.yml
-#   tags:
-#     - qmt
+# Set up the firewall
+#
+# Configure the firewall to open all ports required by qmailtoaster
 
+- include: firewall.yml
+  tags:
+    - qmt
+
+# Set up packages
+
+- when: ansible_facts['distribution_major_version'] == "7"
+  include: qt_package_setup_centos_7.yml
+  tags:
+    - qmt
+
+- when: ansible_facts['distribution_major_version'] == "8"
+  include: qt_package_setup_centos_8.yml
+  tags:
+    - qmt
+# Do QMailToaster installation
+#
+# Corresponds (roughly) to the 'qt_install.sh' script.
+
+#- include: qt_install.yml
+#  tags:
+#    - qmt
 # # Set up a security certificate to replace the automatically-created
 # # self-signed certificate.
 

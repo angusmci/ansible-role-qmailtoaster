@@ -1,11 +1,9 @@
 ---
 - name: disable selinux
-  when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == 7
   become: yes
   selinux:
     state: disabled
-  notify:
-    - reboot server
+  register: selinux_disabled
 
 - name: yum clean
   become: yes
@@ -20,12 +18,17 @@
     state: latest
     update_cache: yes
 
+# On CentOS 8, 'wget' should be pre-installed, but it never hurts to be sure.
+
 - name: install wget
-  when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == 7
   become: yes
   yum:
     name: wget
     state: latest
 
-- name: flush handlers
-  meta: flush_handlers
+# Judging by Eric's scripts, it's only necessary to reboot the server after
+# disabling SELinux on CentOS 7.
+
+- name: reboot when required
+  when: ansible_facts['distribution_major_version'] == "7" and selinux_disabled
+  reboot:
