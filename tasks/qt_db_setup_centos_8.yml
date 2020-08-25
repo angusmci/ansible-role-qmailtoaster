@@ -10,9 +10,6 @@
   set_fact:
     qmt_database_daemon: "{{ (qmt_database == 'mysql') | ternary ('mysqld', 'mariadb') }}"
 
-- debug:
-    msg: "Using {{ qmt_database_daemon }} backend ..."
-
 - name: install chosen database
   become: yes
   yum:
