@@ -65,18 +65,18 @@
     name: "{{ item }}"
     state: started
     enabled: yes
-  with-items:
-    - clamav-daemon.service
-    - clamav-daemon.socket
-    - clamav-freshclam
-    - dovecot
-    - spamassassin
-    - httpd
-    - chronyd
-    - acpid
-    - atd
-    - autofs
-    - smartd
+    with-items:
+      - clamav-daemon.service
+      - clamav-daemon.socket
+      - clamav-freshclam
+      - dovecot
+      - spamassassin
+      - httpd
+      - chronyd
+      - acpid
+      - atd
+      - autofs
+      - smartd
 
 - name: install toaststat
   become: yes

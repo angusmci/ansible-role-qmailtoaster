@@ -34,7 +34,7 @@
 # Set up the database server and create the vpopmail database.
 
 - when: ansible_facts['distribution_major_version'] == "7"
-  include: qt_mariadb_setup_centos_7.yml
+  include: qt_db_setup_centos_7.yml
   tags:
     - qmt
 
