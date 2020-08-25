@@ -1,0 +1,16 @@
+---
+# Add the tools needed to manipulate MySQL from Python
+
+- name: add python mysql support
+  become: yes
+  yum: name=MySQL-python state=present
+  when: ansible_os_family == 'RedHat'
+
+# Start MariaDB and ensure that it will be running on startup.
+
+- name: start and enable mariadb
+  become: yes
+  systemd:
+    name: mariadb
+    enabled: yes
+    state: started

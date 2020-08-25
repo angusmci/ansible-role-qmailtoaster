@@ -1,0 +1,34 @@
+---
+- name: set up dnf variables
+  become: yes
+  template:
+    src: templates/etc_yum_vars_db.j2
+    dest: /etc/yum/vars/db
+    mode: 0644
+
+- name: get name of db daemon
+  set_fact:
+    qmt_database_daemon: "{{ (qmt_database == 'mysql') | ternary ('mysqld', 'mariadb') }}"
+
+- debug:
+    msg: "Using {{ qmt_database_daemon }} backend ..."
+
+- name: install chosen database
+  become: yes
+  yum:
+    name: ["{{ qmt_database }}", "{{ qmt_database_daemon }}"]
+    state: latest
+
+- name: write credentials file
+  become: yes
+  template:
+    src: templates/sql_cnf.j2
+    dest: { { qmt_db_credfile } }
+    mode: 0644
+
+- name: start and enable database server
+  become: yes
+  systemd:
+    name: "{{ qmt_database_daemon }}"
+    enabled: yes
+    state: started

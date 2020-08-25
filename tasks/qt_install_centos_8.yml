@@ -1,0 +1,96 @@
+---
+- name: Add qmt repo
+  become: yes
+  get_url:
+    url: https://raw.githubusercontent.com/qmtoaster/mirrorlist/master/qmt-centos8.repo
+    dest: /etc/yum.repos.d/qmt.repo
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: install qmailtoaster software
+  become: yes
+  yum:
+    name:
+      [
+        "daemontools",
+        "ucspi-tcp",
+        "libsrs2",
+        "libsrs2-devel",
+        "vpopmail",
+        "spamdyke",
+        "simscan",
+        "qmail",
+        "autorespond",
+        "control-panel",
+        "ezmlm",
+        "ezmlm-cgi",
+        "qmailadmin",
+        "qmailmrtg",
+        "maildrop",
+        "maildrop-devel",
+        "isoqlog",
+        "vqadmin",
+        "squirrelmail",
+        "clamav",
+        "ripmime",
+        "dovecot",
+        "qmt-plus",
+      ]
+    state: latest
+
+- name: make symbolic link from sendmail
+  become: yes
+  file:
+    src: /usr/sbin/sendmail
+    dest: /var/qmail/bin/sendmail
+    owner: root
+    group: root
+    state: link
+
+- name: add qmailtoaster man pages to man_db.conf
+  become: yes
+  lineinfile:
+    path: /etc/man_db.conf
+    regexp: "/var/qmail/man"
+    line: MANDATORY_MANPATH /var/qmail/man
+
+- name: bring up qmail
+  become: yes
+  command: qmailctl start
+
+- name: enable all services
+  become: yes
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with-items:
+    - clamav-daemon.service
+    - clamav-daemon.socket
+    - clamav-freshclam
+    - dovecot
+    - spamassassin
+    - httpd
+    - chronyd
+    - acpid
+    - atd
+    - autofs
+    - smartd
+
+- name: install toaststat
+  become: yes
+  get_url:
+    url: https://raw.githubusercontent.com/qmtoaster/scripts/master/toaststat.cos8
+    dest: /usr/bin/toaststat
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: start toaststat
+  become: yes
+  command: toaststat
+# Add access to QMT administration from desired network or hosts
+# sed -i -e 's/Define aclnet "127.0.0.1"/Define aclnet "192.168.2.0\/24 192.168.9.0\/24 127.0.0.1"/' /etc/httpd/conf/toaster.conf && \
+#   systemctl reload httpd
+

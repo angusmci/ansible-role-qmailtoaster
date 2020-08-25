@@ -1,25 +1,7 @@
 ---
-
-# Add the tools needed to manipulate MySQL from Python
-
-- name: add python mysql support
-  become: yes
-  yum: name=MySQL-python state=present
-  when: ansible_os_family == 'RedHat'
-
-# Start MariaDB and ensure that it will be running on startup.
-
-- name: start and enable mariadb
-  become: yes
-  systemd:
-    name: mariadb
-    enabled: yes
-    state: started
-
-# The following tasks take the place of 'mysql_secure_installation' in the original script. They
-# perform the same basic functions, namely:
+# The following tasks take the place of 'mysql_secure_installation' in the original CentOS 7
+# install script. They perform the same basic functions, namely:
 #
-# - set the root password
 # - remove the anonymous user
 # - secure the root user
 # - remove the test database
@@ -36,7 +18,7 @@
 # to preserve idempotency; the script can be re-run repeatedly, and won't fail if the
 # root password has already been set.
 
-- name: set mariadb root password
+- name: set root password
   mysql_user:
     login_user: root
     user: root
@@ -47,7 +29,7 @@
 - name: remove anonymous user for all hosts
   when: qmt_secure_mariadb | bool
   mysql_user:
-    name: ''
+    name: ""
     host_all: yes
     state: absent
     login_user: root
@@ -74,4 +56,3 @@
     state: absent
     login_user: root
     login_password: "{{ qmt_db_root_password }}"
-

@@ -1,6 +1,13 @@
 ---
 # vars file for qmailtoaster
 
+# qmt_database
+#
+# Database should be set to 'mariadb' or 'mysql' for CentOS 8 only. For CentOS 7,
+# MariaDB will always be used.
+
+qmt_database: mariadb
+
 # qmt_version
 #
 # Version of Qmailtoaster to install
@@ -15,11 +22,17 @@ qmt_version: 1-7
 
 qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b00874
 
-# qmt_secure_mariadb
+# qmt_secure_db
 #
-# Should the MariaDB database be secured by removing test accounts and databases?
+# Should the database be secured by removing test accounts and databases?
 
-qmt_secure_mariadb: yes
+qmt_secure_db: yes
+
+# qmt_db_credfile
+#
+# Credentials file for database
+
+qmt_db_credfile: ~/sql.cnf
 
 # qmt_package
 #

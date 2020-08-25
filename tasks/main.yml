@@ -30,6 +30,33 @@
   include: qt_package_setup_centos_8.yml
   tags:
     - qmt
+
+# Set up the database server and create the vpopmail database.
+
+- when: ansible_facts['distribution_major_version'] == "7"
+  include: qt_mariadb_setup_centos_7.yml
+  tags:
+    - qmt
+
+- when: ansible_facts['distribution_major_version'] == "8"
+  include: qt_db_setup_centos_7.yml
+  tags:
+    - qmt
+
+- include: qt_db_setup_security.yml
+  tags:
+    - qmt
+
+- include: qt_db_setup_vpopmail_db.yml
+  tags:
+    - qmt
+
+# Install qmailtoaster
+
+- when: ansible_facts['distribution_major_version'] == "8"
+  include: qt_install_centos_8.yml
+  tags:
+    - qmt
 # Do QMailToaster installation
 #
 # Corresponds (roughly) to the 'qt_install.sh' script.
