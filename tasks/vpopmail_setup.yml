@@ -1,11 +1,11 @@
 ---
-- name: ensure vchkpw group exists
+- name: vpopmail_setup -- ensure vchkpw group exists
   become: yes
   group:
     name: vchkpw
     state: present
 
-- name: ensure vpopmail user exists
+- name: vpopmail_setup -- ensure vpopmail user exists
   become: yes
   user:
     name: vpopmail
@@ -15,7 +15,7 @@
     home: /home/vpopmail
     state: present
 
-- name: ensure vpopmail directory exists
+- name: vpopmail_setup -- ensure vpopmail directory exists
   become: yes
   file:
     path: /home/vpopmail
@@ -24,7 +24,7 @@
     group: vchkpw
     mode: 0700
 
-- name: ensure vpopmail domains directory exists
+- name: vpopmail_setup -- ensure vpopmail domains directory exists
   become: yes
   file:
     path: /home/vpopmail/domains/

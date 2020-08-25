@@ -1,18 +1,18 @@
 ---
-- name: yum update
+- name: qt_package_setup_centos_8 -- yum update
   become: yes
   yum:
     name: "*"
     state: latest
     update_cache: yes
 
-- name: Enable EPEL Repository on CentOS 8
+- name: qt_package_setup_centos_8 -- enable EPEL Repository on CentOS 8
   become: yes
   dnf:
     name: epel-release
     state: latest
 
-- name: Get Remi's GPG keys
+- name: qt_package_setup_centos_8 -- get Remi's GPG keys
   become: yes
   rpm_key:
     state: present
@@ -40,30 +40,30 @@
         fingerprint: "1EE0 4CCE 88A4 AE4A A29A  5DF5 004E 6F47 00F9 7F56",
       }
 
-- name: install remi-release-8
+- name: qt_package_setup_centos_8 -- install remi-release-8
   become: yes
   yum:
     name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 
-- name: update all
+- name: qt_package_setup_centos_8 -- update all
   become: yes
   dnf:
     name: "*"
     state: latest
 
-- name: Install dnf-utils
+- name: qt_package_setup_centos_8 -- install dnf-utils
   become: yes
   dnf:
     name: dnf-utils
     state: latest
 
-- name: Install Remi's PHP 7
+- name: qt_package_setup_centos_8 -- install Remi's PHP 7
   become: yes
   command: dnf -y module install php:remi-7.4
   args:
     warn: no
 
-- name: Install additional packages
+- name: qt_package_setup_centos_8 -- install additional packages
   become: yes
   yum:
     name:

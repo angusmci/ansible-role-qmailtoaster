@@ -1,27 +1,27 @@
 ---
-- name: change date.timezone in php.ini
+- name: php_configuration -- change date.timezone in php.ini
   become: yes
   lineinfile:
     path: /etc/php.ini
-    regexp: '^;?date.timezone =.*'
-    line: 'date.timezone = {{ qmt_timezone }}'
+    regexp: "^;?date.timezone =.*"
+    line: "date.timezone = {{ qmt_timezone }}"
   notify:
     - restart apache
 
-- name: change post_max_size
+- name: php_configuration -- change post_max_size
   become: yes
   lineinfile:
     path: /etc/php.ini
-    regexp: '^post_max_size =.*'
-    line: 'post_max_size = {{ qmt_attachment_size_limit }}M'
+    regexp: "^post_max_size =.*"
+    line: "post_max_size = {{ qmt_attachment_size_limit }}M"
   notify:
     - restart apache
 
-- name: change post_max_size
+- name: php_configuration -- change upload_max_filesize
   become: yes
   lineinfile:
     path: /etc/php.ini
-    regexp: '^upload_max_filesize =.*'
-    line: 'upload_max_filesize = {{ qmt_attachment_size_limit }}M'
+    regexp: "^upload_max_filesize =.*"
+    line: "upload_max_filesize = {{ qmt_attachment_size_limit }}M"
   notify:
     - restart apache

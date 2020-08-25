@@ -1,26 +1,24 @@
 ---
-- name: disable selinux
+- name: qt_prep -- disable selinux
   become: yes
   selinux:
     state: disabled
   register: selinux_disabled
 
-- name: yum clean
+- name: qt_prep -- yum clean
   become: yes
   shell: yum clean all
   args:
     warn: no
 
-- name: yum update
+- name: qt_prep -- yum update
   become: yes
   yum:
     name: "*"
     state: latest
     update_cache: yes
 
-# On CentOS 8, 'wget' should be pre-installed, but it never hurts to be sure.
-
-- name: install wget
+- name: qt_prep -- install wget
   become: yes
   yum:
     name: wget
@@ -29,6 +27,6 @@
 # Judging by Eric's scripts, it's only necessary to reboot the server after
 # disabling SELinux on CentOS 7.
 
-- name: reboot when required
+- name: qt_prep -- reboot when required
   when: ansible_facts['distribution_major_version'] == "7" and selinux_disabled
   reboot:

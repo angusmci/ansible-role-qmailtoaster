@@ -1,34 +1,34 @@
 ---
-- name: remove postfix
+- name: qt_package_setup_centos_7 -- remove postfix
   become: yes
   yum:
     name: postfix
     state: absent
 
-- name: add EPEL repository
+- name: qt_package_setup_centos_7 -- add EPEL repository
   become: yes
   yum:
     name: epel-release
     state: latest
 
-- name: install yum-plugin-priorities
+- name: qt_package_setup_centos_7 -- install yum-plugin-priorities
   become: yes
   yum:
     name: yum-plugin-priorities
     state: latest
 
-- name: get qmailtoaster rpm
+- name: qt_package_setup_centos_7 -- get qmailtoaster rpm
   get_url:
     url: https://github.com/qmtoaster/release/raw/master/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
     dest: /tmp/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
 
-- name: install qmailtoaster rpm
+- name: qt_package_setup_centos_7 -- install qmailtoaster rpm
   become: yes
   yum:
     name: /tmp/qmt-release-{{ qmt_version }}.qt.el7.noarch.rpm
     state: present
 
-- name: install required packages for CentOS 7
+- name: qt_package_setup_centos_7 -- install required packages for CentOS 7
   become: yes
   yum:
     name:

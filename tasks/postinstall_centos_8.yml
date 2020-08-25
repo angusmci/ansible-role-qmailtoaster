@@ -1,4 +1,4 @@
 ---
-- name: update crypto policies
+- name: postinstall_centos_8 -- update crypto policies
   become: yes
   shell: update-crypto-policies --set {{ qmt_crypto_policy }}

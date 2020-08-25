@@ -1,11 +1,11 @@
-- name: start firewalld
+- name: firewall -- start firewalld
   become: yes
   systemd:
     name: firewalld.service
     state: started
     enabled: yes
 
-- name: open ports
+- name: firewall -- open ports
   become: yes
   firewalld:
     port: "{{ item }}/tcp"

@@ -1,5 +1,5 @@
 ---
-- name: ensure roundcube database is present
+- name: roundcube_setup -- ensure roundcube database is present
   mysql_db:
     login_user: root
     login_password: "{{ qmt_db_root_password}}"
@@ -8,13 +8,13 @@
     state: present
   register: roundcube_database_created
 
-- name: reload mysql
+- name: roundcube_setup -- reload mysql
   shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} reload"
 
-- name: refresh mysql
+- name: roundcube_setup -- refresh mysql
   shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
 
-- name: create roundcube database user and assign privileges
+- name: roundcube_setup -- create roundcube database user
   mysql_user:
     login_user: root
     login_password: "{{ qmt_db_root_password}}"
@@ -23,20 +23,20 @@
     priv: "roundcube.*:ALL"
     state: present
 
-- name: reload mysql
+- name: roundcube_setup -- reload mysql
   shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} reload"
 
-- name: refresh mysql
+- name: roundcube_setup -- refresh mysql
   shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
 
-- name: initialize the roundcube database if needed
+- name: roundcube_setup -- initialize the roundcube database if needed
   when: roundcube_database_created.changed
   shell: mysql --defaults-extra-file={{ qmt_db_credfile }} < /usr/share/roundcubemail/SQL/mysql.initial.sql
 
-- name: back up the roundcube .conf file
+- name: roundcube_setup -- back up the roundcube .conf file
   shell: cp -p /etc/httpd/conf.d/roundcubemail.conf /etc/httpd/conf.d/roundcubemail.conf.bak
 
-- name: create roundcube configuration
+- name: roundcube_setup -- create roundcube configuration
   become: yes
   template:
     src: rc_default_config.j2
@@ -48,7 +48,7 @@
   notify:
     - restart apache
 
-- name: create roundcube httpd configuration
+- name: roundcube_setup -- create roundcube httpd configuration
   become: yes
   template:
     src: rc_httpd_config.j2
@@ -60,7 +60,7 @@
   notify:
     - restart apache
 
-- name: get roundcube password plugin configuration
+- name: roundcube_setup -- get roundcube password plugin configuration
   become: yes
   get_url:
     url: https://www.qmailtoaster.org/rc.password.config
@@ -70,7 +70,7 @@
   notify:
     - restart apache
 
-- name: Ensure maximum upload size is set
+- name: roundcube_setup -- ensure maximum upload size is set
   become: yes
   lineinfile:
     path: /etc/roundcubemail/config.inc.php
