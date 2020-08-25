@@ -29,18 +29,52 @@
 - name: refresh mysql
   shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
 
-- name: check to see if roundcube database has been initialized
-  shell: mysql --defaults-extra-file={{ qmt_db_credfile }} roundcube -Bse 'select count(*) from session'
-  register: probe_result
-
 - name: initialize the roundcube database if needed
-  when: '"ERROR" in probe_result'
+  when: roundcube_database_created.changed
   shell: mysql --defaults-extra-file={{ qmt_db_credfile }} < /usr/share/roundcubemail/SQL/mysql.initial.sql
 
 - name: back up the roundcube .conf file
   shell: cp -p /etc/httpd/conf.d/roundcubemail.conf /etc/httpd/conf.d/roundcubemail.conf.bak
-#  cp -p /etc/httpd/conf.d/roundcubemail.conf /etc/httpd/conf.d/roundcubemail.conf.bak && \
-#  wget -O /etc/roundcubemail/config.inc.php http://www.qmailtoaster.org/rc.default.config && \
-#  wget -O /etc/httpd/conf.d/roundcubemail.conf http://www.qmailtoaster.org/rc.httpd.config
-#  sed -i 's/\;date.timezone.*/date.timezone = "America\/Denver"/' /etc/php.ini | sleep 2 | cat /etc/php.ini | grep date.timezone.*=
-#  systemctl restart httpd
+
+- name: create roundcube configuration
+  become: yes
+  template:
+    src: rc_default_config.j2
+    dest: /etc/roundcubemail/config.inc.php
+    backup: yes
+    owner: apache
+    group: apache
+    mode: "0644"
+  notify:
+    - restart apache
+
+- name: create roundcube httpd configuration
+  become: yes
+  template:
+    src: rc_httpd_config.j2
+    dest: /etc/httpd/conf.d/roundcubemail.conf
+    backup: yes
+    owner: apache
+    group: apache
+    mode: "0644"
+  notify:
+    - restart apache
+
+- name: get roundcube password plugin configuration
+  become: yes
+  get_url:
+    url: https://www.qmailtoaster.org/rc.password.config
+    dest: /usr/share/roundcubemail/plugins/password/config.inc.php
+    backup: yes
+    mode: "0644"
+  notify:
+    - restart apache
+
+- name: Ensure maximum upload size is set
+  become: yes
+  lineinfile:
+    path: /etc/roundcubemail/config.inc.php
+    regexp: "^$config['max_message_size'] = .*"
+    line: "$config['max_message_size'] = '{{ qmt_attachment_size_limit }}M';"
+  notify:
+    - restart apache

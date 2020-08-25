@@ -6,7 +6,8 @@
 #
 # Corresponds (roughly) to the 'qt_prep.sh' script used in CentOS 7 installation.
 
-- when: ansible_facts['distribution_major_version'] == "7"
+- name: prepare for qmailtoaster installation
+  when: ansible_facts['distribution_major_version'] == "7"
   include: qt_prep.yml
   tags:
     - qmt
@@ -15,46 +16,95 @@
 #
 # Configure the firewall to open all ports required by qmailtoaster
 
-- include: firewall.yml
+- name: set up firewall
+  include: firewall.yml
   tags:
     - qmt
 
 # Set up packages
 
-- when: ansible_facts['distribution_major_version'] == "7"
-  include: qt_package_setup_centos_7.yml
-  tags:
-    - qmt
-
-- when: ansible_facts['distribution_major_version'] == "8"
+- name: set up packages for CentOS 8
+  when: ansible_facts['distribution_major_version'] == "8"
   include: qt_package_setup_centos_8.yml
   tags:
     - qmt
 
-# Set up the database server and create the vpopmail database.
-
-- when: ansible_facts['distribution_major_version'] == "7"
-  include: qt_db_setup_centos_7.yml
+- name: set up packages for CentOS 7
+  when: ansible_facts['distribution_major_version'] == "7"
+  include: qt_package_setup_centos_7.yml
   tags:
     - qmt
 
-- when: ansible_facts['distribution_major_version'] == "8"
+# Set up PHP
+
+- name: configure PHP
+  include: php.yml
+    - qmt
+
+# Set up the database server and create the vpopmail database.
+
+- name: set up database server for CentOS 8
+  when: ansible_facts['distribution_major_version'] == "8"
   include: qt_db_setup_centos_8.yml
   tags:
     - qmt
 
-- include: qt_db_setup_security.yml
+- name: set up database server for CentOS 7
+  when: ansible_facts['distribution_major_version'] == "7"
+  include: qt_db_setup_centos_7.yml
   tags:
     - qmt
 
-- include: qt_db_setup_vpopmail_db.yml
+- name: secure database
+  include: qt_db_setup_security.yml
+  tags:
+    - qmt
+
+- name: set up vpopmail database
+  include: qt_db_setup_vpopmail_db.yml
   tags:
     - qmt
 
 # Install qmailtoaster
 
-- when: ansible_facts['distribution_major_version'] == "8"
+- name: install qmailtoaster for CentOS 8
+  when: ansible_facts['distribution_major_version'] == "8"
   include: qt_install_centos_8.yml
+  tags:
+    - qmt
+
+- name: install qmailtoaster for CentOS 7
+  when: ansible_facts['distribution_major_version'] == "7"
+  debug:
+    msg: "Installation of qmailtoaster for CentOS 7 not currently implemented."
+  tags:
+    - qmt
+
+# Install roundcube
+
+- name: install roundcube for CentOS 7
+  when: ansible_facts['distribution_major_version'] == "7"
+  debug:
+    msg: "Installation of roundcube for CentOS 7 not currently implemented."
+  tags:
+    - qmt
+
+- name: set up roundcube database and configuration
+  include: roundcube_setup.yml
+  tags:
+    - qmt
+
+# Post-installation
+
+- name: perform post-installation for CentOS 8
+  when: ansible_facts['distribution_major_version'] == "8"
+  include: postinstall_centos_8.yml
+  tags:
+    - qmt
+
+- name: perform post-installation for CentOS 7
+  when: ansible_facts['distribution_major_version'] == "7"
+  include: postinstall_centos_7.yml
   tags:
     - qmt
 # Do QMailToaster installation

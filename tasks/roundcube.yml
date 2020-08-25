@@ -1,4 +1,6 @@
 ---
+# OLD roundcube setup, including installation for CentOS 7
+
 - name: install roundcube and dependencies - PHP 5
   become: yes
   when: qmt_php7_version == 0
@@ -111,7 +113,7 @@
     login_password: "{{ qmt_db_root_password}}"
     name: roundcube
     password: "{{ qmt_db_roundcube_password}}"
-    priv: 'roundcube.*:ALL'
+    priv: "roundcube.*:ALL"
     state: present
   notify:
     - reload mysql
@@ -138,7 +140,7 @@
     backup: yes
     owner: apache
     group: apache
-    mode: '0644'
+    mode: "0644"
   notify:
     - restart apache
 
@@ -150,7 +152,7 @@
     backup: yes
     owner: apache
     group: apache
-    mode: '0644'
+    mode: "0644"
   notify:
     - restart apache
 
@@ -160,7 +162,7 @@
     url: https://www.qmailtoaster.org/rc.password.config
     dest: /usr/share/roundcubemail/plugins/password/config.inc.php
     backup: yes
-    mode: '0644'
+    mode: "0644"
   notify:
     - restart apache
 
@@ -172,4 +174,3 @@
     line: "$config['max_message_size'] = '{{ qmt_attachment_size_limit }}M';"
   notify:
     - restart apache
-

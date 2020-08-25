@@ -176,6 +176,14 @@ qmt_rainloop_admin_password: 12345
 
 qmt_timezone: "America/New_York"
 
+# qmt_crypto_policy
+#
+# Cryptographic policies for qmailtoaster. This should normally be DEFAULT.
+# If you need to support users on Windows 7 with Outlook 2010, change it to
+# LEGACY
+
+qmt_crypto_policy: DEFAULT
+
 # qmt_attachment_size_limit
 #
 # Maximum size of attachments that can be posted through web UIs on
@@ -201,6 +209,14 @@ qmt_roundcube_support_url: ""
 # Product name displayed to users of this Roundcube instance
 
 qmt_roundcube_product_name: "Roundcube Webmail"
+
+# qmt_toast_aclnet
+#
+# ACL definitions for access to web management tools. Slashes in
+# netblock CIDR expressions should be escaped, e.g. "192.168.2.0\/24"
+# and entries should be space-separated.
+
+qmt_toast_aclnet: "192.168.2.0\/24 192.168.9.0\/24 127.0.0.1"
 
 # ======================================================================
 # PASSWORDS
