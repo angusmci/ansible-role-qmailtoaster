@@ -1,10 +1,10 @@
 ---
- - name: group hosts by OS and variant
-   hosts: all
-   tasks:
-     - name: Classify hosts depending on their OS distribution
-       group_by:
-         key: os_{{ ansible_facts['distribution'] }}_ansible_facts['distribution_major_version']
+- name: group hosts by OS and variant
+  hosts: all
+  tasks:
+    - name: Classify hosts depending on their OS distribution
+      group_by:
+        key: os_{{ ansible_facts['distribution'] }}_ansible_facts['distribution_major_version']
 
 - name: install qmailtoaster for CentOS 7
   hosts: os_CentOS_7
