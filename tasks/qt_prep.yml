@@ -1,6 +1,6 @@
 ---
-
 - name: disable selinux
+  when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == 7
   become: yes
   selinux:
     state: disabled
@@ -16,11 +16,12 @@
 - name: yum update
   become: yes
   yum:
-    name: '*'
+    name: "*"
     state: latest
     update_cache: yes
 
 - name: install wget
+  when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == 7
   become: yes
   yum:
     name: wget

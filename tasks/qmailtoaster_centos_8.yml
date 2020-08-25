@@ -1,3 +1,2 @@
----
 - debug:
     msg: Installing qmailtoaster for CentOS 8 on {{ inventory_hostname }}

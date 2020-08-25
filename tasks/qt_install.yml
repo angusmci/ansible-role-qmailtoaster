@@ -31,76 +31,77 @@
 - name: install required packages
   become: yes
   yum:
-    name: [
-      'rsync',
-      'bind-utils',
-      'bind',
-      'net-tools',
-      'zlib-devel',
-      'mariadb-server',
-      'mariadb',
-      'mariadb-devel',
-      'libev-devel',
-      'httpd',
-      'mrtg',
-      'expect',
-      'libidn-devel',
-      'aspell',
-      'tmpwatch',
-      'perl-Time-HiRes',
-      'perl-ExtUtils-MakeMaker',
-      'perl-Archive-Tar',
-      'perl-Digest-SHA',
-      'perl-HTML-Parser',
-      'perl-IO-Zlib',
-      'perl-Net-DNS',
-      'perl-NetAddr-IP',
-      'perl-Crypt-OpenSSL-Bignum',
-      'perl-Digest-SHA1',
-      'perl-Encode-Detect',
-      'perl-Geo-IP',
-      'perl-IO-Socket-SSL',
-      'perl-Mail-DKIM',
-      'perl-Razor-Agent',
-      'perl-Sys-Syslog',
-      'perl-Net-CIDR-Lite',
-      'perl-DB_File',
-      'bzip2-devel',
-      'check-devel',
-      'curl-devel',
-      'gmp-devel',
-      'ncurses-devel',
-      'libxml2-devel',
-      'python-devel',
-      'sqlite-devel',
-      'postgresql-devel',
-      'openldap-devel',
-      'quota-devel',
-      'libcap-devel',
-      'pam-devel',
-      'clucene-core-devel',
-      'expat-devel',
-      'emacs',
-      'ocaml',
-      'procmail',
-      'wget',
-      'logwatch',
-      'vsftpd',
-      'acpid',
-      'acpid-sysvinit',
-      'at',
-      'autofs',
-      'ntp',
-      'smartmontools',
-      'mod_ssl',
-      'fail2ban',
-      'perl-Sys-Hostname-Long',
-      'perl-Mail-DomainKeys',
-      'perl-Mail-SPF-Query',
-      'nfs-utils',
-      'bzip2',
-      'python2-PyMySQL'
-    ]
+    name:
+      [
+        "rsync",
+        "bind-utils",
+        "bind",
+        "net-tools",
+        "zlib-devel",
+        "mariadb-server",
+        "mariadb",
+        "mariadb-devel",
+        "libev-devel",
+        "httpd",
+        "mrtg",
+        "expect",
+        "libidn-devel",
+        "aspell",
+        "tmpwatch",
+        "perl-Time-HiRes",
+        "perl-ExtUtils-MakeMaker",
+        "perl-Archive-Tar",
+        "perl-Digest-SHA",
+        "perl-HTML-Parser",
+        "perl-IO-Zlib",
+        "perl-Net-DNS",
+        "perl-NetAddr-IP",
+        "perl-Crypt-OpenSSL-Bignum",
+        "perl-Digest-SHA1",
+        "perl-Encode-Detect",
+        "perl-Geo-IP",
+        "perl-IO-Socket-SSL",
+        "perl-Mail-DKIM",
+        "perl-Razor-Agent",
+        "perl-Sys-Syslog",
+        "perl-Net-CIDR-Lite",
+        "perl-DB_File",
+        "bzip2-devel",
+        "check-devel",
+        "curl-devel",
+        "gmp-devel",
+        "ncurses-devel",
+        "libxml2-devel",
+        "python-devel",
+        "sqlite-devel",
+        "postgresql-devel",
+        "openldap-devel",
+        "quota-devel",
+        "libcap-devel",
+        "pam-devel",
+        "clucene-core-devel",
+        "expat-devel",
+        "emacs",
+        "ocaml",
+        "procmail",
+        "wget",
+        "logwatch",
+        "vsftpd",
+        "acpid",
+        "acpid-sysvinit",
+        "at",
+        "autofs",
+        "ntp",
+        "smartmontools",
+        "mod_ssl",
+        "fail2ban",
+        "perl-Sys-Hostname-Long",
+        "perl-Mail-DomainKeys",
+        "perl-Mail-SPF-Query",
+        "nfs-utils",
+        "bzip2",
+        "python2-PyMySQL",
+      ]
     state: latest
     update_cache: yes
     disablerepo:
@@ -166,7 +167,7 @@
     login_password: "{{ qmt_db_root_password}}"
     name: vpopmail
     password: "{{ qmt_db_vpopmail_password}}"
-    priv: 'vpopmail.*:ALL'
+    priv: "vpopmail.*:ALL"
     state: present
 
 - name: reload mysql
@@ -178,35 +179,36 @@
 - name: install dependencies
   become: yes
   yum:
-    name: [
-      'daemontools',
-      'ucspi-tcp',
-      'libsrs2',
-      'libsrs2-devel',
-      'vpopmail',
-      'spamdyke',
-      'qmail',
-      'autorespond',
-      'control-panel',
-      'ezmlm',
-      'ezmlm-cgi',
-      'qmailadmin',
-      'qmailmrtg',
-      'maildrop',
-      'maildrop-devel',
-      'isoqlog',
-      'vqadmin',
-      'squirrelmail',
-      'spamassassin',
-      'clamav',
-      'ripmime',
-      'simscan',
-      'mailman',
-      'mailman-debuginfo',
-      'dovecot',
-      'libdomainkeys-devel',
-      'qmt-plus'
-    ]
+    name:
+      [
+        "daemontools",
+        "ucspi-tcp",
+        "libsrs2",
+        "libsrs2-devel",
+        "vpopmail",
+        "spamdyke",
+        "qmail",
+        "autorespond",
+        "control-panel",
+        "ezmlm",
+        "ezmlm-cgi",
+        "qmailadmin",
+        "qmailmrtg",
+        "maildrop",
+        "maildrop-devel",
+        "isoqlog",
+        "vqadmin",
+        "squirrelmail",
+        "spamassassin",
+        "clamav",
+        "ripmime",
+        "simscan",
+        "mailman",
+        "mailman-debuginfo",
+        "dovecot",
+        "libdomainkeys-devel",
+        "qmt-plus",
+      ]
     state: latest
     update_cache: yes
     disablerepo:
@@ -250,7 +252,7 @@
     state: directory
     owner: vpopmail
     group: vchkpw
-    mode: '0755'
+    mode: "0755"
 
 - name: write vpopmail.mysql
   become: yes
@@ -260,7 +262,7 @@
     backup: yes
     owner: vpopmail
     group: vchkpw
-    mode: '0644'
+    mode: "0644"
 
 - name: stop qmail
   become: yes
@@ -282,7 +284,7 @@
     path: /run/clamav
     owner: root
     group: clamav
-    mode: '0775'
+    mode: "0775"
 
 - name: start and enable services
   become: yes
@@ -331,7 +333,7 @@
   get_url:
     url: https://raw.githubusercontent.com/qmtoaster/scripts/master/toaststat
     dest: /usr/bin/toaststat
-    mode: '0755'
+    mode: "0755"
 
 - name: install dspam
   include: dspam.yml
@@ -355,7 +357,7 @@
     backup: yes
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   notify:
     - rebuild qmail cdb
 
@@ -367,7 +369,4 @@
     backup: yes
     owner: root
     group: root
-    mode: '0644'
-
-
-
+    mode: "0644"
