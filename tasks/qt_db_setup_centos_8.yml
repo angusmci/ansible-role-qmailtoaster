@@ -29,6 +29,6 @@
 - name: start and enable database server
   become: yes
   systemd:
-    name: "{{ qmt_database_daemon }}"
+    name: "{{ qmt_database_daemon }}.service"
     enabled: yes
     state: started
