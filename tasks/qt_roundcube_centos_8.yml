@@ -1,0 +1,46 @@
+---
+- name: ensure roundcube database is present
+  mysql_db:
+    login_user: root
+    login_password: "{{ qmt_db_root_password}}"
+    name: roundcube
+    collation: utf8_bin
+    state: present
+  register: roundcube_database_created
+
+- name: reload mysql
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} reload"
+
+- name: refresh mysql
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
+
+- name: create roundcube database user and assign privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ qmt_db_root_password}}"
+    name: roundcube
+    password: "{{ qmt_db_roundcube_password}}"
+    priv: "roundcube.*:ALL"
+    state: present
+
+- name: reload mysql
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} reload"
+
+- name: refresh mysql
+  shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
+
+- name: check to see if roundcube database has been initialized
+  shell: mysql --defaults-extra-file={{ qmt_db_credfile }} roundcube -Bse 'select count(*) from session'
+  register: probe_result
+
+- name: initialize the roundcube database if needed
+  when: '"ERROR" in probe_result'
+  shell: mysql --defaults-extra-file={{ qmt_db_credfile }} < /usr/share/roundcubemail/SQL/mysql.initial.sql
+
+- name: back up the roundcube .conf file
+  shell: cp -p /etc/httpd/conf.d/roundcubemail.conf /etc/httpd/conf.d/roundcubemail.conf.bak
+#  cp -p /etc/httpd/conf.d/roundcubemail.conf /etc/httpd/conf.d/roundcubemail.conf.bak && \
+#  wget -O /etc/roundcubemail/config.inc.php http://www.qmailtoaster.org/rc.default.config && \
+#  wget -O /etc/httpd/conf.d/roundcubemail.conf http://www.qmailtoaster.org/rc.httpd.config
+#  sed -i 's/\;date.timezone.*/date.timezone = "America\/Denver"/' /etc/php.ini | sleep 2 | cat /etc/php.ini | grep date.timezone.*=
+#  systemctl restart httpd
