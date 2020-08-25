@@ -39,7 +39,7 @@
     - qmt
 
 - when: ansible_facts['distribution_major_version'] == "8"
-  include: qt_db_setup_centos_7.yml
+  include: qt_db_setup_centos_8.yml
   tags:
     - qmt
 
