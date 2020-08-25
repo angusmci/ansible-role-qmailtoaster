@@ -53,9 +53,10 @@ qmt_php7_version: 71
 
 # qmt_use_dspam
 #
-# Should QMT use Dspam?
+# Should QMT use Dspam? The default is 'no', but you can set this to 'yes' to install
+# dspam if desired.
 
-qmt_use_dspam: yes
+qmt_use_dspam: no
 
 # qmt_use_dspam_domains
 #
