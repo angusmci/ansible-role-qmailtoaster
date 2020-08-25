@@ -1,6 +1,6 @@
 ---
 - debug:
-    msg: Installing qmailtoaster on {{ inventory_hostname }}
+    msg: Installing qmailtoaster on {{ inventory_hostname }} -- distribution={ansible_facts['distribution']} version={ansible_facts['distribution_major_version']}
 
 - name: QMT for CentOS 7
   when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == 7
