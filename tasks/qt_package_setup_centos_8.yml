@@ -40,23 +40,10 @@
         fingerprint: "1EE0 4CCE 88A4 AE4A A29A  5DF5 004E 6F47 00F9 7F56",
       }
 
-- name: Enable Remi's repo
+- name: install remi-release-8
   become: yes
-  yum_repository:
-    name: remi
-    description: Remi Release 8
-    baseurl: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
-
-- name: clean dnf
-  become: yes
-  warn: false
-  command: dnf clean all
-
-- name: bust dnf cache
-  become: yes
-  file:
-    path: /var/cache/dnf
-    state: absent
+  yum:
+    name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 
 - name: update all
   become: yes
