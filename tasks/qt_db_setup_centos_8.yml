@@ -16,7 +16,12 @@
 - name: install chosen database
   become: yes
   yum:
-    name: ["{{ qmt_database }}", "{{ qmt_database_daemon }}"]
+    name:
+      [
+        "{{ qmt_database }}",
+        "{{ qmt_database }}-server",
+        "{{ qmt_database }}-devel",
+      ]
     state: latest
 
 - name: write credentials file
