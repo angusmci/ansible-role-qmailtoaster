@@ -1,10 +1,10 @@
 ---
-- hosts: all
+- name: perform host grouping
+  hosts: all
   tasks:
     - name: Classify hosts depending on their OS distribution
       group_by:
-        key: os_{{ ansible_facts['distribution'] }}_ansible_facts['distribution_major_version']
-
+        key: "os_{{ ansible_facts['distribution'] }}_ansible_facts['distribution_major_version']"
 # - name: install qmailtoaster for CentOS 7
 #   hosts: os_CentOS_7
 #   include: install_qmt_centos7.yml
@@ -13,12 +13,12 @@
 #   hosts: os_CentOS_8
 #   include: install_qmt_centos8.yml
 
-- hosts: os_CentOS_7
-  tasks:
-    - debug:
-      msg: Installing qmailtoaster for CentOS 8 on {{ inventory_hostname }}
+# - hosts: os_CentOS_7
+#   tasks:
+#     - debug:
+#       msg: Installing qmailtoaster for CentOS 8 on {{ inventory_hostname }}
 
-- hosts: os_CentOS_8
-  tasks:
-    - debug:
-      msg: Installing qmailtoaster for CentOS 8 on {{ inventory_hostname }}
+# - hosts: os_CentOS_8
+#   tasks:
+#     - debug:
+#       msg: Installing qmailtoaster for CentOS 8 on {{ inventory_hostname }}
