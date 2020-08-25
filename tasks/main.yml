@@ -3,12 +3,17 @@
     msg: Installing qmailtoaster on {{ inventory_hostname }} -- distribution={{ansible_facts['distribution']}} version={{ansible_facts['distribution_major_version']}}
 
 - name: QMT for CentOS 7
-  when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == 7
+  when: ansible_facts['distribution_major_version'] == 7
   import_tasks: qmailtoaster_centos_7.yml
 
 - name: QMT for CentOS 8
-  when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == 8
+  when: ansible_facts['distribution_major_version'] == 8
   import_tasks: qmailtoaster_centos_8.yml
+
+- name: test
+  when: ansible_facts['distribution_major_version'] == 8
+  debug:
+    msg: "This is CentOS 8"
 # Do basic QMailToaster preparation
 #
 # Corresponds (roughly) to the 'qt_prep.sh' script.
