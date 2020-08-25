@@ -39,14 +39,14 @@
       ]
     state: latest
 
-- name: make symbolic link from sendmail
-  become: yes
-  file:
-    src: /usr/sbin/sendmail
-    dest: /var/qmail/bin/sendmail
-    owner: root
-    group: root
-    state: link
+# - name: make symbolic link from sendmail
+#   become: yes
+#   file:
+#     src: /usr/sbin/sendmail
+#     dest: /var/qmail/bin/sendmail
+#     owner: root
+#     group: root
+#     state: link
 
 - name: add qmailtoaster man pages to man_db.conf
   become: yes
