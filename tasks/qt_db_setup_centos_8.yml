@@ -25,6 +25,13 @@
       ]
     state: latest
 
+- name: install MySQL Python
+  become: yes
+  yum:
+    name: "python3-mysql"
+    enablerepo: "epel"
+    state: latest
+
 - name: write credentials file
   become: yes
   template:
