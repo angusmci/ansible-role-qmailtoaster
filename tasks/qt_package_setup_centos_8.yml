@@ -59,8 +59,8 @@
 
 - name: Install Remi's PHP 7
   become: yes
-  warn: no
   command: dnf -y module install php:remi-7.4
+    warn: no
 
 - name: Install additional packages
   become: yes
