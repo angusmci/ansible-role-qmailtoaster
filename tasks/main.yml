@@ -6,10 +6,22 @@
       group_by:
         key: os_{{ ansible_facts['distribution'] }}_ansible_facts['distribution_major_version']
 
+# - name: install qmailtoaster for CentOS 7
+#   hosts: os_CentOS_7
+#   include: install_qmt_centos7.yml
+
+# - name: install qmailtoaster for CentOS 8
+#   hosts: os_CentOS_8
+#   include: install_qmt_centos8.yml
+
 - name: install qmailtoaster for CentOS 7
   hosts: os_CentOS_7
-  include: install_qmt_centos7.yml
+  tasks:
+    - debug:
+      msg: Installing qmailtoaster for CentOS 8 on {{ inventory_hostname }}
 
 - name: install qmailtoaster for CentOS 8
   hosts: os_CentOS_8
-  include: install_qmt_centos8.yml
+  tasks:
+    - debug:
+      msg: Installing qmailtoaster for CentOS 8 on {{ inventory_hostname }}
