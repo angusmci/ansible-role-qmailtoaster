@@ -12,6 +12,34 @@
     name: epel-release
     state: latest
 
+- name: Get Remi's GPG keys
+  become: yes
+  rpm_key:
+    state: present
+    key: "{{ item.url }}"
+    fingerprint: "{{ item.fingerprint }}"
+  with_items:
+    - {
+        url: https://rpms.remirepo.net/RPM-GPG-KEY-remi2020,
+        fingerprint: "34C1 0BDB CC6F 1B25 2E50  BA1A 0714 919E 4C21 A808",
+      }
+    - {
+        url: https://rpms.remirepo.net/RPM-GPG-KEY-remi2019,
+        fingerprint: "5F13 6145 BF10 369B 7685  D8DE 5036 66CC BBAE 6F1B",
+      }
+    - {
+        url: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018,
+        fingerprint: "6B38 FEA7 231F 87F5 2B9C  A9D8 5550 9759 5F11 735A",
+      }
+    - {
+        url: https://rpms.remirepo.net/RPM-GPG-KEY-remi2017,
+        fingerprint: "44E8 9CD5 B233 62C2 24CE  5A5D E080 F29F 0364 B949",
+      }
+    - {
+        url: https://rpms.remirepo.net/RPM-GPG-KEY-remi,
+        fingerprint: "1EE0 4CCE 88A4 AE4A A29A  5DF5 004E 6F47 00F9 7F56",
+      }
+
 - name: Enable Remi's repo
   become: yes
   yum_repository:
