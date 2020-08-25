@@ -39,6 +39,7 @@
 
 - name: configure PHP
   include: php_configuration.yml
+  tags:
     - qmt
 
 # Set up the database server and create the vpopmail database.

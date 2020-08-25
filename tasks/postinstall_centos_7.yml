@@ -1,0 +1,3 @@
+---
+- debug:
+    msg: "Post-installation for CentOS 7 not yet implemented"
