@@ -21,7 +21,6 @@
         "{{ qmt_database }}",
         "{{ qmt_database }}-server",
         "{{ qmt_database }}-devel",
-        "MySQL-python",
       ]
     state: latest
 
