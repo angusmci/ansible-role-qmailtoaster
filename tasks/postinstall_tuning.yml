@@ -1,9 +1,9 @@
 ---
-- name: set SPF behavior
+- name: postinstall_tuning -- set SPF behavior
   become: yes
   template:
     src: spfbehavior.j2
     dest: /var/qmail/control/spfbehavior
     owner: root
     group: qmail
-    mode: '0644'
+    mode: "0644"
