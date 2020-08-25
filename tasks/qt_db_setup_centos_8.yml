@@ -21,6 +21,8 @@
         "{{ qmt_database }}",
         "{{ qmt_database }}-server",
         "{{ qmt_database }}-devel",
+        "python-pymysql",
+        "python3-pymysql",
       ]
     state: latest
 
