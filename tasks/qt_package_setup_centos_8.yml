@@ -19,6 +19,16 @@
     description: Remi Release 8
     baseurl: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 
+- name: clean dnf
+  become: yes
+  command: dnf clean all && rm -r /var/cache/dnf
+
+- name: update all
+  become: yes
+  dnf:
+    name: "*"
+    state: latest
+
 - name: Install dnf-utils
   become: yes
   dnf:
