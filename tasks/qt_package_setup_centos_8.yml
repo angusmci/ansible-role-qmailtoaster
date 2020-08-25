@@ -49,7 +49,14 @@
 
 - name: clean dnf
   become: yes
-  command: dnf clean all && rm -r /var/cache/dnf
+  warn: false
+  command: dnf clean all
+
+- name: bust dnf cache
+  become: yes
+  file:
+    path: /var/cache/dnf
+    state: absent
 
 - name: update all
   become: yes
