@@ -34,6 +34,7 @@
   shell: mysql --defaults-extra-file={{ qmt_db_credfile }} < /usr/share/roundcubemail/SQL/mysql.initial.sql
 
 - name: roundcube_setup -- back up the roundcube .conf file
+  become: yes
   shell: cp -p /etc/httpd/conf.d/roundcubemail.conf /etc/httpd/conf.d/roundcubemail.conf.bak
 
 - name: roundcube_setup -- create roundcube configuration
