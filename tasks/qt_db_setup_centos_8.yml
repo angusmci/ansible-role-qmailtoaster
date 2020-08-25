@@ -28,21 +28,11 @@
     enablerepo: "epel"
     state: latest
 
-- debug:
-    msg: "### About to write credentials to {{ qmt_db_credfile }}"
-
 - name: qt_db_setup_centos_8 -- write credentials file
   template:
     src: templates/sql_cnf.j2
     dest: "{{ qmt_db_credfile }}"
     mode: 0644
-
-- stat:
-    path: "{{ qmt_db_credfile }}"
-  register: foundfile
-
-- debug:
-    msg: "{{ foundfile.stat.path }} exists"
 
 - name: qt_db_setup_centos_8 -- start and enable database server
   become: yes
