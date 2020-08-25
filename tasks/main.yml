@@ -14,6 +14,11 @@
   when: ansible_facts['distribution_major_version'] == 8
   debug:
     msg: "This is CentOS 8"
+
+- name: test2
+  when: ansible_facts['distribution_major_version'] == "8"
+  debug:
+    msg: "Maybe version has to be a string"
 # Do basic QMailToaster preparation
 #
 # Corresponds (roughly) to the 'qt_prep.sh' script.
