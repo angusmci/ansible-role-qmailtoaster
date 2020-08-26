@@ -119,6 +119,11 @@
 - include: postinstall_tuning.yml
   tags:
     - qmt
+
+- name: signal completion and schedule reboot
+  debug:
+    msg: "qmailtoaster install completed"
+  notify: reboot server
 # Do QMailToaster installation
 #
 # Corresponds (roughly) to the 'qt_install.sh' script.

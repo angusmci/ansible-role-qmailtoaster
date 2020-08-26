@@ -1,6 +1,5 @@
 ---
 # firewall setup
-
 - name: firewall -- start firewalld
   become: yes
   systemd:
