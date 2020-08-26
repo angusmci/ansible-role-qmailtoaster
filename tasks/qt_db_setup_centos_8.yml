@@ -10,7 +10,7 @@
   set_fact:
     qmt_database_daemon: "{{ (qmt_database == 'mysql') | ternary ('mysqld', 'mariadb') }}"
 
-- name: qt_db_setup_centos_8 -- install chosen database
+- name: qt_db_setup_centos_8 -- install selected database
   become: yes
   yum:
     name:
