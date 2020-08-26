@@ -92,6 +92,9 @@
   tags:
     - qmt
 
+- debug:
+    msg: "#DEBUG variable settings -- qmt_use_dspam={{ qmt_use_dspam }} qmt_install_rainloop={{ qmt_install_rainloop }}"
+
 # Install dspam
 
 - when: qmt_use_dspam == "yes"
