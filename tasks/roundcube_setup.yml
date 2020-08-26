@@ -29,8 +29,12 @@
 - name: roundcube_setup -- refresh mysql
   shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
 
+- name: roundcube_setup -- test status of roundcube database
+  shell: "mysql --defaults-{{ qmt_db_credfile }} -Bse 'use roundcube; select count(*) from session;'"
+  register: probe_result
+
 - name: roundcube_setup -- initialize the roundcube database if needed
-  when: roundcube_database_created.changed
+  when: roundcube_database_created.changed or "ERROR" in probe_result.stdout
   shell: mysql --defaults-extra-file={{ qmt_db_credfile }} < /usr/share/roundcubemail/SQL/mysql.initial.sql
 
 - name: roundcube_setup -- back up the roundcube .conf file
