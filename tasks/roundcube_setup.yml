@@ -30,7 +30,7 @@
   shell: "mysqladmin -uroot -p{{ qmt_db_root_password}} refresh"
 
 - name: roundcube_setup -- test status of roundcube database
-  shell: "mysql --defaults-{{ qmt_db_credfile }} -Bse 'use roundcube; select count(*) from session;'"
+  shell: "mysql --defaults-extra-file-{{ qmt_db_credfile }} -Bse 'use roundcube; select count(*) from session;'"
   register: probe_result
 
 - name: roundcube_setup -- initialize the roundcube database if needed
