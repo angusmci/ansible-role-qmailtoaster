@@ -36,7 +36,7 @@
 
 - name: roundcube_setup -- initialize the roundcube database if needed
   when: roundcube_database_created.changed or "ERROR" in probe_result.stderr
-  shell: mysql --defaults-extra-file={{ qmt_db_credfile }} < /usr/share/roundcubemail/SQL/mysql.initial.sql
+  shell: mysql --defaults-extra-file={{ qmt_db_credfile }} roundcube < /usr/share/roundcubemail/SQL/mysql.initial.sql
 
 - name: roundcube_setup -- back up the roundcube .conf file
   become: yes
