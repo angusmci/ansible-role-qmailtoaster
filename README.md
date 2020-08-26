@@ -8,7 +8,7 @@ This is a port to Ansible of Eric Broch's install scripts. At the time of writin
 
 Any bugs in the role are my fault, not Eric's.
 
-Thanks to the maintainers of `qmailtoaster`, Eric Broch and Eric Shubert, for all their hard work in maintaining, updating and extending the `qmailtoaster` system. Thanks are due also to Daniel Bernstein, the original author of `qmail`, and to everyone else who has contributed to the `qmailtoaster` ecosystem.  
+Thanks to the maintainers of `qmailtoaster`, Eric Broch and Eric Shubert, for all their hard work in maintaining, updating and extending the `qmailtoaster` system. Thanks are due also to Daniel Bernstein, the original author of `qmail`, and to everyone else who has contributed to the `qmailtoaster` ecosystem.
 
 BECAUSE THIS ROLE IS STILL UNDER ACTIVE DEVELOPMENT, IT IS NOT RECOMMENDED FOR PRODUCTION SYSTEMS. NO WARRANTY, EXPRESS OR IMPLIED.
 
@@ -24,96 +24,83 @@ The behavior of the role is controlled by various role variables. These are used
 
 The default `vars/main.yml` file in the role does not provide definitions for the database passwords used in the role. Therefore, if you simply run the role without specifying these passwords, the role will fail with an error. This is intentional: for the security of your system, you should provide good, non-default passwords.
 
-The standard `qmailtoaster` install scripts specify rather weak default passwords for the MariaDB users `vpopmail` and `dspam`. This arguably represents a possible small security risk. For greater security, this role requires you to specify your own passwords for each of these.
+The standard `qmailtoaster` install scripts specify rather weak default passwords for the MariaDB `vpopmail` user. This arguably represents a possible small security risk. For greater security, this role requires you to specify your own passwords.
 
-When choosing passwords, you are recommended to avoid using certain characters, specifically punctuation that has special meaning to the shell (e.g. '&', '|', ' ' or '!') or in SQL (e.g. semicolons and various types of quotes). This is because some parts of the install process require the passwords to be passed to the shell or to MariaDB, and Ansible isn't always entirely helpful in the way that it handles quoted strings. Using special characters can cause problems. Using alphanumerics and a restricted set of punctuation characters (e.g. '=', '-', '_', '+', '.', ',') should be safe.
+When choosing passwords, you are recommended to avoid using certain characters, specifically punctuation that has special meaning to the shell (e.g. '&', '|', ' ' or '!') or in SQL (e.g. semicolons and various types of quotes). This is because some parts of the install process require the passwords to be passed to the shell or to MariaDB, and Ansible isn't always entirely helpful in the way that it handles quoted strings. Using special characters can cause problems. Using alphanumerics and a restricted set of punctuation characters (e.g. '=', '-', '\_', '+', '.', ',') should be safe.
 
     qmt_db_root_password:
     qmt_db_vpopmail_password:
-    qmt_db_dspam_password:
 
 ### General QMailToaster configuration
 
     qmt_mariadb_secure: yes
-   
+
 Should the MariaDB database be secured on setup? Leave this as the default value to secure MariaDB, unless you have an extremely good reason not to.
 
-    qmt_use_dspam: yes
-   
-Should dspam be installed? 
+    qmt_install_vpopmaild: no
 
-    qmt_use_dspam_domains: no
-   
-Should dspam be used for individual domains on setup. 
-
-    qmt_dspam_domains:
-    
-List of domains for which dspam should be used.
-
-	qmt_install_vpopmaild: no
-	
 Should `vpopmaild` be installed? The `vpopmaild` daemon is required for Roundcube, so if you install Roundcube, set this to `yes`.
 
 ### Roundcube configuration
 
-	qmt_install_roundcube: no
-	
+    qmt_install_roundcube: no
+
 Should the Roundcube webmail client be installed?
 
-	qmt_roundcube_des_key: "Change_this_24Byte_Str!!"
-	
+    qmt_roundcube_des_key: "Change_this_24Byte_Str!!"
+
 If you install Roundcube, you must specify a DES key. This key must be a string containing exactly 24 characters. Do not simply use the default value, or your Roundcube installation will be insecure.
 
 ### Rainloop configuration
 
-	qmt_install_rainloop: no
+    qmt_install_rainloop: no
 
 Should the Rainloop webmail client be installed?
 
-	qmt_rainloop_license: community
-	
+    qmt_rainloop_license: community
+
 If Rainloop is installed, should it be the `community` or `standard` version?
 
-	qmt_rainloop_domains: 
-	
+    qmt_rainloop_domains:
+
 Which domains should Rainloop handle? If you install Rainloop, this variable should be a list of objects that specify the name of a domain, and the name of the hosts that handle SMTP and IMAP for that domain. For example:
 
-	qmt_rainloop_domains:
-	  - domain: domain1.com
-		imap_host: imap.domain1.com
-		smtp_host: smtp.domain1.com
-	  - domain: domain2.com
-		imap_host: mail.domain2.com
-		smtp_host: mail.domain2.com
+    qmt_rainloop_domains:
+      - domain: domain1.com
+    	imap_host: imap.domain1.com
+    	smtp_host: smtp.domain1.com
+      - domain: domain2.com
+    	imap_host: mail.domain2.com
+    	smtp_host: mail.domain2.com
 
 ### PHP configuration
 
-	qmt_timezone: "America/New_York"
-	
+    qmt_timezone: "America/New_York"
+
 What timezone should be used for this server? This must be chosen from the list of [PHP supported timezones](https://www.php.net/manual/en/timezones.php).
 
-	qmt_attachment_size_limit: 10
+    qmt_attachment_size_limit: 10
 
 Maximum size of attachments that can be uploaded for sending through any webmail UI on this server.
 
 ### SSL Configuration
 
-	qmt_use_httpd_ssl: no
-	
+    qmt_use_httpd_ssl: no
+
 Should the server be set up to use a provided SSL certificate in place of the automatically-generated self-signed certificate? You probably want to get a proper server certificate, and set this option to `yes`.
 
-	qmt_httpd_ssl_certificate_file: server.crt
+    qmt_httpd_ssl_certificate_file: server.crt
 
 Name of the SSL certificate key file. This file should be placed in `/etc/pki/tls/private/`.
 
-	qmt_httpd_ssl_certificate_key_file: server.key
+    qmt_httpd_ssl_certificate_key_file: server.key
 
 Name of the SSL certificate authority file. This file should be placed in `/etc/pki/tls/certs/`.
 
-	qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
+    qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
 
 Name of the SSL certificate bundle file. This file should be placed in `/etc/pki/tls/private/`.
-    
+
 ### Domain configuration
 
 Most of this role is intended to be as 'unopinionated' as possible, or at least no more opinionated than QMailToaster. It is intended to follow the standard scripts on the [QMailToaster](http://qmailtoaster.org/) website closely, so that it can be used to build a basic QMailToaster server.
@@ -128,21 +115,15 @@ Actions specify how mail should be handled. We'll see actions used with both rol
 
 none
 : No .qmail files will be created
-	
 delete
 : Mail sent to this alias or group will be deleted unread.
-	
 deliver
 : Mail sent to this alias or group will be delivered to a local mailbox.
-	
 forward
 : Mail sent to this alias or group will be forwarded to a remote address.
-	
 filter
 : Mail sent to this alias or group will be filtered using `procmail` before delivery.
-	
 _... more text will follow here ..._
-
 
 ## Dependencies
 
@@ -152,80 +133,77 @@ TBD
 
 Here is an example of invoking the role.
 
-	- name: install qmailtoaster
-	  include_role:
-		name: ansible-role-qmailtoaster
-	  vars:
-		qmt_version: 1-7
-		qmt_secure_mariadb: yes
-		qmt_use_dspam: yes
-		qmt_use_dspam_domains: no
-		qmt_install_vpopmaild: yes
-		qmt_install_roundcube: yes
-		qmt_install_rainloop: yes
-		qmt_db_root_password: "{{ my_password1 }}"
-		qmt_db_vpopmail_password: "{{ my_password2 }}"
-		qmt_db_dspam_password: "{{ my_password3 }}"
-		qmt_db_roundcube_password: "{{ my_password4 }}"
-		qmt_roundcube_des_key: "an.3x4mpl3.DES.key.12345"
-		qmt_rainloop_license: community
-		qmt_rainloop_domains:
-		  - domain: example.com
-			imap_host: server1.example.com
-			smtp_host: server2.example.com
-		  - domain: example.net
-			imap_host: mail.example.net
-			smtp_host: mail.example.net
-		qmt_use_httpd_ssl: yes
-		qmt_timezone: America/New_York
-		qmt_rainloop_admin_password: "{{ my_password5 }}"
-		qmt_attachment_size_limit: 25
-		qmt_domains:
-		  - name: example.com
+    - name: install qmailtoaster
+      include_role:
+    	name: ansible-role-qmailtoaster
+      vars:
+    	qmt_version: 1-7
+    	qmt_secure_mariadb: yes
+    	qmt_install_vpopmaild: yes
+    	qmt_install_roundcube: yes
+    	qmt_install_rainloop: yes
+    	qmt_db_root_password: "{{ my_password1 }}"
+    	qmt_db_vpopmail_password: "{{ my_password2 }}"
+    	qmt_db_roundcube_password: "{{ my_password4 }}"
+    	qmt_roundcube_des_key: "an.3x4mpl3.DES.key.12345"
+    	qmt_rainloop_license: community
+    	qmt_rainloop_domains:
+    	  - domain: example.com
+    		imap_host: server1.example.com
+    		smtp_host: server2.example.com
+    	  - domain: example.net
+    		imap_host: mail.example.net
+    		smtp_host: mail.example.net
+    	qmt_use_httpd_ssl: yes
+    	qmt_timezone: America/New_York
+    	qmt_rainloop_admin_password: "{{ my_password5 }}"
+    	qmt_attachment_size_limit: 25
+    	qmt_domains:
+    	  - name: example.com
     		password: "{{ my_password6 }}"
-			default:
-			  action: delete
-			business:
-			  action: filter
-			  user: fred
-			  host: example.com
-			owner:
-			  action: filter
-			  user: bob
-			  host: example.com
-			network:
-			  action: filter
-			  user: jane
-			  host: example.com
-			services:
-			  action: filter
-			  user: elizabeth
-			  host: example.com
-			webmaster:
-			  action: filter
-			  user: fred
-			  host: example.com
-		  - name: example.net
+    		default:
+    		  action: delete
+    		business:
+    		  action: filter
+    		  user: fred
+    		  host: example.com
+    		owner:
+    		  action: filter
+    		  user: bob
+    		  host: example.com
+    		network:
+    		  action: filter
+    		  user: jane
+    		  host: example.com
+    		services:
+    		  action: filter
+    		  user: elizabeth
+    		  host: example.com
+    		webmaster:
+    		  action: filter
+    		  user: fred
+    		  host: example.com
+    	  - name: example.net
     		password: "{{ my_password6 }}"
-			default:
-			  action: delete
-			business:
-			  action: none
-			owner:
-			  action: filter
-			  user: bob
-			  host: example.com
-			network:
-			  action: filter
-			  user: jane
-			  host: example.com
-			services:
-			  action: filter
-			  user: elizabeth
-			  host: example.com
-			webmaster:
-			  action: none
-		
+    		default:
+    		  action: delete
+    		business:
+    		  action: none
+    		owner:
+    		  action: filter
+    		  user: bob
+    		  host: example.com
+    		network:
+    		  action: filter
+    		  user: jane
+    		  host: example.com
+    		services:
+    		  action: filter
+    		  user: elizabeth
+    		  host: example.com
+    		webmaster:
+    		  action: none
+
 ## License
 
 BSD
@@ -234,9 +212,9 @@ BSD
 
 Ansible role
 
- * Angus McIntyre -- http://nomadcode.com/
-   
+- Angus McIntyre -- http://nomadcode.com/
+
 Qmailtoaster install script
 
- * Eric Broch -- http://whitehorsetc.com/
- * Eric Shubert
+- Eric Broch -- http://whitehorsetc.com/
+- Eric Shubert

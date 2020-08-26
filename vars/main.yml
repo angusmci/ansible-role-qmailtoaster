@@ -51,26 +51,6 @@ qmt_package: stable
 
 qmt_php7_version: 71
 
-# qmt_use_dspam
-#
-# Should QMT use Dspam? The default is 'no', but you can set this to 'yes' to install
-# dspam if desired.
-
-qmt_use_dspam: no
-
-# qmt_use_dspam_domains
-#
-# If this option is set to 'yes', default .qmail files using Dspam will be set up for
-# each domain listed in the 'qmt_dspam_domains' argument.
-
-qmt_use_dspam_domains: no
-
-# qmt_dspam_domains
-#
-# List of domains for which a dspam-based catchall account will be initialized.
-
-qmt_dspam_domains: []
-
 # qmt_spf_behavior
 #
 # Set the SPF behavior for this toaster. See http://wiki.qmailtoaster.com/index.php/Spf
@@ -91,12 +71,6 @@ qmt_vpopmail_dump_file_path: /tmp/vpopmail.sql
 # to fail later. If you set this to true, be prepared to clean up the mess manually.
 
 qmt_vpopmail_rebuild_database: false
-
-# qmt_dspam_dump_file_path
-#
-# If a dspam database already exists, back it up to this file
-
-qmt_dspam_dump_file_path: /tmp/dspam.sql
 
 # qmt_install_vpopmaild
 #
@@ -225,28 +199,21 @@ qmt_toast_aclnet: "192.168.2.0\/24 192.168.9.0\/24 127.0.0.1"
 
 # qmt_db_root_password
 #
-# The Maria DB root password is left undefined here. You need to define it yourself
+# The root database password is left undefined here. You need to define it yourself
 # in your own vars file, preferably in an Ansible vault.
 #
 # qmt_db_root_password:
 
 # qmt_db_vpopmail_password
 #
-# The Maria DB vpopmail password is left undefined here. You need to define it yourself
+# The vpopmail database password is left undefined here. You need to define it yourself
 # in your own vars file, preferably in an Ansible vault.
 #
 # qmt_db_vpopmail_password:
 
-# qmt_db_dspam_password
-#
-# The Maria DB dspam password is left undefined here. You need to define it yourself
-# in your own vars file, preferably in an Ansible vault.
-#
-# qmt_db_dspam_password:
-#
 # qmt_db_roundcube_password
 #
-# The Maria DB roundcube password is left undefined here. If you install
+# The roundcube database password is left undefined here. If you install
 # Roundcube, you need to define it yourself in your own vars file,
 # preferably in an Ansible vault.
 #
@@ -377,5 +344,4 @@ qmt_maildir_subdirs:
 qmt_preline: /var/qmail/bin/preline
 qmt_procmail: /usr/bin/procmail
 qmt_vdelivermail: /home/vpopmail/bin/vdelivermail
-qmt_dspam: /usr/bin/dspam
 qmt_vpopmail_dir: /home/vpopmail/domains
