@@ -1,4 +1,6 @@
 ---
+# set PHP options
+
 - name: php_configuration -- change date.timezone in php.ini
   become: yes
   lineinfile:

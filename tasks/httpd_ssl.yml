@@ -1,4 +1,6 @@
 ---
+# SSL configuration for Apache webserver
+
 - name: httpd_ssl -- change server certificate file
   become: yes
   when: qmt_use_httpd_ssl | bool

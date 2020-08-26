@@ -1,10 +1,12 @@
 ---
+# install the rainloop client
+
 - name: create rainloop directory
   become: yes
   file:
     path: /usr/share/rainloop/
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: get the rainloop sources [community version]
   become: yes
@@ -48,7 +50,7 @@
     backup: yes
     owner: apache
     group: apache
-    mode: '0644'
+    mode: "0644"
   notify:
     - restart apache
 
@@ -59,7 +61,7 @@
     state: directory
     owner: apache
     group: apache
-    mode: '0755'
+    mode: "0755"
   with_items:
     - cache
     - configs
@@ -76,7 +78,7 @@
     backup: yes
     owner: apache
     group: apache
-    mode: '0644'
+    mode: "0644"
   with_items: "{{ qmt_rainloop_domains }}"
 
 - name: create application configuration file
@@ -87,7 +89,7 @@
     backup: yes
     owner: apache
     group: apache
-    mode: '0644'
+    mode: "0644"
   register: wrote_application_ini_file
 
 - name: change admin password - step 1
@@ -98,7 +100,7 @@
     dest: /tmp/rainloop_set_password.php
     owner: apache
     group: apache
-    mode: '0644'
+    mode: "0644"
 
 - name: change admin password - step 2
   when: wrote_application_ini_file.changed and qmt_rainloop_admin_password != '12345'
@@ -111,4 +113,3 @@
   file:
     path: /tmp/rainloop_set_password.php
     state: absent
-

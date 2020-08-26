@@ -1,4 +1,6 @@
 ---
+# Set up the database for CentOS 8
+
 - name: qt_db_setup_centos_8 -- set up dnf variables
   become: yes
   template:

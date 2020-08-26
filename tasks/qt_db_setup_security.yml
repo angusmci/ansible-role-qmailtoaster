@@ -1,7 +1,8 @@
 ---
 # The following tasks take the place of 'mysql_secure_installation' in the original CentOS 7
-# install script. They perform the same basic functions, namely:
+# install script. They perform the same basic functions:
 #
+# - set the root password
 # - remove the anonymous user
 # - secure the root user
 # - remove the test database

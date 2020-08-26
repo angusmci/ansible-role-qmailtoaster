@@ -1,4 +1,6 @@
 ---
+# make sure directories and groups needed for vpopmail exist
+
 - name: vpopmail_setup -- ensure vchkpw group exists
   become: yes
   group:

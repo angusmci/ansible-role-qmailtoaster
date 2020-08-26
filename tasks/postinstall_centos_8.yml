@@ -1,4 +1,6 @@
 ---
+# perform post-installation tasks on CentOS 8
+
 - name: postinstall_centos_8 -- update crypto policies
   become: yes
   shell: update-crypto-policies --set {{ qmt_crypto_policy }}

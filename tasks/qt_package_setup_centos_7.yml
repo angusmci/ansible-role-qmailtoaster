@@ -1,4 +1,6 @@
 ---
+# set up required supporting packages on CentOS 7
+
 - name: qt_package_setup_centos_7 -- remove postfix
   become: yes
   yum:

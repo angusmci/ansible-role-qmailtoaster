@@ -1,4 +1,6 @@
 ---
+# set up vpopmail database
+
 - name: qt_db_setup_vpopmail_db -- check if vpopmail database exists
   when: qmt_vpopmail_rebuild_database
   shell: "mysql -u root -p{{ qmt_db_root_password}} -e 'SHOW DATABASES;' | grep 'vpopmail'"

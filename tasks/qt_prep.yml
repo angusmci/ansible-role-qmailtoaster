@@ -1,4 +1,6 @@
 ---
+# perform basic preparation tasks before installation
+
 - name: qt_prep -- disable selinux
   become: yes
   selinux:

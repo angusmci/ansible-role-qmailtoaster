@@ -1,4 +1,6 @@
 ---
+# set up required supporting packages on CentOS 8
+
 - name: qt_package_setup_centos_8 -- yum update
   become: yes
   yum:

@@ -1,4 +1,6 @@
 ---
+# perform post-installation tasks on CentOS 7
+
 - name: postinstall_centos_7 -- message
   debug:
     msg: "Post-installation for CentOS 7 not yet implemented"
