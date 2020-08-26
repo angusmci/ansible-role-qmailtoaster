@@ -99,6 +99,13 @@
   tags:
     - dspam
 
+# Install rainloop
+
+- when: qmt_install_rainloop == "yes"
+  include: rainloop_install.yml
+  tags:
+    - rainloop
+
 # Post-installation
 
 - when: ansible_facts['distribution_major_version'] == "8"
