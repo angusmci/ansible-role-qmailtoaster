@@ -99,14 +99,14 @@
 
 # Install dspam
 
-- when: qmt_use_dspam == "yes"
+- when: qmt_use_dspam
   include: dspam_install.yml
   tags:
     - dspam
 
 # Install rainloop
 
-- when: qmt_install_rainloop == "yes"
+- when: qmt_install_rainloop
   include: rainloop_install.yml
   tags:
     - rainloop
