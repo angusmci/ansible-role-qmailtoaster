@@ -95,6 +95,14 @@
     - { path: "/var/log/clamav", owner: "clamupdate", group: "clamupdate" }
     - { path: "/var/lib/clamav", owner: "clamupdate", group: "clamupdate" }
 
+- name: qt_install_centos_8 -- verify ownership of clamd log
+  become: yes
+  file:
+    path: /var/log/clamd/clamd.log
+    state: file
+    owner: clamscan
+    group: clamscan
+
 - name: qt_install_centos_8 -- edit /etc/freshclam.conf
   become: yes
   lineinfile:
