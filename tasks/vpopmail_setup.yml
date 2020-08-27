@@ -34,3 +34,12 @@
     owner: vpopmail
     group: vchkpw
     mode: 0700
+
+- name: vpopmail_setup -- set up vpopmail.mysql
+  become: yes
+  template:
+    src: templates/vpopmail.mysql.j2
+    dest: /home/vpopmail/etc/vpopmail.mysql
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
