@@ -44,12 +44,7 @@
 - name: qt_install_centos_8 -- install clamav from epel
   become: yes
   yum:
-    name:
-      [
-        "clamav"
-        "clamav-update"
-        "clamd"
-      ]
+    name: ["clamav", "clamav-update", "clamd"]
     enablerepo: epel
     disablerepo: qmt
 
@@ -77,19 +72,29 @@
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-    mode: {{ item.mode }}
+    mode: { { item.mode } }
   with_items:
-    - { path: "/var/qmail/simscan", owner: "clamscan", group: "root", mode: 0750 }
-    - { path: "/var/qmail/bin/simscan", owner: "clamscan", group: "root", mode: 04711 }
+    - {
+        path: "/var/qmail/simscan",
+        owner: "clamscan",
+        group: "root",
+        mode: 0750,
+      }
+    - {
+        path: "/var/qmail/bin/simscan",
+        owner: "clamscan",
+        group: "root",
+        mode: 04711,
+      }
 
 - name: qt_install_centos_8 -- verify state of clamav directories
   become: yes
-  file: 
+  file:
     path: "{{ item.path }}"
     state: directory
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-    mode: '0755'
+    mode: "0755"
   with_items:
     - { path: "/var/log/clamd", owner: "clamscan", group: "clamscan" }
     - { path: "/var/log/clamav", owner: "clamupdate", group: "clamupdate" }
@@ -101,8 +106,11 @@
     path: /etc/freshclam.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-  with_items: 
-    - { regexp: "^#?UpdateLogFile", line: "UpdateLogFile /var/log/clamav/freshclam.log" }
+  with_items:
+    - {
+        regexp: "^#?UpdateLogFile",
+        line: "UpdateLogFile /var/log/clamav/freshclam.log",
+      }
     - { regexp: "^#?LogFileMaxSize", line: "LogFileMaxSize 2M" }
     - { regexp: "^#?LogTime", line: "LogTime yes" }
     - { regexp: "^#?LogVerbose", line: "LogVerbose yes" }
@@ -158,10 +166,13 @@
     path: /usr/bin/toaststat
     regexp: "^CLAMD="
     line: "CLAMD=clamd@scan.service"
-  with_items: 
+  with_items:
     - { regexp: "^CLAMS=", line: "" }
     - { regexp: "^CLAMD=", line: "CLAMD=clamd@scan.service" }
-    - { regexp: "^for sv in", line: "for sv in $CLAMD clamav-freshclam spamassassin dovecot $DBD httpd $NAMED chronyd sshd crond $VSFTPD acpid atd autofs smartd $IRQBALANCE" }
+    - {
+        regexp: "^for sv in",
+        line: "for sv in $CLAMD clamav-freshclam spamassassin dovecot $DBD httpd $NAMED chronyd sshd crond $VSFTPD acpid atd autofs smartd $IRQBALANCE",
+      }
 
 - name: qt_install_centos_8 -- start toaststat
   become: yes
