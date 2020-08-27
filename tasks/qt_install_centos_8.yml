@@ -66,26 +66,21 @@
     group: root
     mode: "0644"
 
-- name: qt_install_centos_8 -- verify ownership of files
+- name: qt_install_centos_8 -- verify ownership of /var/qmail/simscan
   become: yes
   file:
-    path: "{{ item.path }}"
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-    mode: "{{ item.mode }}"
-  with_items:
-    - {
-        path: "/var/qmail/simscan",
-        owner: "clamscan",
-        group: "root",
-        mode: 0750,
-      }
-    - {
-        path: "/var/qmail/bin/simscan",
-        owner: "clamscan",
-        group: "root",
-        mode: 04711,
-      }
+    path: /var/qmail/simscan
+    owner: clamscan
+    group: root
+    mode: 0750
+
+- name: qt_install_centos_8 -- verify ownership of /var/qmail/bin/simscan
+  become: yes
+  file:
+    path: /var/qmail/bin/simscan
+    owner: clamscan
+    group: root
+    mode: 04711
 
 - name: qt_install_centos_8 -- verify state of clamav directories
   become: yes
