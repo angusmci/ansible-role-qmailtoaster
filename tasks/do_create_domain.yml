@@ -2,6 +2,7 @@
 - name: create a domain
   become: yes
   command: "/home/vpopmail/bin/vadddomain {{ domain }} {{ password }}"
-  creates: "/home/vpopmail/domains/{{ domain }}"
+  args:
+    creates: "/home/vpopmail/domains/{{ domain }}"
   notify:
     - restart dovecot
