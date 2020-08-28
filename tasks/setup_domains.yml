@@ -1,0 +1,7 @@
+---
+- name: set up all domains
+  include: do_create_domain.yml
+  vars:
+    domain: "{{ item.name }}"
+    password: "{{ item.password }}"
+  with_items: "{{ qmt_domains }}"
