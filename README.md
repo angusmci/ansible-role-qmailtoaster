@@ -8,7 +8,7 @@ This is a port to Ansible of Eric Broch's install scripts. At the time of writin
 
 Any bugs in the role are my fault, not Eric's.
 
-Thanks to the maintainers of `qmailtoaster`, Eric Broch and Eric Shubert, for all their hard work in maintaining, updating and extending the `qmailtoaster` system. Thanks are due also to Daniel Bernstein, the original author of `qmail`, and to everyone else who has contributed to the `qmailtoaster` ecosystem.
+Thanks above all to the present and past maintainers of `qmailtoaster`, Eric Broch and Eric Shubert, for all their hard work in maintaining, updating and extending the `qmailtoaster` system. Thanks also to other members of the `qmailtoaster` community, especially Remo Mattei, for their help and comments, and special thanks to Remi Collet for help with installing his PHP repos. Thanks are due also to Daniel Bernstein, the original author of `qmail`, and to everyone else who has contributed to the `qmailtoaster` ecosystem.
 
 BECAUSE THIS ROLE IS STILL UNDER ACTIVE DEVELOPMENT, IT IS NOT RECOMMENDED FOR PRODUCTION SYSTEMS. NO WARRANTY, EXPRESS OR IMPLIED.
 
