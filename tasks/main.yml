@@ -82,6 +82,13 @@
   tags:
     - qmt
 
+# Install dspam if requested
+
+- when: qmt_install_dspam
+  include: dspam_install.yml
+  tags:
+    - dspam
+
 # Install roundcube
 
 - when: ansible_facts['distribution_major_version'] == "7"

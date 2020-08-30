@@ -79,6 +79,12 @@ qmt_vpopmail_rebuild_database: false
 
 qmt_install_vpopmaild: no
 
+# qmt_install_dspam
+#
+# Should dspam be installed?
+
+qmt_install_dspam: no
+
 # qmt_install_roundcube
 #
 # Should we install the roundcube webmail client?

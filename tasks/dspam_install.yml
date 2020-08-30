@@ -1,0 +1,110 @@
+---
+- name: install requirements
+  become: yes
+  yum:
+    name: ["dspam", "dspam-client", "dspam-mysql"]
+    enablerepo: "epel"
+    state: latest
+    update_cache: yes
+
+- name: check if dspam database exists
+  shell: "mysql --defaults-extra-file={{ qmt_db_credfile }} -e 'SHOW DATABASES;' | grep 'dspam'"
+  register: dbstatus
+  failed_when: dbstatus.rc == 2
+
+- name: dump dspam database if it exists
+  mysql_db:
+    login_user: root
+    login_password: "{{ qmt_db_root_password }}"
+    name: dspam
+    state: dump
+    target: "{{ qmt_dspam_dump_file_path }}"
+  when: dbstatus.rc == 0
+
+- name: drop dspam database if it exists
+  mysql_db:
+    login_user: root
+    login_password: "{{ qmt_db_root_password }}"
+    name: dspam
+    state: absent
+  when: dbstatus.rc == 0
+
+- name: create dspam database
+  mysql_db:
+    login_user: root
+    login_password: "{{ qmt_db_root_password }}"
+    name: dspam
+    state: present
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [1]
+  meta: flush_handlers
+
+- name: create dspam database user and assign privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ qmt_db_root_password}}"
+    name: dspam
+    password: "{{ qmt_db_dspam_password}}"
+    priv: "dspam.*:ALL"
+    state: present
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [2]
+  meta: flush_handlers
+
+- name: get dspam SQL script
+  get_url:
+    url: https://raw.githubusercontent.com/qmtoaster/dspam/master/dspamdb.sql
+    dest: /tmp/dspamdb.sql
+  register: dspam_script_downloaded
+
+- name: initialize dspam database
+  when: dspam_script_downloaded.changed
+  shell: mysql -uroot -p{{ qmt_db_root_password}} dspam < /tmp/dspamdb.sql
+  notify:
+    - reload mysql
+    - refresh mysql
+
+- name: flush handlers [3]
+  meta: flush_handlers
+
+- name: set permissions on /var/run/dspam
+  become: yes
+  file:
+    path: /var/run/dspam
+    mode: "0777"
+
+- name: stat /etc/dspam.conf
+  stat: path=/etc/dspam.conf
+  register: dspam_conf_stat
+
+- name: Back up /etc/dspam.conf
+  become: yes
+  command: mv /etc/dspam.conf /etc/dspam.conf.bak
+  when: dspam_conf_stat.stat.exists
+
+- name: get dspam conf file
+  become: yes
+  get_url:
+    url: https://raw.githubusercontent.com/qmtoaster/dspam/master/dspam.conf
+    dest: /etc/dspam.conf
+    mode: "0744"
+
+- name: start and enable dspam
+  become: yes
+  systemd:
+    name: dspam
+    state: started
+    enabled: yes
+
+- name: use our password for dspam
+  become: yes
+  lineinfile:
+    path: /etc/dspam.conf
+    regexp: "^MySQLPass.*"
+    line: "MySQLPass		{{ qmt_db_dspam_password }}"
