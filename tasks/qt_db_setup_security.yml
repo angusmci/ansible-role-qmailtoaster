@@ -28,7 +28,7 @@
   ignore_errors: yes
 
 - name: qt_db_setup_security -- remove anonymous user for all hosts
-  when: qmt_secure_mariadb | bool
+  when: qmt_db_secure | bool
   mysql_user:
     name: ""
     host_all: yes
@@ -37,7 +37,7 @@
     login_password: "{{ qmt_db_root_password }}"
 
 - name: qt_db_setup_security -- secure the root user for this host
-  when: qmt_secure_mariadb | bool
+  when: qmt_db_secure | bool
   mysql_user:
     name: root
     host: "{{ item }}"
@@ -51,7 +51,7 @@
     - localhost
 
 - name: qt_db_setup_security -- remove the test database
-  when: qmt_secure_mariadb | bool
+  when: qmt_db_secure | bool
   mysql_db:
     db: test
     state: absent

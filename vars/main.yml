@@ -22,11 +22,11 @@ qmt_version: 1-7
 
 qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b00874
 
-# qmt_secure_db
+# qmt_db_secure
 #
 # Should the database be secured by removing test accounts and databases?
 
-qmt_secure_db: yes
+qmt_db_secure: yes
 
 # qmt_db_credfile
 #
