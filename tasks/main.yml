@@ -82,9 +82,9 @@
   tags:
     - qmt
 
-# Install dspam if requested
+# Install dspam if requested (but only on CentOS 7)
 
-- when: qmt_install_dspam
+- when: qmt_install_dspam and ansible_facts['distribution_major_version'] == "7"
   include: dspam_install.yml
   tags:
     - dspam
