@@ -1,5 +1,6 @@
 ---
 - name: set up all domains
+  when: qmt_domains is defined
   include: do_create_domain.yml
   vars:
     domain: "{{ item.name }}"
