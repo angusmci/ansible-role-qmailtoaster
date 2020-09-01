@@ -15,6 +15,8 @@
     src: https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip
     dest: /usr/share/rainloop/
     remote_src: yes
+    creates: /usr/share/rainloop/
+  register: rainloop_sources
 
 - name: get the rainloop sources [standard version]
   become: yes
@@ -23,8 +25,11 @@
     src: https://www.rainloop.net/repository/webmail/rainloop-latest.zip
     dest: /usr/share/rainloop/
     remote_src: yes
+    creates: /usr/share/rainloop/
+  register: rainloop_sources
 
 - name: change file modes recursively
+  when: rainloop_sources.changed
   become: yes
   command: |
     chmod -c -R ug=rw,o=r,a-x+X /usr/share/rainloop
@@ -34,6 +39,7 @@
   changed_when: chmod_status.stdout != ""
 
 - name: change file ownership
+  when: rainloop_sources.changed
   become: yes
   command: |
     chown -c -R apache:apache /usr/share/rainloop
@@ -45,12 +51,12 @@
 - name: create configuration file
   become: yes
   template:
-    src: rainloop_centos_7_conf.j2
+    src: rainloop_conf.j2
     dest: /etc/httpd/conf.d/rainloop.conf
     backup: yes
     owner: apache
     group: apache
-    mode: "0644"
+    mode: 0644
   notify:
     - restart apache
 
@@ -61,7 +67,7 @@
     state: directory
     owner: apache
     group: apache
-    mode: "0755"
+    mode: 0755
   with_items:
     - cache
     - configs
@@ -89,7 +95,7 @@
     backup: yes
     owner: apache
     group: apache
-    mode: "0644"
+    mode: 0644
   register: wrote_application_ini_file
 
 - name: change admin password - step 1
