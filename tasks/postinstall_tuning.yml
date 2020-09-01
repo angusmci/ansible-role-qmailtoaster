@@ -19,37 +19,42 @@
 - name: postinstall_tuning -- create spamassassin data directory
   become: yes
   file:
-    path: /home/vpopmail/.spamassassin
+    path: "{{ qmt_clamscan_home_dir }}/.spamassassin"
     state: directory
     owner: clamscan
     group: clamscan
     mode: 0755
+
+- name: postinstall_tuning -- ensure spamassassin user_prefs exists
+  copy:
+    content: ""
+    dest: "{{ qmt_clamscan_home_dir }}/.spamassassin/user_prefs"
+    force: no
+    owner: clamscan
+    group: clamscan
+    mode: 0644
 
 - name: postinstall_tuning -- check clamscan home directory
   become: yes
   shell: 'cat /etc/passwd | grep clamscan | awk -F ":" ''{print $6}'''
   register: clamscan_home
 
-- name: DEBUG
-  debug:
-    msg: "{{ clamscan_home }}"
-
 - name: postinstall_tuning -- halt clamscan if needed
-  when: clamscan_home.stdout != "{{ qmt_clamscan_home_dir }}"
+  when: clamscan_home.stdout != qmt_clamscan_home_dir
   become: yes
   systemd:
     name: "clamd@scan"
     state: stopped
 
 - name: postinstall_tuning -- change clamscan home directory
-  when: clamscan_home.stdout != "{{ qmt_clamscan_home_dir }}"
+  when: clamscan_home.stdout != qmt_clamscan_home_dir
   become: yes
   user:
     name: clamscan
     home: "{{ qmt_clamscan_home_dir }}"
 
 - name: postinstall_tuning -- start clamscan if needed
-  when: clamscan_home.stdout != "{{ qmt_clamscan_home_dir }}"
+  when: clamscan_home.stdout != qmt_clamscan_home_dir
   become: yes
   systemd:
     name: "clamd@scan"
