@@ -9,3 +9,24 @@
     owner: root
     group: qmail
     mode: "0644"
+
+# On creation, 'clamscan' has a home directory of '/'. This seems to
+# result in errors when spamassassin -- which runs as 'clamscan' -- tries
+# to write preferences to '//.spamassassin/user_prefs'. Changing the
+# home directory for 'clamscan' and creating a directory with the
+# write permissions should take care of this.
+
+- name: postinstall_tuning -- create spamassassin data directory
+  become: yes
+  file:
+    path: /home/vpopmail/.spamassassin
+    state: directory
+    owner: clamscan
+    group: clamscan
+    mode: 0755
+
+- name: postinstall_tuning -- change clamscan home directory
+  become: yes
+  user:
+    name: clamscan
+    home: /home/vpopmail
