@@ -26,6 +26,7 @@
     mode: 0755
 
 - name: postinstall_tuning -- ensure spamassassin user_prefs exists
+  become: yes
   copy:
     content: ""
     dest: "{{ qmt_clamscan_home_dir }}/.spamassassin/user_prefs"
