@@ -10,12 +10,6 @@
     group: qmail
     mode: "0644"
 
-# On creation, 'clamscan' has a default home directory of '/'. This seems
-# to result in errors when spamassassin -- which runs as 'clamscan' -- tries
-# to write preferences to '//.spamassassin/user_prefs'. Changing the
-# home directory for 'clamscan' and creating a directory with the
-# write permissions should take care of this.
-
 - name: postinstall_tuning -- create spamassassin data directory
   become: yes
   file:
@@ -24,39 +18,3 @@
     owner: clamscan
     group: clamscan
     mode: 0755
-
-- name: postinstall_tuning -- ensure spamassassin user_prefs exists
-  become: yes
-  copy:
-    content: ""
-    dest: "{{ qmt_clamscan_home_dir }}/.spamassassin/user_prefs"
-    force: no
-    owner: clamscan
-    group: clamscan
-    mode: 0644
-
-- name: postinstall_tuning -- check clamscan home directory
-  become: yes
-  shell: 'cat /etc/passwd | grep clamscan | awk -F ":" ''{print $6}'''
-  register: clamscan_home
-
-- name: postinstall_tuning -- halt clamscan if needed
-  when: clamscan_home.stdout != qmt_clamscan_home_dir
-  become: yes
-  systemd:
-    name: "clamd@scan"
-    state: stopped
-
-- name: postinstall_tuning -- change clamscan home directory
-  when: clamscan_home.stdout != qmt_clamscan_home_dir
-  become: yes
-  user:
-    name: clamscan
-    home: "{{ qmt_clamscan_home_dir }}"
-
-- name: postinstall_tuning -- start clamscan if needed
-  when: clamscan_home.stdout != qmt_clamscan_home_dir
-  become: yes
-  systemd:
-    name: "clamd@scan"
-    state: started
