@@ -1,76 +1,9 @@
 ---
 # vars file for qmailtoaster
 
-# qmt_database
-#
-# Database should be set to 'mariadb' or 'mysql' for CentOS 8 only. For CentOS 7,
-# MariaDB will always be used.
-
-qmt_database: mariadb
-
-# qmt_version
-#
-# Version of Qmailtoaster to install
-
-qmt_version: 1-7
-
-# qmt_sha256_checksum
-#
-# Checksum for this version of the Qmailtoaster RPM
-#
-# TODO Set this to the correct checksum for QMT 1.7, and implement checksum checking.
-
-qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b00874
-
-# qmt_db_secure
-#
-# Should the database be secured by removing test accounts and databases?
-
-qmt_db_secure: yes
-
-# qmt_db_credfile
-#
-# Credentials file for database
-
-qmt_db_credfile: ~/sql.cnf
-
-# qmt_package
-#
-# qmt_package can be 'stable', 'testing', or 'development'. 'stable' will get you
-# the current stable install; 'testing' or 'development' will get you increasingly
-# bleeding-edge versions. See http://qmailtoaster.com/ to see what will be installed
-# for each of these.
-
-qmt_package: stable
-
-# qmt_php7_version
-#
-# If a valid version number is specified, PHP7 will be installed in place of the stock
-# CentOS PHP 5.4, and qmailtoaster patched accordingly. Set to 0 to stay with PHP 5.4.
-# Set to 71 for PHP 7.1 etc.
-
-qmt_php7_version: 71
-
-# qmt_spf_behavior
-#
-# Set the SPF behavior for this toaster. See http://wiki.qmailtoaster.com/index.php/Spf
-# for a list of behaviors. The default setting is 3, reject when SPF resolves to fail.
-
-qmt_spf_behavior: 3
-
-# qmt_vpopmail_dump_file_path
-#
-# If a vpopmail database already exists, back it up to this file.
-
-qmt_vpopmail_dump_file_path: /tmp/vpopmail.sql
-
-# qmt_vpopmail_rebuild_database
-#
-# Force a rebuild of the database. This is potentially dangerous, because it will
-# destroy any domain tables created by 'vadddomain', which will cause 'vadduser'
-# to fail later. If you set this to true, be prepared to clean up the mess manually.
-
-qmt_vpopmail_rebuild_database: false
+# ================================================================================
+# INSTALLATION OPTIONS
+# ================================================================================
 
 # qmt_install_vpopmaild
 #
@@ -97,6 +30,75 @@ qmt_install_roundcube: no
 
 qmt_install_rainloop: no
 
+# ================================================================================
+# DATABASE
+# ================================================================================
+
+# qmt_database
+#
+# Database should be set to 'mariadb' or 'mysql' for CentOS 8 only. For CentOS 7,
+# MariaDB will always be used.
+
+qmt_database: mariadb
+
+# qmt_db_secure
+#
+# Should the database be secured by removing test accounts and databases?
+
+qmt_db_secure: yes
+
+# qmt_db_credfile
+#
+# Credentials file for database
+
+qmt_db_credfile: ~/sql.cnf
+
+# ================================================================================
+# SQUIRRELMAIL
+# ================================================================================
+
+# qmt_squirrelmail_*
+#
+# Some basic Squirrelmail configuration options. You can probably leave all
+# of these at the defaults. If you want to configure the Rainloop
+# application in ways that aren't supported by this role, you should
+# use your own template and tasks.
+#
+# These variable names are intended to be self-explanatory. If they
+# don't make sense to you, look in 'squirrelmail_config_local.j2' to
+# see how they're used.
+
+qmt_squirrelmail_org_name: "Qmailtoaster"
+qmt_squirrelmail_provider_uri: "http://qmailtoaster.com/"
+qmt_squirrelmail_provider_name: "Qmailtoaster"
+
+# ================================================================================
+# ROUNDCUBE
+# ================================================================================
+
+# qmt_roundcube_des_key
+#
+# You MUST change this value if you install Roundcube, for security
+# reasons. The string needs to be exactly 24 characters long.
+
+qmt_roundcube_des_key: "Change_this_24Byte_Str!!"
+
+# qmt_roundcube_support_url
+#
+# URL of the support page for this Roundcube instance
+
+qmt_roundcube_support_url: ""
+
+# qmt_roundcube_product_name
+#
+# Product name displayed to users of this Roundcube instance
+
+qmt_roundcube_product_name: "Roundcube Webmail"
+
+# ================================================================================
+# RAINLOOP
+# ================================================================================
+
 # qmt_rainloop_license
 #
 # Should we use the 'community' or 'standard' version of Rainloop?
@@ -118,21 +120,6 @@ qmt_rainloop_license: community
 
 qmt_rainloop_domains: []
 
-# qmt_squirrelmail_*
-#
-# Some basic Squirrelmail configuration options. You can probably leave all
-# of these at the defaults. If you want to configure the Rainloop
-# application in ways that aren't supported by this role, you should
-# use your own template and tasks.
-#
-# These variable names are intended to be self-explanatory. If they
-# don't make sense to you, look in 'squirrelmail_config_local.j2' to
-# see how they're used.
-
-qmt_squirrelmail_org_name: "Qmailtoaster"
-qmt_squirrelmail_provider_uri: "http://qmailtoaster.com/"
-qmt_squirrelmail_provider_name: "QmailToaster"
-
 # qmt_rainloop_*
 #
 # Some basic Rainloop configuration options. You can probably leave all
@@ -150,6 +137,17 @@ qmt_rainloop_default_language: en
 qmt_rainloop_admin_language: en
 qmt_rainloop_admin_name: admin
 qmt_rainloop_admin_password: 12345
+
+# ================================================================================
+# TUNING
+# ================================================================================
+
+# qmt_spf_behavior
+#
+# Set the SPF behavior for this toaster. See http://wiki.qmailtoaster.com/index.php/Spf
+# for a list of behaviors. The default setting is 3, reject when SPF resolves to fail.
+
+qmt_spf_behavior: 3
 
 # qmt_timezone
 #
@@ -172,58 +170,23 @@ qmt_crypto_policy: DEFAULT
 
 qmt_attachment_size_limit: 10
 
-# qmt_roundcube_des_key
+# ================================================================================
+# VPOPMAIL
+# ================================================================================
+
+# qmt_vpopmail_dump_file_path
 #
-# You MUST change this value if you install Roundcube, for security
-# reasons. The string needs to be exactly 24 characters long.
+# If a vpopmail database already exists, back it up to this file.
 
-qmt_roundcube_des_key: "Change_this_24Byte_Str!!"
+qmt_vpopmail_dump_file_path: /tmp/vpopmail.sql
 
-# qmt_roundcube_support_url
+# qmt_vpopmail_rebuild_database
 #
-# URL of the support page for this Roundcube instance
+# Force a rebuild of the database. This is potentially dangerous, because it will
+# destroy any domain tables created by 'vadddomain', which will cause 'vadduser'
+# to fail later. If you set this to true, be prepared to clean up the mess manually.
 
-qmt_roundcube_support_url: ""
-
-# qmt_roundcube_product_name
-#
-# Product name displayed to users of this Roundcube instance
-
-qmt_roundcube_product_name: "Roundcube Webmail"
-
-# qmt_toast_aclnet
-#
-# ACL definitions for access to web management tools. Slashes in
-# netblock CIDR expressions should be escaped, e.g. "192.168.2.0\/24"
-# and entries should be space-separated.
-
-qmt_toast_aclnet: "192.168.2.0\/24 192.168.9.0\/24 127.0.0.1"
-
-# ======================================================================
-# PASSWORDS
-# ======================================================================
-
-# qmt_db_root_password
-#
-# The root database password is left undefined here. You need to define it yourself
-# in your own vars file, preferably in an Ansible vault.
-#
-# qmt_db_root_password:
-
-# qmt_db_vpopmail_password
-#
-# The vpopmail database password is left undefined here. You need to define it yourself
-# in your own vars file, preferably in an Ansible vault.
-#
-# qmt_db_vpopmail_password:
-
-# qmt_db_roundcube_password
-#
-# The roundcube database password is left undefined here. If you install
-# Roundcube, you need to define it yourself in your own vars file,
-# preferably in an Ansible vault.
-#
-# qmt_db_roundcube_password:
+qmt_vpopmail_rebuild_database: false
 
 # ======================================================================
 # WEB SERVER SECURITY SETTINGS
@@ -257,87 +220,78 @@ qmt_httpd_ssl_certificate_key_file: server.key
 
 qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
 
+# ================================================================================
+# OTHER
+# ================================================================================
+
+# qmt_toast_aclnet
+#
+# ACL definitions for access to web management tools. Slashes in
+# netblock CIDR expressions should be escaped, e.g. "192.168.2.0\/24"
+# and entries should be space-separated.
+
+qmt_toast_aclnet: "192.168.2.0\/24 192.168.9.0\/24 127.0.0.1"
+
+# ================================================================================
+# LEGACY
+# ================================================================================
+
+# qmt_version
+#
+# Version of Qmailtoaster to install
+
+qmt_version: 1-7
+
+# qmt_sha256_checksum
+#
+# Checksum for this version of the Qmailtoaster RPM
+#
+# TODO Set this to the correct checksum for QMT 1.7, and implement checksum checking.
+
+qmt_sha256_checksum: ca74e9b77658f4c3686a21d9909384ee74124bbc3d41bb58f31766d6b3b00874
+
+# qmt_package
+#
+# qmt_package can be 'stable', 'testing', or 'development'. 'stable' will get you
+# the current stable install; 'testing' or 'development' will get you increasingly
+# bleeding-edge versions. See http://qmailtoaster.com/ to see what will be installed
+# for each of these.
+
+qmt_package: stable
+
+# qmt_php7_version
+#
+# If a valid version number is specified, PHP7 will be installed in place of the stock
+# CentOS PHP 5.4, and qmailtoaster patched accordingly. Set to 0 to stay with PHP 5.4.
+# Set to 71 for PHP 7.1 etc.
+
+qmt_php7_version: 71
+
 # ======================================================================
-# CONFIGURATION
+# PASSWORDS
 # ======================================================================
 
-# qmt_roles
+# qmt_db_root_password
 #
-# The qmt_roles variable defines the major role groups for the role
-# accounts on this server. When you declare your domains, you can
-# specify for each role group how emails should be handled.
+# The root database password is left undefined here. You need to define it yourself
+# in your own vars file, preferably in an Ansible vault.
 #
-# If this scheme doesn't work for you, you can declare role accounts
-# individually as either aliases or mailboxes.
+# qmt_db_root_password:
+
+# qmt_db_vpopmail_password
 #
-# Note that role accounts in the 'other' group will not be created
-# automatically. These accounts are included here simply to illustrate
-# some other RFC2142 role accounts that you might wish to create
-# individually.
-
-qmt_roles:
-  business:
-    - info
-    - marketing
-    - sales
-    - support
-  network:
-    - abuse
-    - noc
-    - security
-  owner:
-    - admin
-    - billing
-  services:
-    - hostmaster
-    - mail
-    - postmaster
-  webmaster:
-    - webmaster
-  other:
-    - help
-    - contact
-    - feedback
-    - root
-    - service
-    - news
-    - ftp
-    - usenet
-    - uucp
-
-# qmt_procmail_filtersets
+# The vpopmail database password is left undefined here. You need to define it yourself
+# in your own vars file, preferably in an Ansible vault.
 #
-# The user creation process will create a set of procmail rc include
-# files for any users who use procmail to filter their incoming email.
-# This list gives a set of default include file names.
+# qmt_db_vpopmail_password:
 
-qmt_procmail_filtersets:
-  - blacklist
-  - whitelist
-  - subscriptions
-
-# qmt_procmail_filterdirs
+# qmt_db_roundcube_password
 #
-# If the user is using procmail filtering, this list of named directories
-# will be set up in their .procmailrc file.
-
-qmt_procmail_filterdirs:
-  - name: JUNKDIR
-    path: .Junk/
-  - name: LISTDIR
-    path: .Lists/
-  - name: SPAMDIR
-    path: .Spam/
-
-# qmt_maildir_subdirs
+# The roundcube database password is left undefined here. If you install
+# Roundcube, you need to define it yourself in your own vars file,
+# preferably in an Ansible vault.
 #
-# This defines the names of subdirectories of a Maildir; don't change
-# these unless you want things to possibly break in surprising ways.
-
-qmt_maildir_subdirs:
-  - cur
-  - new
-  - tmp
+# qmt_db_roundcube_password:
 
 # ======================================================================
 # PATHS
