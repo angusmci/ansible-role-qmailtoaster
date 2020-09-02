@@ -56,7 +56,7 @@
     group: root
     mode: "0644"
 
-- name: qt_install_centos_8 -- fetch clamd@scan.service
+- name: qt_install_centos_8 -- fetch scan.conf
   become: yes
   get_url:
     url: https://raw.githubusercontent.com/qmtoaster/scripts/master/scan.conf
@@ -118,6 +118,7 @@
     - { regexp: "^#?LogTime", line: "LogTime yes" }
     - { regexp: "^#?LogVerbose", line: "LogVerbose yes" }
     - { regexp: "^#?LogRotate", line: "LogRotate yes" }
+    - { regexp: "^#DatabaseOwner", line: "DatabaseOwner: clamupdate" }
   register: freshclam_conf
 
 - name: qt_install_centos_8 -- run freshclam if needed
