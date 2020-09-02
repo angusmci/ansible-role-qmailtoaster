@@ -118,7 +118,7 @@
     - { regexp: "^#?LogTime", line: "LogTime yes" }
     - { regexp: "^#?LogVerbose", line: "LogVerbose yes" }
     - { regexp: "^#?LogRotate", line: "LogRotate yes" }
-    - { regexp: "^#DatabaseOwner", line: "DatabaseOwner: clamupdate" }
+    - { regexp: "^#DatabaseOwner", line: "DatabaseOwner clamupdate" }
   register: freshclam_conf
 
 - name: qt_install_centos_8 -- run freshclam if needed
