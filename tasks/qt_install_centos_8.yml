@@ -47,6 +47,15 @@
     enablerepo: epel
     disablerepo: qmt
 
+- name: qt_install_centos_8 -- make sure freshclam service is stopped
+  become: yes
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items:
+    - clamav-freshclam
+
 - name: qt_install_centos_8 -- fetch clamd@scan.service
   become: yes
   get_url:
