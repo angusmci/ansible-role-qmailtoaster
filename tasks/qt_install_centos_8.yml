@@ -47,14 +47,14 @@
     enablerepo: epel
     disablerepo: qmt
 
-- name: qt_install_centos_8 -- make sure freshclam service is stopped
-  become: yes
-  systemd:
-    name: "{{ item }}"
-    state: stopped
-    enabled: no
-  with_items:
-    - clamav-freshclam
+# - name: qt_install_centos_8 -- make sure freshclam service is stopped
+#   become: yes
+#   systemd:
+#     name: "{{ item }}"
+#     state: stopped
+#     enabled: no
+#   with_items:
+#     - clamav-freshclam
 
 - name: qt_install_centos_8 -- fetch clamd@scan.service
   become: yes
@@ -130,10 +130,10 @@
     - { regexp: "^#DatabaseOwner", line: "DatabaseOwner clamupdate" }
   register: freshclam_conf
 
-- name: qt_install_centos_8 -- run freshclam if needed
-  become: yes
-  when: freshclam_conf.changed
-  command: freshclam
+# - name: qt_install_centos_8 -- run freshclam if needed
+#   become: yes
+#   when: freshclam_conf.changed
+#   command: freshclam
 
 - name: qt_install_centos_8 -- add qmailtoaster man pages to man_db.conf
   become: yes
