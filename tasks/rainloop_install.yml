@@ -15,7 +15,6 @@
     src: https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip
     dest: /usr/share/rainloop/
     remote_src: yes
-    creates: /usr/share/rainloop/
   register: rainloop_sources
 
 - name: get the rainloop sources [standard version]
@@ -25,7 +24,6 @@
     src: https://www.rainloop.net/repository/webmail/rainloop-latest.zip
     dest: /usr/share/rainloop/
     remote_src: yes
-    creates: /usr/share/rainloop/
   register: rainloop_sources
 
 - name: change file modes recursively
