@@ -84,11 +84,13 @@
     mode: 0640
 
 - name: import key
+  become: yes
   rpm_key:
     state: present
     key: https://rspamd.com/rpm-stable/gpg.key
 
 - name: install rspamd
+  become: yes
   yum:
     name: rspamd
     state: present
