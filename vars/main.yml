@@ -230,6 +230,22 @@ qmt_httpd_ssl_certificate_authority_file: server-ca-bundle.crt
 # OTHER
 # ================================================================================
 
+# qmt_open_ports
+#
+# List of ports that should be open on this server
+
+qmt_open_ports:
+  - 22
+  - 25
+  - 80
+  - 110
+  - 143
+  - 443
+  - 465
+  - 587
+  - 993
+  - 995
+
 # qmt_toast_aclnet
 #
 # ACL definitions for access to web management tools. Slashes in
