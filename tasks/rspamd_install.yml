@@ -95,3 +95,40 @@
     name: rspamd
     state: present
     enablerepo: rspamd
+
+- name: create local.d/worker-normal.inc
+  become: yes
+  template:
+    src: etc_rspamd_local.d_worker-normal.inc.j2
+    dest: /etc/rspamd/local.d/worker-normal.inc
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+
+- name: create local.d/classifier-bayes.conf
+  become: yes
+  template:
+    src: etc_rspamd_local.d_classifier-bayes.conf.j2
+    dest: /etc/rspamd/local.d/classifier-bayes.conf
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+
+- name: create local.d/fuzzy-check.conf
+  become: yes
+  template:
+    src: etc_rspamd_local.d_fuzzy-check.conf.j2
+    dest: /etc/rspamd/local.d/fuzzy-check.conf
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable and start rspamd
+  become: yes
+  systemd:
+    name: rspamd
+    state: started
+    enabled: yes
