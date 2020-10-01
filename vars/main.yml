@@ -30,6 +30,12 @@ qmt_install_roundcube: no
 
 qmt_install_rainloop: no
 
+# qmt_install_rspamd
+#
+# Should we install the rspamd spam filtering system?
+
+qmt_install_rspamd: no
+
 # ================================================================================
 # DATABASE
 # ================================================================================

@@ -1,0 +1,10 @@
+include /etc/redis.conf
+
+port 6378
+
+pidfile /var/run/redis/bayes.pid
+logfile /var/log/redis/bayes.log
+dbfilename bayes.rdb
+dir /var/lib/redis/bayes/
+
+maxmemory 600M

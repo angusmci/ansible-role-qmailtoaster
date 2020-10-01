@@ -101,15 +101,22 @@
   tags:
     - qmt
 
+# Install rainloop
+
 - debug:
     msg: "#DEBUG variable settings -- qmt_install_rainloop={{ qmt_install_rainloop }}"
-
-# Install rainloop
 
 - when: qmt_install_rainloop
   include: rainloop_install.yml
   tags:
     - rainloop
+
+# Install rspamd
+
+- when: qmt_install_rspamd
+  include: rspamd_install.yml
+  tags:
+    - rspamd
 
 # Post-installation
 

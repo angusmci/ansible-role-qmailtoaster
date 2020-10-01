@@ -1,0 +1,76 @@
+---
+# install the rspamd spam filter system
+
+- name: install redis
+  become: yes
+  yum:
+    name: "redis"
+    state: latest
+    update_cache: yes
+
+- name: create additional directories for redis databases
+  become: yes
+  file:
+    path: /var/lib/redis/{{ item }}
+    state: directory
+    mode: 0755
+    owner: redis
+  with_items:
+    - fuzzy
+    - bayes
+
+- name: allow redis connections from local host only
+  become: yes
+  lineinfile:
+    path: /etc/redis.conf
+    regexp: "^# bind 127.0.0.1 ::1"
+    line: bind 127.0.0.1 ::1
+
+- name: set max memory for redis
+  become: yes
+  lineinfile:
+    path: /etc/redis.conf
+    regexp: "^# maxmemory"
+    line: maxmemory 200M
+
+- name: create redis config files
+  become: yes
+  template:
+    src: "etc_redis_{{ item }}.conf.j2"
+    dest: "/etc/redis_{{ item }}.conf"
+    backup: yes
+    owner: redis
+    mode: 0644
+  with_items:
+    - redis
+    - bayes
+    - fuzzy
+
+- name: enable and start redis instances
+  become: yes
+  systemd:
+    state: started
+    enabled: yes
+    name: redis-{{ item }}
+  with_items:
+    - redis
+    - bayes
+    - fuzzy
+
+- name: get rspamd repo
+  become: yes
+  get_url:
+    url: https://rspamd.com/rpm-stable/centos-8/rspamd.repo
+    dest: /etc/yum.repos.d/rspamd.repo
+    mode: 0640
+
+- name: import key
+  rpm_key:
+    state: present
+    key: https://rspamd.com/rpm-stable/gpg.key
+
+- name: install rspamd
+  yum:
+    name: rspamd
+    state: present
+    enablerepo: rspamd
