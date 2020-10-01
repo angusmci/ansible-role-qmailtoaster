@@ -46,14 +46,33 @@
     - bayes
     - fuzzy
 
-- name: enable and start redis instances
+- name: create redis service files
+  become: yes
+  template:
+    src: usr_lib_systemd_system_redis-{{ item }}.service.j2
+    dest: /usr/lib/systemd/system/redis-{{ item }}.service
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - bayes
+    - fuzzy
+
+- name: enable and start main redis instance
   become: yes
   systemd:
+    name: redis
     state: started
     enabled: yes
+
+- name: enable and start additional redis instances
+  become: yes
+  systemd:
     name: redis-{{ item }}
+    state: started
+    enabled: yes
   with_items:
-    - redis
     - bayes
     - fuzzy
 
