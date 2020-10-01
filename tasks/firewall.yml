@@ -14,3 +14,9 @@
     permanent: yes
     state: enabled
   with_items: "{{ qmt_open_ports }}"
+
+- name: firewall -- reload
+  become: yes
+  systemd:
+    name: firewalld.service
+    state: reloaded
