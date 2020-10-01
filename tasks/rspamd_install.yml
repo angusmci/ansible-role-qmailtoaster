@@ -36,8 +36,8 @@
 - name: create redis config files
   become: yes
   template:
-    src: "etc_redis_{{ item }}.conf.j2"
-    dest: "/etc/redis_{{ item }}.conf"
+    src: "etc_redis-{{ item }}.conf.j2"
+    dest: "/etc/redis-{{ item }}.conf"
     backup: yes
     owner: redis
     mode: 0644
