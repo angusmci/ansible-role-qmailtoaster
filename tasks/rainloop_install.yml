@@ -6,7 +6,9 @@
   file:
     path: /usr/share/rainloop/
     state: directory
-    mode: "0755"
+    owner: apache
+    group: apache
+    mode: 0755
 
 - name: get the rainloop sources [community version]
   become: yes
@@ -15,6 +17,8 @@
     src: https://www.rainloop.net/repository/webmail/rainloop-community-latest.zip
     dest: /usr/share/rainloop/
     remote_src: yes
+    owner: apache
+    group: apache
   register: rainloop_sources
 
 - name: get the rainloop sources [standard version]
@@ -24,6 +28,8 @@
     src: https://www.rainloop.net/repository/webmail/rainloop-latest.zip
     dest: /usr/share/rainloop/
     remote_src: yes
+    owner: apache
+    group: apache
   register: rainloop_sources
 
 - name: change file modes recursively
