@@ -108,7 +108,7 @@
   become: yes
   file:
     path: /var/log/clamd/clamd.log
-    state: file
+    state: touch
     owner: clamscan
     group: clamscan
 
