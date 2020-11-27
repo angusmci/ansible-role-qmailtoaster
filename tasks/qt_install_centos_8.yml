@@ -99,7 +99,7 @@
     group: "{{ item.group }}"
     mode: 0755
   with_items:
-    - { path: "/var/clamav", owner: "clamav", group: "clamscan" }
+    - { path: "/var/clamav", owner: "clamscan", group: "clamscan" }
     - { path: "/var/log/clamd", owner: "clamscan", group: "clamscan" }
     - { path: "/var/log/clamav", owner: "clamupdate", group: "clamupdate" }
     - { path: "/var/lib/clamav", owner: "clamupdate", group: "clamupdate" }
