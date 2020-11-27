@@ -4,3 +4,10 @@
 - name: postinstall_centos_8 -- update crypto policies
   become: yes
   shell: update-crypto-policies --set {{ qmt_crypto_policy }}
+
+- name: postinstall_centos_8 -- set dovecot authentication
+  become: yes
+  lineinfile:
+    path: /etc/dovecot/toaster.conf
+    regexp: "^auth_mechanisms"
+    line: "auth_mechanisms = plain login"
